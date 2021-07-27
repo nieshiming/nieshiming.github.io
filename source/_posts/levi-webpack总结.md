@@ -23,8 +23,6 @@ const CircularDependencyPlugin = require('circular-dependency-plugin')
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length })
 const source = resolve(__dirname, '..', 'src')
 
-<!--more-->
-
 module.exports = {
   context: source,
   entry: {
@@ -155,6 +153,8 @@ module.exports = {
 > 带有副作用的内容转换器,函数, 从右到左执行，实质上是一个compose函数
 > 将源文件经过转换输出新的结果，支持链式操作，其本质上就是一个函数
 
+<!--more-->
+
 ```javascript
 
 module.exports = function(source, sourceMap?, data?) {}
@@ -169,6 +169,7 @@ module.exports = function (context) {
 
   return result;
 };
+
 
 /** 异步loader */
 // module.exports = function (context) {
