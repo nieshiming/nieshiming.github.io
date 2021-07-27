@@ -5,7 +5,7 @@ tags: "react"
 categories: "react"
 ---
 
-#### 1、什么是虚拟DOM，怎么构成的
+#### 什么是虚拟DOM，怎么构成的
 虚拟DOM是真实DOM在内存中的表示，简单来说，虚拟DOM就是个对象，由tag,props,children构成
 ```javascript
   <div id="app">
@@ -64,7 +64,7 @@ categories: "react"
   var _default = Page;
 ```
 
-#### 2、谈谈你对DIFF算法理解
+#### 谈谈你对DIFF算法理解
 顾名思义：就是比较新老VDOM变化，把变化的部分更新到视图上  
 **diff的优化策略**
 - 针对于tree diff优化，react会忽略DOM节点跨层级的移动操作
@@ -86,7 +86,7 @@ React提出，通过key来判断同一层级的同组子节点。如果是相同
 <img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b8426edda46c4a16a691a81509aa5b44~tplv-k3u1fbpfcp-watermark.image">
 <font color=red>react主要用key来区分组件，相同的key表示同一个组件，react不会重新销毁创建组件实例，只可能更新。如果key不同，react会销毁已有的组件实例，重新创建组件新的实例</font>
 
-#### 3、生命周期有哪些
+#### 生命周期有哪些
 react > 16.3版本最新的生命周期,   
 <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a5236362d1e842d99b30cd04d3633157~tplv-k3u1fbpfcp-watermark.image">
 
@@ -209,7 +209,7 @@ react > 16.3版本最新的生命周期,
 - componentWillUnmount
 > componentWillUnmount 组件卸载时调用， 可取消订阅、清除定时器、清除组件内部引用store的数据等操作
 
-#### 4、 setState
+#### setState
 - setState 只在合成事件和钩子函数中是“异步”的，在原生事件和 setTimeout 中都是同步的
 - setState的“异步”并不是说内部由异步代码实现，其实本身执行的过程和代码都是同步的，只是合成事件和钩子函数的调用顺序在更新之前，导致在合成事件和钩子函数中没法立马拿到更新后的值，形式了所谓的“异步”，当然可以通过第二个参数 setState(partialState, callback) 中的callback拿到更新后的结果
 - 在原生事件和setTimeout 中不会批量更新，在“异步”中如果对同一个值进行多次 setState ， setState 的批量更新策略会对其进行覆盖，取最后一次的执行，如果是同时 setState 多个不同的值，在更新时会对其进行合并批量更新
@@ -246,12 +246,12 @@ setState的“异步”并不是说内部由异步代码实现，其实本身执
 - [关于 React setState，你了解多少？ #11](https://github.com/JTangming/blog/issues/11)
 
 
-#### 5、类组件和函数组件区别
+#### 类组件和函数组件区别
 类组件就是常说的class组件，有声明周期以及state    
 函数式组件：无声明周期，可接受props，常用来作为UI组件，
 > 函数式组件性能比类组件要高，适用于表现层，类组件包含声明周期以及state特性，可处理复杂的逻辑，适用于逻辑层。<font color=red>react初衷偏向于使用函数式组件，这样能更快的渲染。hooks横空出世</font>
 
-#### 6、 react ref作用
+#### react ref作用
 dom元素、组件真正实例的引用，其实就是react.render()函数执行后，返回的**组件实例**， <font color=red>你不能在函数组件上使用 ref 属性，因为他们没有实例。</font>
 
 - 为什么会用到refs
@@ -291,7 +291,7 @@ dom元素、组件真正实例的引用，其实就是react.render()函数执行
 当ref传递给render元素时，対该元素的引用可在ref中的current获取到
 > const ref = this.leviRef.current
 
-#### 7、什么是高阶组件？
+#### 什么是高阶组件？
 高阶组件可接受react组件作为参数并返回一个新的组件的函数，
 高阶组件可用于以下场景
 - 代码复用，逻辑抽象
@@ -330,7 +330,7 @@ const HOCComponent = (WrapComponent) => {
 }
 ```
 
-#### 8、什么是jsx
+#### 什么是jsx
 - 优点、特点
   - 增强可读性
   - 语法上和HTML非常相似
@@ -351,7 +351,7 @@ jsx会经过bable编译+react.js构造，变成js对象（这个对象也就是�
 - jsx为什么要经历一层bable编译呢？
 jsx是一个抽象出来的语法，它经过bable编译以后，可以变成一个可以描述UI的对象，我们可以拿着这个对象，渲染到浏览器，也可以选择显示到手机APP，所以这也是为什么要把react-dom单独抽离出来
 
-#### 9、什么是React.Context
+#### 什么是React.Context
 context的作用就是实现跨层级的组件数据传递， context提供了一种在组件之间可以共享值的方法，而无需通过树的每个级显示传递props    
 **优点： 跨组件访问数据**
 **缺点：react组件树中某个上级组件shouldComponentUpdate返回false以后，当context更新，是不会引起下级组件的更新**      
@@ -394,7 +394,7 @@ context的作用就是实现跨层级的组件数据传递， context提供了�
 
 [从Context源码实现谈React性能优化](https://juejin.cn/post/6907546624441090055)
 
-#### 10、如何避免组件重复渲染
+#### 如何避免组件重复渲染
 React常见问题就是重复渲染，React提供了2个方法，避免重复渲染
 - React.Memo(component, fn)
 - React.PureComponent
@@ -417,7 +417,7 @@ React常见问题就是重复渲染，React提供了2个方法，避免重复渲
 
 ```
 
-#### 11、如何提高react性能
+#### 如何提高react性能
 - 适当的使用shouldComponentUpdate/React.memo，避免了子组件不必要的渲染
 - 在列表和表格中使用key，这样React渲染更新速度更快
 - 抽离公共代码到单独文件中，使用路由懒加载
@@ -430,11 +430,11 @@ React常见问题就是重复渲染，React提供了2个方法，避免重复渲
 - 使用响应的打包工具：webpack,gulp压缩代码
 - DOM渲染优化。重绘不一定引起回流，但是回流会重绘，所以在弄DOM渲染的时候，毕竟发生过多的回流以及重绘
 
-#### 12、什么是React.Fiber
+#### 什么是React.Fiber
 
-#### 13、react 事件系统
+#### react 事件系统
 
-#### 14、react为什么要引入hooks
+#### react为什么要引入hooks
 - 组件之间逻辑复杂难用
 - 大型的组件难以拆分
 - 难以理解的class语法，忘记事件绑定this，没有稳定的语法提案
@@ -455,7 +455,7 @@ React常见问题就是重复渲染，React提供了2个方法，避免重复渲
 
 ```
 
-#### 15、常用hooks
+#### 常用hooks
 - useState()状态钩子。为函数组建提供内部状态
   ```javascript
     const Page = () => {
@@ -534,11 +534,11 @@ React常见问题就是重复渲染，React提供了2个方法，避免重复渲
     },
   ```
 
-#### 16、Hooks相比HOC和Render Prop有哪些优点？
+#### Hooks相比HOC和Render Prop有哪些优点？
  HOC都属于一种开发模式,将复用逻辑提升至父组件，容易嵌套过多、过度包装
  hooks是react一种api, 将复用逻辑提升组件顶层，而不是提升至父组件中，避免造成多层嵌套
 
-#### 17、hooks 里面有哪些优化方案
+#### hooks 里面有哪些优化方案
 - deps依赖项不过过多，尽量不要超出3个
 - 多个相关state，合并成对象形式处理，不然会导致hooks内部出现多个state，难以维
 - 在 useCallback 内部使用了 setState ，可以考虑使用 setState callback 减少依赖
@@ -587,18 +587,18 @@ React常见问题就是重复渲染，React提供了2个方法，避免重复渲
     };
   ```
 
-#### 18、useCallback 是用来干嘛的
+#### useCallback 是用来干嘛的
 缓存函数
 
-#### 19、useEffect和useLayoutEffect区别？
+#### useEffect和useLayoutEffect区别？
 1、useEffect是render结束后，callback函数执行，但是不会阻断浏览器的渲染。
 2、useLayoutEffect里面的callback函数会在DOM更新完成后立即执行,但是会在浏览器进行任何绘制之前运行完成,阻塞了浏览器的绘制。
 
-#### 20、react新版生命周期getDrivedStatefromprops为什么是静态的
+#### react新版生命周期getDrivedStatefromprops为什么是静态的
 react 16.4版本引入，代替换来的componentWillReceiveProps, 当props或state改变的时候，触发，是一个纯函数。
 之所以设置为静态，在函数内部不能获取this，防止setState造成死循环; 
 
-#### 21、实现一个自定义hooks
+#### 实现一个自定义hooks
 注意： 自定义hooks以use开头、或者函数名开头大写(react会认为这是一个组件)。不会react-hooks校验规则会报错
 
 ```javascript

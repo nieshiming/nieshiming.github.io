@@ -6,7 +6,7 @@ categories: "http"
 ---
 
 
-#### 1、http 协商缓存 & 强制缓存
+#### http 协商缓存 & 强制缓存
 - [http面试必会的：强制缓存和协商缓存](https://juejin.cn/post/6844903838768431118)
 - [10分钟彻底搞懂Http的强制缓存和协商缓存](https://segmentfault.com/a/1190000016199807)
 
@@ -42,7 +42,7 @@ cache-control: (http1.1) 现在最多使用的控制缓存的方式，服务器�
     <img  src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b05a37c143634702b9e88d0a7143d0f1~tplv-k3u1fbpfcp-zoom-1.image" />
 </div>
 
-#### 2、浏览器输入URL地址后发生了什么
+#### 浏览器输入URL地址后发生了什么
 - 浏览器想DNS服务器查找输入URL对应的IP地址
 - DNS服务器返回请求域名对应的ip地址
 - 浏览器根据IP地址与目标web服务器建立起TCP连接
@@ -62,7 +62,7 @@ cache-control: (http1.1) 现在最多使用的控制缓存的方式，服务器�
 - 防止已失效的连接请求报文段突然又传送到了服务端，因而产生错误
 
 
-#### 3、常见http状态码
+#### 常见http状态码
 - 1xx, 表示请求已被接收，继续处理
     - 100 客户端必须继续发出请求
     - 101 客户端要求服务端根据请求转换http协议版本
@@ -81,11 +81,11 @@ cache-control: (http1.1) 现在最多使用的控制缓存的方式，服务器�
     - 504 （网关超时） 服务器作为网关或代理，但是没有及时从上游服务器收到请求
     - 505 （HTTP 版本不受支持） 服务器不支持请求中所用的 HTTP 协议版本
 
-#### 4、请列举常用的 HTTP 方法，并介绍 GET 与 POST 请求之间的区别
+#### 请列举常用的 HTTP 方法，并介绍 GET 与 POST 请求之间的区别
 - get请求数据量较小，可以在URL展示出来,可以被缓存
 - post请求，报文数据量比get多
 
-#### 5、cookies sessionstorage和localstorage的区别
+#### cookies sessionstorage和localstorage的区别
 - cookie：存储在用户本地终端上的数据
 - cookie数据始终在同源的http请求中携带(cookie在浏览器和服务器间来回传递)， 每次http请求都会携带cookie 大小为4k
 - sessionstorage和localstorage存储在浏览器中，不参与服务器的通信,大于5M
@@ -93,7 +93,7 @@ cache-control: (http1.1) 现在最多使用的控制缓存的方式，服务器�
 - localstorage：客户端存储数据,没有时间限制的数据存储
 
 
-#### 6、HTTP 和 HTTPS 的共同点和区别
+#### HTTP 和 HTTPS 的共同点和区别
 经典五层模型： 应用层(http/https)、传输层(TCP)、网络层(IP)、数据链路层  
 http: 超文本传输协议    
 https： 超文本传输安全协议    
@@ -104,7 +104,7 @@ https： 超文本传输安全协议
 - http请求比https响应更快， 因为https加了TLS，建立连接更加复杂，也要交换更多的数据，难免会影响速度
 - http的连接很简单，是无状态的，https协议是有SSL+HTTP 协议构建的可进行加密传输，身份认证的网络协议，比http更加安全
 
-#### 7、HTTPS加密过程
+#### HTTPS加密过程
 
 ##### 对称加密
 > 简单来说就是一个密钥，可以用它加密数据，也可以用它解密数据, eg: 客户端和服务器用同一个密钥来进行加密、解密工作
@@ -135,7 +135,7 @@ eg: 服务器维护一组公钥、私钥。在客户端TLS阶段传递客户端�
 - [彻底搞懂HTTPS的加密原理 - 知乎](https://zhuanlan.zhihu.com/p/43789231)
 - [HTTPS 详解一：附带最精美详尽的 HTTPS 原理图](https://segmentfault.com/a/1190000021494676)
 
-#### 8、什么是跨域
+#### 什么是跨域
 跨域本质是浏览器的同源策略造成，指的是浏览器不能执行其他网站的脚本
 > 什么是同源策略： 协议，端口，域名
 - 同源策略限制了一下行为
@@ -278,7 +278,7 @@ const Jsonp = async (
 - nginx 实现反向代理， webpackdevserver proxy 是一个小型服务器，也能实现反向代理指定到指定域名
 
 
-#### 9、跨域资源共享CORS（简单请求、复杂请求）
+#### 跨域资源共享CORS（简单请求、复杂请求）
 跨站资源共享中的一种方式，它使用额外的http头部告诉浏览器可以服务器进行跨域资源请求
 ##### 请求类型
 ###### 简单请求
@@ -316,7 +316,7 @@ CORS请求需要要求服务器设置允许访问来源，即：设置**Access-C
 
 <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a70473688cc143d48870eca4c5e627f7~tplv-k3u1fbpfcp-zoom-1.image">
 
-#### 10、http1.0 / http1.1 / http2.0 区别
+#### http1.0 / http1.1 / http2.0 区别
 - http1.1 增加了connection: keep-alive(保持http持久连接)
    > 假设有6个http请求，如果开启keep-alive, 那么在5-15s同时发送6次http请求，走的是一个TCP连接，走一个是同一条http流，如果超出5-15没有发生http请求，那么连接中断，这表示是一条http长连接  
     如果不使用http持久连接，那么没发生一次http请求，都会经历TCP三次握手，非常耗时    
@@ -329,7 +329,7 @@ CORS请求需要要求服务器设置允许访问来源，即：设置**Access-C
     - 多路复用： 1.1请求和响应是有顺序，一旦某个前面未响应后续请求会阻塞，2.0响应是无序的，不会造成阻塞
     - 服务器推送： 服务器可以对客户端一次请求响应多次，例如客户端请求html，服务器可以额外推送css/js/img资源等
 
-#### 11、web常用的攻击技术和防护
+#### web常用的攻击技术和防护
 > xss 跨站脚本攻击: XSS 攻击是指攻击者在网站上注入恶意的客户端代码，通过恶意脚本对客户端网页进行篡改，从而在用户浏览网页时，对用户浏览器进行控制或者获取用户隐私数据的一种攻击方式
 
 > csrf 跨站请求伪造: 通常情况下，CSRF 攻击是攻击者借助受害者的 Cookie 骗取服务器的信任，可以在受害者毫不知情的情况下以受害者名义伪造请求发送给受攻击服务器，从而在并未授权的情况下执行在权限保护之下的操作。
@@ -341,7 +341,7 @@ CORS请求需要要求服务器设置允许访问来源，即：设置**Access-C
 - [15个常见的http知识点复习](https://juejin.cn/post/6844903872935247886)
 - [connection keep-alive作用](https://segmentfault.com/q/1010000019503002)
 
-#### 12、DNS解析相关 && CDN原理
+#### DNS解析相关 && CDN原理
 CDN中文含义”内容分发网络“，将原站的内容分布到接近用户边缘的边缘。用户可以就近获取数据
 - 降低了网络请求阻塞情况
 - 提高了请求的响应的数据
@@ -388,7 +388,7 @@ CDN中文含义”内容分发网络“，将原站的内容分布到接近用�
 - [百度面试官：给我说是CDN加速的原理？](https://zhuanlan.zhihu.com/p/306069528)
 
 
-#### 13、使用Promise封装ajax请求
+#### 使用Promise封装ajax请求
 ```javascript
     /***
      * @description
@@ -452,7 +452,7 @@ CDN中文含义”内容分发网络“，将原站的内容分布到接近用�
     };
 ```
 
-#### 14、content-type 有几种 **
+#### content-type 有几种 **
 用于定义网络文件以及类型，同时告知浏览器以那些方式处理该文件
 - 文本： text/html、text/javascript、text/css 、 text/plain
 - 图片： image/gif、image/jpeg、image/png
@@ -461,7 +461,7 @@ CDN中文含义”内容分发网络“，将原站的内容分布到接近用�
 - 二进制：application/json 、 application/pdf
 - 上传文件： multipart/form-data
 
-#### 15、http报文结构，有哪些headers **
+#### http报文结构，有哪些headers **
 用户http协议交互的信息成为报文： 有请求报文，响应报文， http报文可分为报文首部、报文主体
 <img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/033d324cd6ac4378910f3db095f7a66c~tplv-k3u1fbpfcp-zoom-1.image">
 
@@ -505,6 +505,6 @@ CDN中文含义”内容分发网络“，将原站的内容分布到接近用�
 ##### 参考文章
 - [一篇让你彻底了解http请求报文和响应报文的结构](https://juejin.cn/post/6920784699493187591)
 
-#### 16、你一般用的MIME类型有哪些？**
+#### 你一般用的MIME类型有哪些？**
 通常来说，浏览器通过MIME Type区分不同的媒体资源， 在把输出结果响应到浏览器上的时候，浏览器必须启动适当的应用程序来处理这个输出文档。这可以通过MIME来完成。在HTTP中，MIME类型被定义在Content-Type header中     
 **mime类型：参考上文：content-type类型**
