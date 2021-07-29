@@ -1,5 +1,5 @@
 ---
-title: '吃一堑长一智系列: 99% 开发者没弄明白的 babel 知识 '
+title: '吃一堑长一智系列_babel基础知识'
 date: 2021-07-29 10:03:29
 tags: "babel"
 categories: "babel"
