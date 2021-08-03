@@ -1,7 +1,9 @@
 ---
 title: JS基础汇总
 date: 2021-07-23 16:29:32
-tags: 'js'
+tags: 
+  - 'js'
+  - 八股文
 categories: 'js'
 ---
 
