@@ -11,8 +11,6 @@ date = "2021-12-16"
 
 <br>
 
-![visitors](https://visitor-badge.glitch.me/badge?page_id=nieshiming/nieshiming)
-
 <img align="right" alt="GIF" src="https://github.com/abhisheknaiidu/abhisheknaiidu/raw/master/code.gif?raw=true" width=355 height=227 style="margin-bottom:20px" />
 
           
@@ -47,17 +45,6 @@ date = "2021-12-16"
 - familiar with nodejs and koa
 - deep understanding of webpack and babel
 
-
-<br>
-<br>
-
-**📈 My Github Info** 
-
-<div align="center">
-
-[![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=nieshiming&theme=gotham)](https://github.com/anuraghazra/github-readme-stats)
-
-</div>
 
 
 
