@@ -1,0 +1,12 @@
+<footer class="footer">
+  <section class="container">
+    ©
+    {{ if (and .Site.Params.since (lt .Site.Params.since now.Year)) }}
+      {{ .Site.Params.since }} -
+    {{ end }}
+    {{ now.Year }}
+    {{ with .Site.Params.author }} {{ . }} {{ end }}
+    ·
+    开启美好新一天
+  </section>
+</footer>
