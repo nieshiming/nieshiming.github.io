@@ -3283,7 +3283,8 @@ figure {
     text-align: center;
     width: 1.6rem;
     margin-left: 0;
-    margin-right: 0.5rem; }
+    margin-right: 0.5rem;
+    vertical-align: bottom; }
   .content .post .post-meta .date .posted-on {
     margin-left: 0;
     margin-right: 1.5rem; }

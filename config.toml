@@ -14,7 +14,7 @@ description = "levi personal website"
 keywords = "blog,developer,personal"
 info = ["Keep your dream, And never give up"]
 avatarURL = "images/avatar.jpg"
-dateFormat = "January 2, 2006"
+dateFormat = "2006-01-02"
 since = 2019
 # Git Commit in Footer, uncomment the line below to enable it
 commit = "https://github.com/luizdepra/hugo-coder/tree/"

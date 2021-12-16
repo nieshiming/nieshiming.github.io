@@ -1,6 +1,6 @@
 +++ 
 draft = true
-date = 2021-12-16T13:17:23+08:00
+date = 2021-12-01
 title = "吃一堑长一智系列_babel基础知识"
 description = ""
 slug = ""
