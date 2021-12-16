@@ -69,22 +69,22 @@ weight = 1
 url = "https://github.com/nieshiming"
 
 [[params.social]]
-name = "E-Maiil"
-icon = "ri-mail-star-fill"
-weight = 3
-url = "mailto:nieshiming1219@163.com"
-
-[[params.social]]
 name = "知乎"
 icon = "ri-zhihu-line"
-weight = 4
+weight = 2
 url = "https://www.zhihu.com/people/xiang-zuo-zou-0o"
 
 [[params.social]]
 name = "掘金"
 icon = "ri-radar-fill"
-weight = 5
+weight = 3
 url = "https://juejin.cn/user/3597257776838583/posts"
+
+[[params.social]]
+name = "E-Maiil"
+icon = "ri-mail-star-fill"
+weight = 4
+url = "mailto:nieshiming1219@163.com"
 
 [languages.en]
 languageName = ":uk:"
