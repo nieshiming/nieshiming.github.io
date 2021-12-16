@@ -15,7 +15,7 @@ date = "2021-12-16"
 
           
 - 📫 blog: [levi的小酒馆](https://nieshiming.github.io/)
-- 🔗 website: [will complete](https://github.com/nieshiming)
+- 🔗 website: [https://nieshiming.cn/](hhttps://nieshiming.cn/)
 - 💬  mailbox: [nieshiming1219@163.com](mailto:nieshiming1219@163.com)
 
 
