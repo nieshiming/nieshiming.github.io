@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>react on levi</title>
+    <link>http://www.example.com/tags/react/</link>
+    <description>Recent content in react on levi</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 16 Dec 2021 13:27:27 +0800</lastBuildDate><atom:link href="http://www.example.com/tags/react/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>levi-react总结</title>
+      <link>http://www.example.com/posts/levi-react%E6%80%BB%E7%BB%93/</link>
+      <pubDate>Thu, 16 Dec 2021 13:27:27 +0800</pubDate>
+      
+      <guid>http://www.example.com/posts/levi-react%E6%80%BB%E7%BB%93/</guid>
+      <description>&lt;h4 id=&#34;什么是虚拟dom怎么构成的&#34;&gt;
+  什么是虚拟DOM，怎么构成的
+  &lt;a class=&#34;heading-link&#34; href=&#34;#%e4%bb%80%e4%b9%88%e6%98%af%e8%99%9a%e6%8b%9fdom%e6%80%8e%e4%b9%88%e6%9e%84%e6%88%90%e7%9a%84&#34;&gt;
+    &lt;i class=&#34;fa fa-link&#34; aria-hidden=&#34;true&#34;&gt;&lt;/i&gt;
+  &lt;/a&gt;
+&lt;/h4&gt;
+&lt;p&gt;虚拟DOM是真实DOM在内存中的表示，简单来说，虚拟DOM就是个对象，由tag,props,children构成&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;  &amp;lt;div id=&lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;app&amp;#34;&lt;/span&gt;&amp;gt;
+    &amp;lt;p &lt;span style=&#34;font-weight:bold&#34;&gt;class&lt;/span&gt;=&lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;text&amp;#34;&lt;/span&gt;&amp;gt;hello world!!!&amp;lt;&lt;span style=&#34;&#34;&gt;/p&amp;gt;&lt;/span&gt;
+  &amp;lt;&lt;span style=&#34;&#34;&gt;/div&amp;gt;&lt;/span&gt;
+
+  &lt;span style=&#34;font-style:italic&#34;&gt;// 可转化成下面的虚拟DOM表示
+&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt;&lt;/span&gt;  {
+    tag: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#39;div&amp;#39;&lt;/span&gt;,
+    props: {
+      id: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#39;app&amp;#39;&lt;/span&gt;
+    },
+    chidren: [
+      {
+        tag: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#39;p&amp;#39;&lt;/span&gt;,
+        props: {
+          className: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#39;text&amp;#39;&lt;/span&gt;
+        },
+        chidren: [
+          &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#39;hello world!!!&amp;#39;&lt;/span&gt;
+        ]
+      }
+    ]
+  }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;上面对象就是我们说的虚拟DOM，可表示成树形结构，原生 DOM 因为浏览器厂商需要实现众多的规范（各种 HTML5 属性、DOM事件），即使创建一个空的 div 也要付出昂贵的代价。虚拟 DOM 提升性能的点在于 DOM 发生变化的时候，通过 diff 算法比对 JavaScript 原生对象，计算出需要变更的 DOM，然后只对变化的 DOM 进行操作，而不是更新整个视图&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>routerv5源码探析前端路由本质</title>
+      <link>http://www.example.com/posts/routerv5%E6%BA%90%E7%A0%81%E6%8E%A2%E6%9E%90%E5%89%8D%E7%AB%AF%E8%B7%AF%E7%94%B1%E6%9C%AC%E8%B4%A8/</link>
+      <pubDate>Thu, 16 Dec 2021 13:18:14 +0800</pubDate>
+      
+      <guid>http://www.example.com/posts/routerv5%E6%BA%90%E7%A0%81%E6%8E%A2%E6%9E%90%E5%89%8D%E7%AB%AF%E8%B7%AF%E7%94%B1%E6%9C%AC%E8%B4%A8/</guid>
+      <description>&lt;h2 id=&#34;前言&#34;&gt;
+  前言
+  &lt;a class=&#34;heading-link&#34; href=&#34;#%e5%89%8d%e8%a8%80&#34;&gt;
+    &lt;i class=&#34;fa fa-link&#34; aria-hidden=&#34;true&#34;&gt;&lt;/i&gt;
+  &lt;/a&gt;
+&lt;/h2&gt;
+&lt;h3 id=&#34;什么是前端路由&#34;&gt;
+  什么是前端路由
+  &lt;a class=&#34;heading-link&#34; href=&#34;#%e4%bb%80%e4%b9%88%e6%98%af%e5%89%8d%e7%ab%af%e8%b7%af%e7%94%b1&#34;&gt;
+    &lt;i class=&#34;fa fa-link&#34; aria-hidden=&#34;true&#34;&gt;&lt;/i&gt;
+  &lt;/a&gt;
+&lt;/h3&gt;
+&lt;p&gt;首先，路由的概念开始是后端提出来的，用来跟服务器进行数据/资源获取的一种方式，通过不同的路径，来获取不同的资源
+前端随着ajax(不刷新页面情况下请求数据)的流行，推动着异步交互体验提升，随后spa&amp;lt;单页面应用程序&amp;gt;在前端领域大放异彩&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;spa: 单页面应用程序不仅在页面内交互是无刷新的，连页面之间的跳转也没有刷新。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;spa核心思想&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;监听url变化&lt;/li&gt;
+&lt;li&gt;改变context的值&lt;/li&gt;
+&lt;li&gt;匹配相对应的组件&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;实现前端路由应该包括哪些功能&#34;&gt;
+  实现前端路由应该包括哪些功能
+  &lt;a class=&#34;heading-link&#34; href=&#34;#%e5%ae%9e%e7%8e%b0%e5%89%8d%e7%ab%af%e8%b7%af%e7%94%b1%e5%ba%94%e8%af%a5%e5%8c%85%e6%8b%ac%e5%93%aa%e4%ba%9b%e5%8a%9f%e8%83%bd&#34;&gt;
+    &lt;i class=&#34;fa fa-link&#34; aria-hidden=&#34;true&#34;&gt;&lt;/i&gt;
+  &lt;/a&gt;
+&lt;/h3&gt;
+&lt;p&gt;前端可以自己维护和控制浏览器的history&amp;lt;历史记录&amp;gt;。我们称之为history栈， 保证浏览器在url改变的时候不会刷新页面。并且通过history栈控制浏览器页面的前进和后退&lt;/p&gt;
+&lt;p&gt;目前 Router有两种实现方式  hash 和 History&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;...
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

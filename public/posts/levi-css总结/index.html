@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="color-scheme" content="light dark">
+
+    
+      <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests; block-all-mixed-content; default-src 'self'; child-src 'self'; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net/; form-action 'self'; frame-src 'self'; img-src 'self'; object-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com/ https://cdn.jsdelivr.net/; script-src 'self' 'unsafe-inline' https://www.google-analytics.com; prefetch-src 'self'; connect-src 'self' https://www.google-analytics.com;">
+
+    
+
+    <meta name="author" content="levi">
+    <meta name="description" content="
+  flex
+  
+    
+  
+
+
+  flex-basis
+  
+    
+  
+
+flex-basis: 项目占据主轴的宽度， 在分配多余空间之前会判断这个属性大小， 默认值auto
+
+auto: 即项目本身的大小，取决于item自身的宽度或高度
+0%： 不暂居主轴宽度，item的宽度和高度无意义
+当主轴为水平方向的时候，当设置了 flex-basis，项目的宽度设置值会失效，flex-basis 需要跟 flex-grow 和 flex-shrink 配合使用才能发挥效果。
+
+
+  flex-grow
+  
+    
+  
+
+flex-grow: 用于瓜分”父容器“剩余空间 。定义项目的放大比例， 默认值0，即存在剩余空间，也不会放大
+
+如果所有项目的 flex-grow 属性都为 1，则它们将等分剩余空间。(如果有的话)
+如果一个项目的 flex-grow 属性为 2，其他项目都为 1，则前者占据的剩余空间将比其他项多一倍。
+">
+    <meta name="keywords" content="blog,developer,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="levi-css总结"/>
+<meta name="twitter:description" content="
+  flex
+  
+    
+  
+
+
+  flex-basis
+  
+    
+  
+
+flex-basis: 项目占据主轴的宽度， 在分配多余空间之前会判断这个属性大小， 默认值auto
+
+auto: 即项目本身的大小，取决于item自身的宽度或高度
+0%： 不暂居主轴宽度，item的宽度和高度无意义
+当主轴为水平方向的时候，当设置了 flex-basis，项目的宽度设置值会失效，flex-basis 需要跟 flex-grow 和 flex-shrink 配合使用才能发挥效果。
+
+
+  flex-grow
+  
+    
+  
+
+flex-grow: 用于瓜分”父容器“剩余空间 。定义项目的放大比例， 默认值0，即存在剩余空间，也不会放大
+
+如果所有项目的 flex-grow 属性都为 1，则它们将等分剩余空间。(如果有的话)
+如果一个项目的 flex-grow 属性为 2，其他项目都为 1，则前者占据的剩余空间将比其他项多一倍。
+"/>
+
+    <meta property="og:title" content="levi-css总结" />
+<meta property="og:description" content="
+  flex
+  
+    
+  
+
+
+  flex-basis
+  
+    
+  
+
+flex-basis: 项目占据主轴的宽度， 在分配多余空间之前会判断这个属性大小， 默认值auto
+
+auto: 即项目本身的大小，取决于item自身的宽度或高度
+0%： 不暂居主轴宽度，item的宽度和高度无意义
+当主轴为水平方向的时候，当设置了 flex-basis，项目的宽度设置值会失效，flex-basis 需要跟 flex-grow 和 flex-shrink 配合使用才能发挥效果。
+
+
+  flex-grow
+  
+    
+  
+
+flex-grow: 用于瓜分”父容器“剩余空间 。定义项目的放大比例， 默认值0，即存在剩余空间，也不会放大
+
+如果所有项目的 flex-grow 属性都为 1，则它们将等分剩余空间。(如果有的话)
+如果一个项目的 flex-grow 属性为 2，其他项目都为 1，则前者占据的剩余空间将比其他项多一倍。
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://www.example.com/posts/levi-css%E6%80%BB%E7%BB%93/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-12-16T13:26:07+08:00" />
+<meta property="article:modified_time" content="2021-12-16T13:26:07+08:00" />
+
+
+
+    <title>
+  levi-css总结 · levi
+</title>
+
+    
+      <link rel="canonical" href="http://www.example.com/posts/levi-css%E6%80%BB%E7%BB%93/">
+    
+
+    <link rel="preload" href="/fonts/forkawesome-webfont.woff2?v=1.2.0" as="font" type="font/woff2" crossorigin>
+
+    
+      
+      
+      <link rel="stylesheet" href="/css/coder.min.d9fddbffe6f27e69985dc5fe0471cdb0e57fbf4775714bc3d847accb08f4a1f6.css" integrity="sha256-2f3b/&#43;byfmmYXcX&#43;BHHNsOV/v0d1cUvD2Eesywj0ofY=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+      
+        
+        
+        <link rel="stylesheet" href="/css/coder-dark.min.ccbbada2e264e4fdbf9b2181cccc2cdb289a63dc9520a1e96ac2b9a45778df29.css" integrity="sha256-zLutouJk5P2/myGBzMws2yiaY9yVIKHpasK5pFd43yk=" crossorigin="anonymous" media="screen" />
+      
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
+
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+    <meta name="generator" content="Hugo 0.90.1" />
+
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+  </head>
+
+  
+  
+    
+  
+  <body class="preload-transitions colorscheme-auto">
+    
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="/">
+      levi
+    </a>
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/">首页</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/posts/">博客</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/tags/">标签</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/about/">关于我</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="http://www.example.com/posts/levi-css%E6%80%BB%E7%BB%93/">
+              levi-css总结
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+              <time datetime='2021-12-16T13:26:07&#43;08:00'>
+                December 16, 2021
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fa fa-clock-o" aria-hidden="true"></i>
+              4-minute read
+            </span>
+          </div>
+          
+          <div class="categories">
+  <i class="fa fa-folder" aria-hidden="true"></i>
+    <a href="/categories/css/">css</a></div>
+
+          <div class="tags">
+  <i class="fa fa-tag" aria-hidden="true"></i>
+    <span class="tag">
+      <a href="/tags/css/">css</a>
+    </span>
+      <span class="separator">•</span>
+    <span class="tag">
+      <a href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/">八股文</a>
+    </span></div>
+
+        </div>
+      </header>
+
+      <div>
+        
+        <h4 id="flex">
+  flex
+  <a class="heading-link" href="#flex">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<h5 id="flex-basis">
+  flex-basis
+  <a class="heading-link" href="#flex-basis">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<p>flex-basis: 项目占据主轴的宽度， 在分配多余空间之前会判断这个属性大小， 默认值auto</p>
+<ul>
+<li>auto: 即项目本身的大小，取决于item自身的宽度或高度</li>
+<li>0%： 不暂居主轴宽度，item的宽度和高度无意义
+<strong>当主轴为水平方向的时候，当设置了 flex-basis，项目的宽度设置值会失效，flex-basis 需要跟 flex-grow 和 flex-shrink 配合使用才能发挥效果。</strong></li>
+</ul>
+<h5 id="flex-grow">
+  flex-grow
+  <a class="heading-link" href="#flex-grow">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<p>flex-grow: 用于瓜分”父容器“剩余空间 。定义项目的放大比例， 默认值0，即存在剩余空间，也不会放大</p>
+<ul>
+<li>如果所有项目的 flex-grow 属性都为 1，则它们将等分剩余空间。(如果有的话)</li>
+<li>如果一个项目的 flex-grow 属性为 2，其他项目都为 1，则前者占据的剩余空间将比其他项多一倍。</li>
+</ul>
+<h5 id="flex-shrink">
+  flex-shrink
+  <a class="heading-link" href="#flex-shrink">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<p>定义了项目的缩小比例， 默认值1。 即项目空间不足，item将弱小。 负值对该属性无效
+flex-shrink: 计算元素宽度（包含标准盒模型、怪异盒模型）总和超出父容器部分，然后按照 盒宽度 -  (实际内容宽度) * shrink /  总的(实际内容宽度) * shrink， 计算缩放后的实际宽度</p>
+<h5 id="简写">
+  简写
+  <a class="heading-link" href="#%e7%ae%80%e5%86%99">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<p>{ flex: flex-grow | flex-shrink | flex-basis}</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-css" data-lang="css">   #<span style="font-weight:bold">container</span> {
+       <span style="font-weight:bold">display</span>: <span style="font-weight:bold">flex</span>;
+       <span style="font-weight:bold">width</span>: 1000<span style="">px</span>;
+   }
+
+   <span style="font-style:italic">/* 瓜分父元素剩余空间 */</span>
+   <span style="font-style:italic">/* 实际宽度  300 + (1000 - 500) * 2 / 3 = 633.33 */</span>
+   .<span style="font-weight:bold">left</span> {
+       <span style="font-weight:bold">width</span>: 300<span style="">px</span>;
+       <span style="font-weight:bold">height</span>: 200<span style="">px</span>;
+       <span style="font-weight:bold">flex-grow</span>: 2;
+   }
+
+   <span style="font-style:italic">/* 实际宽度  200 + (1000 - 500) * 1 / 3 = 366.66 */</span>
+   .<span style="font-weight:bold">right</span> {
+       <span style="font-weight:bold">width</span>: 200<span style="">px</span>;
+       <span style="font-weight:bold">height</span>: 200<span style="">px</span>;
+       <span style="font-weight:bold">flex-grow</span>: 1;
+   }
+
+
+   <span style="font-style:italic">/* flex-shrink 测评 */</span>
+   <span style="font-style:italic">/* 
+</span><span style="font-style:italic">       分配比例为： 超出宽度 400 + 300 = 700 - 500 = 200
+</span><span style="font-style:italic">       left和right 分配比例为 400*2:300*1= 8/3
+</span><span style="font-style:italic">       left = 400 - 200*8/11 = 254.54 
+</span><span style="font-style:italic">       right = 300 - 200*3/11 = 245.45
+</span><span style="font-style:italic">
+</span><span style="font-style:italic">       计算缩放比例：用width，要考虑到盒模型，标准和模型和怪异盒模型
+</span><span style="font-style:italic">       超出宽度 = 盒子宽度+padding+border - 外部容器宽度
+</span><span style="font-style:italic">   */</span>
+   #<span style="font-weight:bold">container</span> {
+       <span style="font-weight:bold">display</span>: <span style="font-weight:bold">flex</span>;
+       <span style="font-weight:bold">width</span>: 500<span style="">px</span>;
+   }
+
+   .<span style="font-weight:bold">left</span> {
+       <span style="font-weight:bold">width</span>: 400<span style="">px</span>;
+       <span style="font-weight:bold">height</span>: 200<span style="">px</span>;
+       <span style="font-weight:bold">flex-shrink</span>: 2;
+   }
+
+   .<span style="font-weight:bold">right</span> {
+       <span style="font-weight:bold">width</span>: 300<span style="">px</span>;
+       <span style="font-weight:bold">height</span>: 200<span style="">px</span>;
+       <span style="font-weight:bold">flex-shrink</span>: 1;
+   }
+
+</code></pre></div><p><a href="https://zhuanlan.zhihu.com/p/25303493">知乎-flex布局进阶</a>
+<a href="https://juejin.cn/post/6844904066078736391">flex分配空间面试题</a></p>
+<h4 id="meta标签作用">
+  meta标签作用
+  <a class="heading-link" href="#meta%e6%a0%87%e7%ad%be%e4%bd%9c%e7%94%a8">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>标签提供关于 HTML 文档的元数据。元数据不会显示在页面上，但是对于机器是可读的。<br>
+meta的必需属性是content，当然并不是说meta标签里一定要有content，而是当有http-equiv或name属性的时候，一定要有content属性对其进行说明。例如</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">    &lt;<span style="font-weight:bold">meta</span> name=<span style="font-style:italic">&#34;viewport&#34;</span> content=<span style="font-style:italic">&#34;width=device-width, initial-scale=1.0&#34;</span> /&gt;
+</code></pre></div><h5 id="http-equiv--模拟http标头字段">
+  http-equiv  模拟http标头字段
+  <a class="heading-link" href="#http-equiv--%e6%a8%a1%e6%8b%9fhttp%e6%a0%87%e5%a4%b4%e5%ad%97%e6%ae%b5">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<p>http-equiv属性是添加http头部内容，对一些自定义的，或者需要额外添加的http头部内容，需要发送到浏览器中</p>
+<h5 id="charset-解析编码">
+  charset 解析编码
+  <a class="heading-link" href="#charset-%e8%a7%a3%e6%9e%90%e7%bc%96%e7%a0%81">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<p>告知浏览器文档使用的解析编码</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">    &lt;<span style="font-weight:bold">meta</span> charset=<span style="font-style:italic">&#34;UTF-8&#34;</span>&gt;
+</code></pre></div><h5 id="namecontent">
+  name/content
+  <a class="heading-link" href="#namecontent">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<p>name属性与content属性结合使用, name用来表示元数据的类型，表示当前<!-- raw HTML omitted -->标签的具体作用；content属性用来提供值
+name属性如下：</p>
+<ul>
+<li>author: 当前页的作者名</li>
+<li>description: 当前页的说明</li>
+<li>keyword: 描述网站内容的关键词,以逗号隔开，用于SEO搜索</li>
+<li>viewreport: 它提供有关视口初始大小的提示，仅供移动设备使用</li>
+</ul>
+<h4 id="重绘重排">
+  重绘&amp;&amp;重排
+  <a class="heading-link" href="#%e9%87%8d%e7%bb%98%e9%87%8d%e6%8e%92">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>页面在生成过程中至少会渲染一次，并且在用户访问过程中，可能还会不断渲染   <br>
+<strong>重排一定会重绘，重绘不一定会重排</strong></p>
+<h5 id="页面生成过程">
+  页面生成过程
+  <a class="heading-link" href="#%e9%a1%b5%e9%9d%a2%e7%94%9f%e6%88%90%e8%bf%87%e7%a8%8b">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<ul>
+<li>从服务器拉取html、css、js资源</li>
+<li>html被html解析器解析成DOM树</li>
+<li>css被css解析器解析cssom树</li>
+<li>结合DOM树和css树生成渲染树(render tree)</li>
+<li>生成布局flow，将渲染树的所有节点进行平面合成&lt;耗时, 重绘少了这一步&gt;</li>
+<li>根据render tree和 节点，绘制在屏幕上&lt;耗时&gt;
+<!-- raw HTML omitted --></li>
+</ul>
+<h5 id="重排简称回流">
+  重排：简称回流
+  <a class="heading-link" href="#%e9%87%8d%e6%8e%92%e7%ae%80%e7%a7%b0%e5%9b%9e%e6%b5%81">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<p>当DOM变化，影响了元素的几何位置、删除元素、添加元素，浏览器需要重新生成元素几何位置，将其放置在正确位置的过程叫做重排<br>
+触发条件： 重新生成布局、重新排列元素， 需要重新生成布局</p>
+<ul>
+<li>窗口大小改变</li>
+<li>添加、删除元素</li>
+<li>改变元素位置、改变元素尺寸</li>
+<li>内容变化(例如：用户在input中输入内容)</li>
+</ul>
+<!-- raw HTML omitted -->
+<h5 id="重绘">
+  重绘
+  <a class="heading-link" href="#%e9%87%8d%e7%bb%98">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<p>当元素外观发生改变，未改变布局(几何位置)，重新把元素外观绘制的过程，叫做重绘<br>
+重绘后，dom树未改变，cssomtre改变，跳过布局阶段，直接绘制</p>
+<ul>
+<li>元素的某些外观改变，style_change</li>
+</ul>
+<!-- raw HTML omitted -->
+<h4 id="什么是bfc">
+  什么是BFC
+  <a class="heading-link" href="#%e4%bb%80%e4%b9%88%e6%98%afbfc">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>BFCC: 块级格式化上下文，BFC决定了元素如何对齐内容进行定位，以及与其他元素关系和相互作用，简单来说BFC就是一个密闭空间，空间内的元素的不会影响到空间外元素</p>
+<h5 id="形成bfc条件">
+  形成BFC条件
+  <a class="heading-link" href="#%e5%bd%a2%e6%88%90bfc%e6%9d%a1%e4%bb%b6">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<ul>
+<li>float 不为none</li>
+<li>overflow 不为visible</li>
+<li>position不为static 和 relative</li>
+<li>display: 为flex， table-cell, inline-block等</li>
+</ul>
+<h5 id="使用bfc场景">
+  使用BFC场景
+  <a class="heading-link" href="#%e4%bd%bf%e7%94%a8bfc%e5%9c%ba%e6%99%af">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<ul>
+<li>防止margin塌陷</li>
+<li>自适应两栏布局</li>
+<li>清除浮动</li>
+</ul>
+<h5 id="bfc原理">
+  BFC原理
+  <a class="heading-link" href="#bfc%e5%8e%9f%e7%90%86">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<ul>
+<li>在BFC内部盒子垂直的从顶部一个一个的排序</li>
+<li>BFC的区域不会与浮动的盒子产生交集，而是紧贴浮动边缘；（<strong>重点</strong>）</li>
+<li>计算BFC的高度时，自然也会检测浮动盒子的高度，它是一个独立的渲染区域</li>
+<li>盒子垂直方向的距离由margin决定，属于同一个BFC的两个盒子的margin会发生重叠</li>
+<li>在BFC中，每一个盒子的左外边缘（margin-left）会触碰到容器的左边缘， 同理： 每个盒子的右边缘(margin-right)会碰到容器的右边缘</li>
+</ul>
+<h4 id="实现吸底效果底部footer在内容没有铺满可视区始终固定在顶部当内容超出可视区高度跟随内容后面展示">
+  实现吸底效果，底部footer在内容没有铺满可视区，始终固定在顶部，当内容超出可视区高度，跟随内容后面展示
+  <a class="heading-link" href="#%e5%ae%9e%e7%8e%b0%e5%90%b8%e5%ba%95%e6%95%88%e6%9e%9c%e5%ba%95%e9%83%a8footer%e5%9c%a8%e5%86%85%e5%ae%b9%e6%b2%a1%e6%9c%89%e9%93%ba%e6%bb%a1%e5%8f%af%e8%a7%86%e5%8c%ba%e5%a7%8b%e7%bb%88%e5%9b%ba%e5%ae%9a%e5%9c%a8%e9%a1%b6%e9%83%a8%e5%bd%93%e5%86%85%e5%ae%b9%e8%b6%85%e5%87%ba%e5%8f%af%e8%a7%86%e5%8c%ba%e9%ab%98%e5%ba%a6%e8%b7%9f%e9%9a%8f%e5%86%85%e5%ae%b9%e5%90%8e%e9%9d%a2%e5%b1%95%e7%a4%ba">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-css" data-lang="css">    <span style="font-weight:bold">html</span>,
+    <span style="font-weight:bold">body</span> {
+        <span style="font-weight:bold">height</span>: 100<span style="">%</span>;
+        <span style="font-weight:bold">position</span>: <span style="font-weight:bold">relative</span>;
+    }
+
+    .<span style="font-weight:bold">wrapper</span> {
+        <span style="font-weight:bold">position</span>: <span style="font-weight:bold">relative</span>;
+        <span style="font-weight:bold">min-height</span>: 100<span style="">%</span>;
+    }
+
+    .<span style="font-weight:bold">header</span> {
+        <span style="font-weight:bold">height</span>: 100<span style="">px</span>;
+        <span style="font-weight:bold">background-color</span>: <span style="font-weight:bold">red</span>;
+    }
+
+    .<span style="font-weight:bold">content</span> {
+        <span style="font-weight:bold">padding-bottom</span>: 80<span style="">px</span>;
+        <span style="font-weight:bold">background</span>: <span style="font-weight:bold">blue</span>;
+        <span style="font-weight:bold">height</span>: 400<span style="">px</span>;
+    }
+
+    .<span style="font-weight:bold">footer</span> {
+        <span style="font-weight:bold">width</span>: 100<span style="">%</span>;
+        <span style="font-weight:bold">height</span>: 80<span style="">px</span>;
+        <span style="font-weight:bold">left</span>: 0;
+        <span style="font-weight:bold">right</span>: 0;
+        <span style="font-weight:bold">bottom</span>: 0;
+        <span style="font-weight:bold">background</span>: <span style="font-weight:bold">green</span>;
+        <span style="font-weight:bold">position</span>: <span style="font-weight:bold">absolute</span>;
+    }
+
+
+    <span style="font-style:italic">/* 方法二， 利用css计算 calc  */</span>
+    <span style="font-weight:bold">html</span>,
+    <span style="font-weight:bold">body</span> {
+        <span style="font-weight:bold">height</span>: 100<span style="">%</span>;
+        <span style="font-weight:bold">position</span>: <span style="font-weight:bold">relative</span>;
+    }
+
+    .<span style="font-weight:bold">wrapper</span> {
+        <span style="font-weight:bold">position</span>: <span style="font-weight:bold">relative</span>;
+        <span style="font-style:italic">/* 这步骤关键 设置高度100%， 不能是min-height */</span>
+        <span style="font-weight:bold">height</span>: 100<span style="">%</span>;
+    }
+
+    .<span style="font-weight:bold">header</span> {
+        <span style="font-weight:bold">height</span>: 100<span style="">px</span>;
+        <span style="font-weight:bold">background-color</span>: <span style="font-weight:bold">red</span>;
+    }
+
+    .<span style="font-weight:bold">content</span> {
+        <span style="font-weight:bold">background</span>: <span style="font-weight:bold">blue</span>;
+        <span style="font-style:italic">/* 计算父级高度， 减去header&amp;&amp;footer高度 */</span>
+        <span style="font-weight:bold">min-height</span>: calc(100<span style="">%</span> - 160<span style="">px</span>);
+    }
+
+    .<span style="font-weight:bold">footer</span> {
+        <span style="font-weight:bold">height</span>: 80<span style="">px</span>;
+        <span style="font-weight:bold">background</span>: <span style="font-weight:bold">green</span>;
+    }
+</code></pre></div><h4 id="浏览器页面有哪三层构成分别是什么作用是什么">
+  浏览器页面有哪三层构成，分别是什么，作用是什么?
+  <a class="heading-link" href="#%e6%b5%8f%e8%a7%88%e5%99%a8%e9%a1%b5%e9%9d%a2%e6%9c%89%e5%93%aa%e4%b8%89%e5%b1%82%e6%9e%84%e6%88%90%e5%88%86%e5%88%ab%e6%98%af%e4%bb%80%e4%b9%88%e4%bd%9c%e7%94%a8%e6%98%af%e4%bb%80%e4%b9%88">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>构成：结构层、表示层、行为层 
+分别是：HTML、CSS、JavaScript 
+作用：HTML实现页面结构，CSS完成页面的表现与风格，JavaScript实现一些客户端的功能与业务。</p>
+<h4 id="解释一下css的盒子模型">
+  解释一下CSS的盒子模型？
+  <a class="heading-link" href="#%e8%a7%a3%e9%87%8a%e4%b8%80%e4%b8%8bcss%e7%9a%84%e7%9b%92%e5%ad%90%e6%a8%a1%e5%9e%8b">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>标准的盒模型：<strong>border&ndash;sizing: content-box</strong> 盒子总宽度/高度=width/height（内容区宽度/高度）+ padding + border
+IE盒模型(怪异盒模型)：<strong>border-sizing: border-box</strong> 盒子总宽度/高度 = width/height(内容区高度/宽度 + 2 * border + 2 * padding)</p>
+<h4 id="请你说说css选择器的类型有哪些并举几个例子说明其用法">
+  请你说说CSS选择器的类型有哪些，并举几个例子说明其用法？
+  <a class="heading-link" href="#%e8%af%b7%e4%bd%a0%e8%af%b4%e8%af%b4css%e9%80%89%e6%8b%a9%e5%99%a8%e7%9a%84%e7%b1%bb%e5%9e%8b%e6%9c%89%e5%93%aa%e4%ba%9b%e5%b9%b6%e4%b8%be%e5%87%a0%e4%b8%aa%e4%be%8b%e5%ad%90%e8%af%b4%e6%98%8e%e5%85%b6%e7%94%a8%e6%b3%95">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>首先说主要都有哪些选择器</p>
+<ul>
+<li>标签选择器（如：body,div,p,ul,li）</li>
+<li>类选择器（如：class=&ldquo;head&rdquo;,class=&ldquo;head_logo&rdquo;）</li>
+<li>ID选择器（如：id=&ldquo;name&rdquo;,id=&ldquo;name_txt&rdquo;）</li>
+<li>组合选择器（如：.head .head_logo,注意两选择器用空格键分开）</li>
+<li>继承选择器（如：div p,注意两选择器用空格键分开）</li>
+<li>伪类选择器（如：就是链接样式,a元素的伪类，4种不同的状态：link、visited、active、hover。）</li>
+</ul>
+<h4 id="要动态改变层中内容可以使用的方法--innerhtml-innertext区别">
+  要动态改变层中内容可以使用的方法 &amp;&amp; innerHtml/ innerText区别
+  <a class="heading-link" href="#%e8%a6%81%e5%8a%a8%e6%80%81%e6%94%b9%e5%8f%98%e5%b1%82%e4%b8%ad%e5%86%85%e5%ae%b9%e5%8f%af%e4%bb%a5%e4%bd%bf%e7%94%a8%e7%9a%84%e6%96%b9%e6%b3%95--innerhtml-innertext%e5%8c%ba%e5%88%ab">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<ul>
+<li>innerHmtl: 当前标签内全部内容，包括html标签</li>
+<li>innerText： 当前标签内除非html标签内容</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">    <span style="font-weight:bold">const</span> wrapper = document.getElementById(<span style="font-style:italic">&#39;wrapper&#39;</span>);
+    wrapper.innerHTML = <span style="font-style:italic">`&lt;p style=&#34;color:red&#34;&gt;111111&lt;/p&gt;`</span>; <span style="font-style:italic">// div内容  111 且颜色是红色
+</span><span style="font-style:italic"></span>    wrapper.innerText = <span style="font-style:italic">`&lt;p style=&#34;color:red&#34;&gt;111111&lt;/p&gt;`</span>; <span style="font-style:italic">// div内容  &lt;p style=&#34;color:red&#34;&gt;111111&lt;/p&gt;
+</span></code></pre></div><h4 id="列出display的值并说明他们的作用">
+  列出display的值并说明他们的作用？
+  <a class="heading-link" href="#%e5%88%97%e5%87%badisplay%e7%9a%84%e5%80%bc%e5%b9%b6%e8%af%b4%e6%98%8e%e4%bb%96%e4%bb%ac%e7%9a%84%e4%bd%9c%e7%94%a8">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<ul>
+<li>block：块级元素/显示</li>
+<li>inline：行内元素</li>
+<li>inline-block：行内块级元素</li>
+<li>none：取消样式</li>
+<li>normal：默认样式</li>
+<li>flex：弹性盒模型</li>
+</ul>
+<h4 id="请列举几种清除浮动的方法至少两种">
+  请列举几种清除浮动的方法(至少两种)?
+  <a class="heading-link" href="#%e8%af%b7%e5%88%97%e4%b8%be%e5%87%a0%e7%a7%8d%e6%b8%85%e9%99%a4%e6%b5%ae%e5%8a%a8%e7%9a%84%e6%96%b9%e6%b3%95%e8%87%b3%e5%b0%91%e4%b8%a4%e7%a7%8d">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<ul>
+<li>父级div定义 height </li>
+<li>结尾处加空div标签 clear:both </li>
+<li>父级div定义 伪类:after {content:” ”,height:0; display:block; overflow:hidden; cleat:both;}</li>
+</ul>
+<h5 id="你有哪些性能优化的方法">
+  你有哪些性能优化的方法？
+  <a class="heading-link" href="#%e4%bd%a0%e6%9c%89%e5%93%aa%e4%ba%9b%e6%80%a7%e8%83%bd%e4%bc%98%e5%8c%96%e7%9a%84%e6%96%b9%e6%b3%95">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<ul>
+<li>使用CDN</li>
+<li>可缓存的AJAX </li>
+<li>减少HTTP请求次数 </li>
+<li>把JS放到底部</li>
+<li>把CSS放到顶部</li>
+<li>为文件头指定Expires</li>
+<li>压缩相关图片等资源</li>
+<li>少用全局变量、缓存DOM节点查找的结果。减少IO读取操作。</li>
+</ul>
+<h4 id="说说你对页面中使用定位position的理解">
+  说说你对页面中使用定位(position)的理解？
+  <a class="heading-link" href="#%e8%af%b4%e8%af%b4%e4%bd%a0%e5%af%b9%e9%a1%b5%e9%9d%a2%e4%b8%ad%e4%bd%bf%e7%94%a8%e5%ae%9a%e4%bd%8dposition%e7%9a%84%e7%90%86%e8%a7%a3">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<ul>
+<li>**static:**可以认为静态的，默认元素都是静态的定位，对象遵循常规流。此时4个定位偏移属性不会被应用，也就是使用left，right，bottom，top将不会生效。</li>
+<li><strong>relative:</strong> 相对定位，对象遵循常规流，并且参照自身在常规流中的位置通过top，right，bottom，left这4个定位偏移属性进行偏移时不会影响常规流中的任何元素。</li>
+<li>**absolute:**绝对定位，对象脱离常规流，此时偏移属性参照的是离自身最近的定位祖先元素，如果没有定位的祖先元素，则一直回溯到body元素。盒子的偏移位置不影响常规流中的任何元素，其margin不与其他任何margin折叠。</li>
+<li><strong>fixed</strong>固定定位，与absolute一致，但偏移定位是以窗口为参考。当出现滚动条时，对象不会随着滚动。</li>
+</ul>
+<h4 id="如何解决多个元素重叠问题">
+  如何解决多个元素重叠问题？
+  <a class="heading-link" href="#%e5%a6%82%e4%bd%95%e8%a7%a3%e5%86%b3%e5%a4%9a%e4%b8%aa%e5%85%83%e7%b4%a0%e9%87%8d%e5%8f%a0%e9%97%ae%e9%a2%98">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>使用z-index属性可以设置元素的层叠顺序 </p>
+<h4 id="position的值relative和absolute的定位原点是">
+  position的值relative和absolute的定位原点是？
+  <a class="heading-link" href="#position%e7%9a%84%e5%80%bcrelative%e5%92%8cabsolute%e7%9a%84%e5%ae%9a%e4%bd%8d%e5%8e%9f%e7%82%b9%e6%98%af">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<ul>
+<li>relative（相对定位）：定位原点是元素本身所在位置； </li>
+<li>absolute（绝对定位）：定位原点是离自己这一级元素最近的一级position设置为absolute或者relative的父元素的左上角为原点的</li>
+</ul>
+<h4 id="before-和-after中双冒号和单冒号有什么区别">
+  <code>::before</code> 和 <code>:after</code>中双冒号和单冒号有什么区别？
+  <a class="heading-link" href="#before-%e5%92%8c-after%e4%b8%ad%e5%8f%8c%e5%86%92%e5%8f%b7%e5%92%8c%e5%8d%95%e5%86%92%e5%8f%b7%e6%9c%89%e4%bb%80%e4%b9%88%e5%8c%ba%e5%88%ab">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<ul>
+<li>单冒号(:)用于CSS3伪类，双冒号(::)用于CSS3伪元素。</li>
+<li>伪元素由双冒号和伪元素名称组成。双冒号是在css3规范中引入的，用于区分伪类和伪元素。但是伪类兼容现存样式；</li>
+</ul>
+<p>伪类弥补css选择器的不足；eg: :nthc-child, :focus等等 <br>
+伪元素创建虚拟的内容容器 <br>
+可以同时使用多个伪类，但是只能同时使用一个伪元素</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-css" data-lang="css">    <span style="font-weight:bold">p</span>:nth-child(:lang(<span style="font-weight:bold">fe</span>)):first-child::after {
+        <span style="font-weight:bold">color</span>: <span style="font-weight:bold">red</span>
+    }
+
+</code></pre></div><h5 id="参考文章">
+  参考文章
+  <a class="heading-link" href="#%e5%8f%82%e8%80%83%e6%96%87%e7%ab%a0">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<ul>
+<li><a href="https://www.cnblogs.com/ihardcoder/p/5294927.html">css3伪类伪元素区别</a></li>
+</ul>
+<h4 id="css3有哪些新特性">
+  CSS3有哪些新特性？
+  <a class="heading-link" href="#css3%e6%9c%89%e5%93%aa%e4%ba%9b%e6%96%b0%e7%89%b9%e6%80%a7">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<ul>
+<li>新增各种<code>css</code>选择器</li>
+<li>圆角 <code>border-radius</code></li>
+<li>多列布局</li>
+<li>阴影和反射</li>
+<li>文字特效<code>text-shadow</code></li>
+<li>线性渐变</li>
+<li>旋转<code>transform</code></li>
+</ul>
+<h4 id="displayinline-block-什么时候不会显示间隙携程">
+  display:inline-block 什么时候不会显示间隙？(携程
+  <a class="heading-link" href="#displayinline-block-%e4%bb%80%e4%b9%88%e6%97%b6%e5%80%99%e4%b8%8d%e4%bc%9a%e6%98%be%e7%a4%ba%e9%97%b4%e9%9a%99%e6%90%ba%e7%a8%8b">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<ul>
+<li>移除空格</li>
+<li>使用<code>margin</code>负值</li>
+<li>使用 <code>font-size:0</code></li>
+</ul>
+<h4 id="垂直居中的几种方式-">
+  垂直居中的几种方式 **
+  <a class="heading-link" href="#%e5%9e%82%e7%9b%b4%e5%b1%85%e4%b8%ad%e7%9a%84%e5%87%a0%e7%a7%8d%e6%96%b9%e5%bc%8f-">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<ul>
+<li>flex 布局</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-css" data-lang="css">    <span style="font-weight:bold">div</span> {
+        <span style="font-weight:bold">display</span>: <span style="font-weight:bold">flex</span>;
+        <span style="font-weight:bold">align-items</span>: <span style="font-weight:bold">center</span>      
+        <span style="font-weight:bold">justify</span>-<span style="font-weight:bold">content</span>: <span style="font-weight:bold">center</span>;
+    }
+</code></pre></div><ul>
+<li>百分比集合transform</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-css" data-lang="css">    <span style="font-weight:bold">div</span> {
+        <span style="font-weight:bold">position</span>: <span style="font-weight:bold">absolute</span>;
+        <span style="font-weight:bold">top</span>: 50<span style="">%</span>;
+        <span style="font-weight:bold">left</span>: 50<span style="">%</span>;
+        <span style="font-weight:bold">transform</span>: translate(-50<span style="">%</span>, -50<span style="">%</span>);
+    }
+
+</code></pre></div><ul>
+<li>margin移动： 必须确定了元素的宽高度(宽高度的一半)</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-css" data-lang="css">    #<span style="font-weight:bold">t1</span> {
+    <span style="font-weight:bold">position</span>: <span style="font-weight:bold">absolute</span>;
+    <span style="font-weight:bold">top</span>: 50<span style="">%</span>;
+    <span style="font-weight:bold">left</span>: 50<span style="">%</span>;
+    <span style="font-weight:bold">width</span>: 100<span style="">px</span>;
+    <span style="font-weight:bold">height</span>: 200<span style="">px</span>;
+    <span style="font-weight:bold">margin-left</span>: -50<span style="">px</span>;
+    <span style="font-weight:bold">margin-top</span>: -100<span style="">px</span>;
+    }
+</code></pre></div><ul>
+<li>绝对定位和0</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-css" data-lang="css">    #<span style="font-weight:bold">t1</span> {
+    <span style="font-weight:bold">position</span>: <span style="font-weight:bold">absolute</span>;
+    <span style="font-weight:bold">width</span>: 20<span style="">%</span>;
+    <span style="font-weight:bold">height</span>: 32<span style="">%</span>;
+    <span style="font-weight:bold">top</span>: 0;
+    <span style="font-weight:bold">left</span>: 0;
+    <span style="font-weight:bold">right</span>: 0;
+    <span style="font-weight:bold">bottom</span>: 0;
+    <span style="font-weight:bold">margin</span>: <span style="font-weight:bold">auto</span>;
+    }
+</code></pre></div><ul>
+<li><a href="https://blog.csdn.net/qq_49353940/article/details/113757685">css中的vw</a></li>
+</ul>
+<h4 id="float-和position一起用是什么效果-">
+  float 和position一起用是什么效果 **
+  <a class="heading-link" href="#float-%e5%92%8cposition%e4%b8%80%e8%b5%b7%e7%94%a8%e6%98%af%e4%bb%80%e4%b9%88%e6%95%88%e6%9e%9c-">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<blockquote>
+<p>float: 是元素脱离文档流，浮动在文档流上， 可以用padding和margin进行定位
+postion： 元素相对自身或父元素定位，&lt;relative: 相对自身左上角(0, 0), static: 默认属性， absolted: 相对父元素设置relative(0, 0)位置&gt; 2者同时使用，并不冲突, 当设置 absolute和fixed 会是元素脱离文档流， 可以使用top,left定位</p>
+</blockquote>
+<p>经实战发现，无论postion和float谁前谁后，都是postion在起到作用</p>
+<ul>
+<li>当postion设置absolute、fixed. 元素已脱离文档流，float不起到作用</li>
+<li>当position设置 relative/static， 元素扔处于文档流中， float将起到作用</li>
+</ul>
+<h4 id="实现一个垂直居中的div左右边距10px高度是宽度的一半里面内容也是垂直居中">
+  实现一个垂直居中的div，左右边距10px，高度是宽度的一半,里面内容也是垂直居中
+  <a class="heading-link" href="#%e5%ae%9e%e7%8e%b0%e4%b8%80%e4%b8%aa%e5%9e%82%e7%9b%b4%e5%b1%85%e4%b8%ad%e7%9a%84div%e5%b7%a6%e5%8f%b3%e8%be%b9%e8%b7%9d10px%e9%ab%98%e5%ba%a6%e6%98%af%e5%ae%bd%e5%ba%a6%e7%9a%84%e4%b8%80%e5%8d%8a%e9%87%8c%e9%9d%a2%e5%86%85%e5%ae%b9%e4%b9%9f%e6%98%af%e5%9e%82%e7%9b%b4%e5%b1%85%e4%b8%ad">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-css" data-lang="css">    .<span style="font-weight:bold">container</span> {
+    <span style="font-weight:bold">width</span>: calc(100<span style="">vw</span> - 20<span style="">px</span>);
+    <span style="font-weight:bold">height</span>: calc(50<span style="">vw</span> - 10<span style="">px</span>);
+
+    <span style="font-weight:bold">margin</span>: 0 <span style="font-weight:bold">auto</span>;
+    <span style="font-weight:bold">display</span>: <span style="font-weight:bold">flex</span>;
+    <span style="font-weight:bold">align-items</span>: <span style="font-weight:bold">center</span>;
+    <span style="font-weight:bold">justify-content</span>: <span style="font-weight:bold">center</span>;
+    <span style="font-weight:bold">border</span>: 1<span style="">px</span> <span style="font-weight:bold">solid</span> <span style="font-weight:bold">red</span>;
+
+    <span style="font-weight:bold">position</span>: <span style="font-weight:bold">absolute</span>;
+    <span style="font-weight:bold">top</span>: 50<span style="">%</span>;
+    <span style="font-weight:bold">transform</span>: translateY(-50<span style="">%</span>);
+    }
+</code></pre></div><h4 id="scrollwidthscrollheightoffsetwidthoffsetheightclientwidhtclientheight">
+  scrollWidth/scrollHeight/offsetWidth/offsetHeight/clientWidht/clientHeight
+  <a class="heading-link" href="#scrollwidthscrollheightoffsetwidthoffsetheightclientwidhtclientheight">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<h5 id="clientwidth--clientheight">
+  clientWidth / clientHeight
+  <a class="heading-link" href="#clientwidth--clientheight">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<p>该属性指的是元素可视区内宽度和高度，即padding+content,如果元素没有滚动条，那么就是元素设置的宽度和高度，如果出来滚动条
+那么滚动条会遮盖元素宽高，该属性就是元素宽高减去滚动条的宽高</p>
+<ul>
+<li><a href="https://blog.csdn.net/qq_37288477/article/details/87890456">scrollWidth/offsetWidth/clientWidth区别</a></li>
+</ul>
+<h5 id="offsetwidth--offsetheigt">
+  offsetWidth / offsetHeigt
+  <a class="heading-link" href="#offsetwidth--offsetheigt">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<p>该属性和其内部的内容是否超出元素大小无关，只和本来设定的border+padding以及width和height有关(可视区域)</p>
+<h5 id="scrollwidth--scrollheight">
+  scrollWidth / scrollHeight
+  <a class="heading-link" href="#scrollwidth--scrollheight">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<p>这两个属性指的是当元素内部的内容超出其宽度和高度的时候，元素内部内容的实际宽度和高度， width/height+padding  <br>
+<strong>当元素内容没有超出设置的宽度和高度时候， clientWidth/clientHieght ==== scrollWidth/scrollHeight</strong></p>
+<h5 id="scrolltop--scrollleft">
+  scrollTop / scrollLeft
+  <a class="heading-link" href="#scrolltop--scrollleft">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<p>设置向上向下滚动距离</p>
+<h5 id="offsettop--offsetleft">
+  offsetTop / offsetLeft
+  <a class="heading-link" href="#offsettop--offsetleft">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<p>距离上一层元素 postion设置不为static距离， 如果上一层没有，则向上上层获取，直接body元素</p>
+      </div>
+
+
+      <footer>
+        
+
+
+        
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    ©
+    
+      2019 -
+    
+    2021
+     levi 
+    ·
+    开启美好新一天
+  </section>
+</footer>
+
+    </main>
+
+    
+      
+      <script src="/js/coder.min.03b17769f4f91ae35667e1f2a1ca8c16f50562576cf90ff32b3179926914daa5.js" integrity="sha256-A7F3afT5GuNWZ&#43;HyocqMFvUFYlds&#43;Q/zKzF5kmkU2qU="></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+  </body>
+
+</html>

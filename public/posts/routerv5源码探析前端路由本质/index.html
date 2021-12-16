@@ -1,0 +1,2031 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="color-scheme" content="light dark">
+
+    
+      <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests; block-all-mixed-content; default-src 'self'; child-src 'self'; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net/; form-action 'self'; frame-src 'self'; img-src 'self'; object-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com/ https://cdn.jsdelivr.net/; script-src 'self' 'unsafe-inline' https://www.google-analytics.com; prefetch-src 'self'; connect-src 'self' https://www.google-analytics.com;">
+
+    
+
+    <meta name="author" content="levi">
+    <meta name="description" content="
+  前言
+  
+    
+  
+
+
+  什么是前端路由
+  
+    
+  
+
+首先，路由的概念开始是后端提出来的，用来跟服务器进行数据/资源获取的一种方式，通过不同的路径，来获取不同的资源
+前端随着ajax(不刷新页面情况下请求数据)的流行，推动着异步交互体验提升，随后spa&lt;单页面应用程序&gt;在前端领域大放异彩
+
+spa: 单页面应用程序不仅在页面内交互是无刷新的，连页面之间的跳转也没有刷新。
+
+spa核心思想
+
+监听url变化
+改变context的值
+匹配相对应的组件
+
+
+  实现前端路由应该包括哪些功能
+  
+    
+  
+
+前端可以自己维护和控制浏览器的history&lt;历史记录&gt;。我们称之为history栈， 保证浏览器在url改变的时候不会刷新页面。并且通过history栈控制浏览器页面的前进和后退
+目前 Router有两种实现方式  hash 和 History
+...
+">
+    <meta name="keywords" content="blog,developer,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="routerv5源码探析前端路由本质"/>
+<meta name="twitter:description" content="
+  前言
+  
+    
+  
+
+
+  什么是前端路由
+  
+    
+  
+
+首先，路由的概念开始是后端提出来的，用来跟服务器进行数据/资源获取的一种方式，通过不同的路径，来获取不同的资源
+前端随着ajax(不刷新页面情况下请求数据)的流行，推动着异步交互体验提升，随后spa&lt;单页面应用程序&gt;在前端领域大放异彩
+
+spa: 单页面应用程序不仅在页面内交互是无刷新的，连页面之间的跳转也没有刷新。
+
+spa核心思想
+
+监听url变化
+改变context的值
+匹配相对应的组件
+
+
+  实现前端路由应该包括哪些功能
+  
+    
+  
+
+前端可以自己维护和控制浏览器的history&lt;历史记录&gt;。我们称之为history栈， 保证浏览器在url改变的时候不会刷新页面。并且通过history栈控制浏览器页面的前进和后退
+目前 Router有两种实现方式  hash 和 History
+...
+"/>
+
+    <meta property="og:title" content="routerv5源码探析前端路由本质" />
+<meta property="og:description" content="
+  前言
+  
+    
+  
+
+
+  什么是前端路由
+  
+    
+  
+
+首先，路由的概念开始是后端提出来的，用来跟服务器进行数据/资源获取的一种方式，通过不同的路径，来获取不同的资源
+前端随着ajax(不刷新页面情况下请求数据)的流行，推动着异步交互体验提升，随后spa&lt;单页面应用程序&gt;在前端领域大放异彩
+
+spa: 单页面应用程序不仅在页面内交互是无刷新的，连页面之间的跳转也没有刷新。
+
+spa核心思想
+
+监听url变化
+改变context的值
+匹配相对应的组件
+
+
+  实现前端路由应该包括哪些功能
+  
+    
+  
+
+前端可以自己维护和控制浏览器的history&lt;历史记录&gt;。我们称之为history栈， 保证浏览器在url改变的时候不会刷新页面。并且通过history栈控制浏览器页面的前进和后退
+目前 Router有两种实现方式  hash 和 History
+...
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://www.example.com/posts/routerv5%E6%BA%90%E7%A0%81%E6%8E%A2%E6%9E%90%E5%89%8D%E7%AB%AF%E8%B7%AF%E7%94%B1%E6%9C%AC%E8%B4%A8/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-12-16T13:18:14+08:00" />
+<meta property="article:modified_time" content="2021-12-16T13:18:14+08:00" />
+
+
+
+    <title>
+  routerv5源码探析前端路由本质 · levi
+</title>
+
+    
+      <link rel="canonical" href="http://www.example.com/posts/routerv5%E6%BA%90%E7%A0%81%E6%8E%A2%E6%9E%90%E5%89%8D%E7%AB%AF%E8%B7%AF%E7%94%B1%E6%9C%AC%E8%B4%A8/">
+    
+
+    <link rel="preload" href="/fonts/forkawesome-webfont.woff2?v=1.2.0" as="font" type="font/woff2" crossorigin>
+
+    
+      
+      
+      <link rel="stylesheet" href="/css/coder.min.d9fddbffe6f27e69985dc5fe0471cdb0e57fbf4775714bc3d847accb08f4a1f6.css" integrity="sha256-2f3b/&#43;byfmmYXcX&#43;BHHNsOV/v0d1cUvD2Eesywj0ofY=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+      
+        
+        
+        <link rel="stylesheet" href="/css/coder-dark.min.ccbbada2e264e4fdbf9b2181cccc2cdb289a63dc9520a1e96ac2b9a45778df29.css" integrity="sha256-zLutouJk5P2/myGBzMws2yiaY9yVIKHpasK5pFd43yk=" crossorigin="anonymous" media="screen" />
+      
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
+
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+    <meta name="generator" content="Hugo 0.90.1" />
+
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+  </head>
+
+  
+  
+    
+  
+  <body class="preload-transitions colorscheme-auto">
+    
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="/">
+      levi
+    </a>
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/">首页</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/posts/">博客</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/tags/">标签</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/about/">关于我</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="http://www.example.com/posts/routerv5%E6%BA%90%E7%A0%81%E6%8E%A2%E6%9E%90%E5%89%8D%E7%AB%AF%E8%B7%AF%E7%94%B1%E6%9C%AC%E8%B4%A8/">
+              routerv5源码探析前端路由本质
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+              <time datetime='2021-12-16T13:18:14&#43;08:00'>
+                December 16, 2021
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fa fa-clock-o" aria-hidden="true"></i>
+              21-minute read
+            </span>
+          </div>
+          
+          <div class="categories">
+  <i class="fa fa-folder" aria-hidden="true"></i>
+    <a href="/categories/react/">react</a></div>
+
+          <div class="tags">
+  <i class="fa fa-tag" aria-hidden="true"></i>
+    <span class="tag">
+      <a href="/tags/js/">js</a>
+    </span>
+      <span class="separator">•</span>
+    <span class="tag">
+      <a href="/tags/react/">react</a>
+    </span></div>
+
+        </div>
+      </header>
+
+      <div>
+        
+        <h2 id="前言">
+  前言
+  <a class="heading-link" href="#%e5%89%8d%e8%a8%80">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h2>
+<h3 id="什么是前端路由">
+  什么是前端路由
+  <a class="heading-link" href="#%e4%bb%80%e4%b9%88%e6%98%af%e5%89%8d%e7%ab%af%e8%b7%af%e7%94%b1">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<p>首先，路由的概念开始是后端提出来的，用来跟服务器进行数据/资源获取的一种方式，通过不同的路径，来获取不同的资源
+前端随着ajax(不刷新页面情况下请求数据)的流行，推动着异步交互体验提升，随后spa&lt;单页面应用程序&gt;在前端领域大放异彩</p>
+<blockquote>
+<p>spa: 单页面应用程序不仅在页面内交互是无刷新的，连页面之间的跳转也没有刷新。</p>
+</blockquote>
+<p>spa核心思想</p>
+<ul>
+<li>监听url变化</li>
+<li>改变context的值</li>
+<li>匹配相对应的组件</li>
+</ul>
+<h3 id="实现前端路由应该包括哪些功能">
+  实现前端路由应该包括哪些功能
+  <a class="heading-link" href="#%e5%ae%9e%e7%8e%b0%e5%89%8d%e7%ab%af%e8%b7%af%e7%94%b1%e5%ba%94%e8%af%a5%e5%8c%85%e6%8b%ac%e5%93%aa%e4%ba%9b%e5%8a%9f%e8%83%bd">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<p>前端可以自己维护和控制浏览器的history&lt;历史记录&gt;。我们称之为history栈， 保证浏览器在url改变的时候不会刷新页面。并且通过history栈控制浏览器页面的前进和后退</p>
+<p>目前 Router有两种实现方式  hash 和 History</p>
+<pre><code>...
+</code></pre>
+<h4 id="hash">
+  Hash
+  <a class="heading-link" href="#hash">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>hash表示页面中的一个位置，当浏览器页面完全加载好了，页面会滚动到hash位置指定的地。</p>
+<ul>
+<li>hash 只作用在浏览器，不会在请求中发送给服务器</li>
+<li>hash 发生变化时，浏览器并不会重新给后端发送请求加载页面。</li>
+<li>hash 发生变化时会触发 hashchange 事件，在该事件中可以通过 window.location.hash 获取到当前 hash值</li>
+</ul>
+<h4 id="history">
+  History
+  <a class="heading-link" href="#history">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>在 html5 中新增了 history.pushState() 和 history.replaceState()，相比hash路由 url上不美观的hash值 ，取而代之使用 history.pushState 来完成对 window.location 的操作。</p>
+<h4 id="history和hash对比">
+  History和Hash对比
+  <a class="heading-link" href="#history%e5%92%8chash%e5%af%b9%e6%af%94">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<ul>
+<li>hash后面使用#来模拟完整的路径，不太美观</li>
+<li>用户手动刷新页面, 对于hashRouter来说，后端收到的是同一个地址， history因为直接修改浏览器url，对于后端而言接受不同的地址，需要后端对资源做统一跳转处理<!-- raw HTML omitted -->
+webpack本地开发模式下，用webpack-dev-server插件开启本地服务器，解决请求资源: <strong>historyapifallback</strong></li>
+</ul>
+<h3 id="react-router">
+  React-Router
+  <a class="heading-link" href="#react-router">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<p>React作为前端视图层的框架，本身是不具有除了view层面以外的功能。需要引入React-Router, 对 react的来说管理路由需要管理组件的生命周期，对不同的路由渲染不同的组件。</p>
+<p>React-Router 库包含三个包：react-router、react-router-dom 和 react-router-native 。<strong>路由操作的核心包 react-router</strong>，而其他两个是特定环境下使用的。如果我们开发web应用，使用react-router-dom，如果开发RN相关react-router-native。</p>
+<p>React-Router实现单页面应用程序路由跳转，分为HashRouter, BrowserRouter
+<strong>browserHistory 是使用 React-Router 的应用推荐的 history方案</strong></p>
+<h2 id="学前小知识">
+  学前小知识
+  <a class="heading-link" href="#%e5%ad%a6%e5%89%8d%e5%b0%8f%e7%9f%a5%e8%af%86">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h2>
+<ul>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/WindowEventHandlers/onpopstate">html5 history.pushstate &amp;&amp; window.popstate</a></li>
+<li><a href="https://zh-hans.reactjs.org/docs/context.html">React.Context</a></li>
+<li>发布订阅设计模式</li>
+</ul>
+<h3 id="historypushstate">
+  history.pushstate
+  <a class="heading-link" href="#historypushstate">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<blockquote>
+<p>history.pushState方法向当前浏览器会话的历史堆栈中添加一个状态 <strong>history.pushState(state, title[, url])</strong></p>
+</blockquote>
+<ul>
+<li>state: state状态是一个JavaScript对象, 每当用户导航到新状态时，都会触发popstate事件，并且该事件的状态属性指向了创建历史条目的创建的state属性</li>
+<li>title: 大多数浏览器都会忽略这个属性</li>
+<li>url: 新历史记录条目的URL由此参数指定, &ldquo;新的url必须和当前网址同源&rdquo;</li>
+</ul>
+<h3 id="windowpopstate">
+  window.popstate
+  <a class="heading-link" href="#windowpopstate">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<blockquote>
+<p>当活动的历史记录更改的时候，将会触发popstate事件，如果被激活的历史记录条目是通过对history.pushState()的调用创建的，或者受到对history.replaceState()的调用。popstate事件的state属性包含历史条目的状态对象的副本。</p>
+</blockquote>
+<p>histry.pushstate、history.replacestate方法调用不会触发window.popstate事件，只要作为浏览器行为才会触发、例如操作哦了tab页上面前进和后退，或者调用了history.back()、history.forword();</p>
+<h2 id="源码分析">
+  源码分析
+  <a class="heading-link" href="#%e6%ba%90%e7%a0%81%e5%88%86%e6%9e%90">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h2>
+<ul>
+<li>react-router-dom</li>
+<li>react-router</li>
+<li>history</li>
+</ul>
+<h3 id="react-router-dom">
+  react-router-dom
+  <a class="heading-link" href="#react-router-dom">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<p>react-router-dom在react-router核心基础上扩展了可操作DOM的api， 添加了用于跳转的Link组件、history模式下的BrowserRouter组件和hash模式下的HashRouter组件。
+<strong>BrowserRouter和HashRouter，调用了history库中createBrowserHistory和createHashHistory方法</strong></p>
+<h3 id="react-router-1">
+  react-router
+  <a class="heading-link" href="#react-router-1">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<p>react路由核心包。 提供了路由的核心组件。如Router、Route、Switch等，但没有提供有关dom操作进行路由跳转的api；</p>
+<h3 id="history-1">
+  history
+  <a class="heading-link" href="#history-1">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<p>可以理解为react-router的核心，也是整个路由原理的核心，里面集成了底层路由原理的实现。</p>
+<h3 id="browserrouter源码分析">
+  BrowserRouter源码分析
+  <a class="heading-link" href="#browserrouter%e6%ba%90%e7%a0%81%e5%88%86%e6%9e%90">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<h4 id="browserrouter">
+  BrowserRouter
+  <a class="heading-link" href="#browserrouter">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>内部创建了一个全局的history对象&lt;用于监听整个路由的变化&gt;， 并且把history作为props传递的react-router的Router组件</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="font-weight:bold">class</span> BrowserRouter <span style="font-weight:bold">extends</span> React.Component {
+  history = createHistory(<span style="font-weight:bold">this</span>.props);
+
+  render() {
+    <span style="font-weight:bold">return</span> &lt;Router history={<span style="font-weight:bold">this</span>.history} children={<span style="font-weight:bold">this</span>.props.children} /&gt;;
+  }
+}
+</code></pre></div><h4 id="router">
+  Router
+  <a class="heading-link" href="#router">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<ul>
+<li>构造函数中把history.location作为自己的state，并且监听了location的变化。</li>
+<li>render中利用了React的Context提供了RouterContext，HistoryContext两个Context信息，供子元素使用。</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">
+<span style="font-weight:bold">class</span> Router <span style="font-weight:bold">extends</span> React.Component {
+  <span style="font-weight:bold">static</span> computeRootMatch(pathname) {
+    <span style="font-weight:bold">return</span> { path: <span style="font-style:italic">&#34;/&#34;</span>, url: <span style="font-style:italic">&#34;/&#34;</span>, params: {}, isExact: pathname === <span style="font-style:italic">&#34;/&#34;</span> };
+  }
+
+  constructor(props) {
+    <span style="font-weight:bold">super</span>(props);
+
+    <span style="font-weight:bold">this</span>.state = {  
+      location: props.history.location
+    };
+
+    <span style="font-style:italic">// This is a bit of a hack. We have to start listening for location
+</span><span style="font-style:italic"></span>    <span style="font-style:italic">// changes here in the constructor in case there are any &lt;Redirect&gt;s
+</span><span style="font-style:italic"></span>    <span style="font-style:italic">// on the initial render. If there are, they will replace/push when
+</span><span style="font-style:italic"></span>    <span style="font-style:italic">// they mount and since cDM fires in children before parents, we may
+</span><span style="font-style:italic"></span>    <span style="font-style:italic">// get a new location before the &lt;Router&gt; is mounted.
+</span><span style="font-style:italic"></span>
+    <span style="font-style:italic">// 这有点hack。 我们必须开始在构造函数中监听位置更改，以防初始渲染中存在任何&lt;Redirect&gt;。
+</span><span style="font-style:italic"></span>    <span style="font-style:italic">// 如果有的话，它们将在安装时替换/推动，并且由于cDM在父级之前在子级中触发，
+</span><span style="font-style:italic"></span>    <span style="font-style:italic">// 因此在&lt;Router&gt;挂在之前，我们可能会获得一个新位置
+</span><span style="font-style:italic"></span>
+    <span style="font-style:italic">// 因为子组件会比父组件更早渲染完成, 以及&lt;Redirect&gt;的存在, 
+</span><span style="font-style:italic"></span>    <span style="font-style:italic">// 若是在&lt;Router&gt;的componentDidMount生命周期中对history.location进行监听, 则有可能在监听事件注册之前,
+</span><span style="font-style:italic"></span>    <span style="font-style:italic">// history.location已经由于&lt;Redirect&gt;发生了多次改变, 因此我们需要在&lt;Router&gt;的constructor中就注册监听事件
+</span><span style="font-style:italic"></span>
+    <span style="font-style:italic">// 判断组件是否加载完成
+</span><span style="font-style:italic"></span>    <span style="font-weight:bold">this</span>._isMounted = <span style="font-weight:bold">false</span>;
+    <span style="font-weight:bold">this</span>._pendingLocation = <span style="font-weight:bold">null</span>;
+
+    <span style="font-style:italic">// 如果不是服务端渲染，监听history变更
+</span><span style="font-style:italic"></span>    <span style="font-weight:bold">if</span> (!props.staticContext) {
+      <span style="font-style:italic">// 每次路由变化 -&gt; 触发顶层 Router 的回调事件 -&gt; Router 进行 setState -&gt; 向下传递 nextContext（context 中含有最新的 location）
+</span><span style="font-style:italic"></span>      <span style="font-weight:bold">this</span>.unlisten = props.history.listen(location =&gt; {
+        <span style="font-style:italic">// 组件未加载完毕，但是 location 发生的变化，暂存在 _pendingLocation 字段中
+</span><span style="font-style:italic"></span>        <span style="font-weight:bold">if</span> (<span style="font-weight:bold">this</span>._isMounted) {
+          <span style="font-weight:bold">this</span>.setState({ location });
+        } <span style="font-weight:bold">else</span> {
+          <span style="font-weight:bold">this</span>._pendingLocation = location;
+        }
+      });
+    }
+  }
+
+  componentDidMount() {
+    <span style="font-weight:bold">this</span>._isMounted = <span style="font-weight:bold">true</span>;
+
+    <span style="font-weight:bold">if</span> (<span style="font-weight:bold">this</span>._pendingLocation) {
+      <span style="font-weight:bold">this</span>.setState({ location: <span style="font-weight:bold">this</span>._pendingLocation });
+    }
+  }
+
+  <span style="font-style:italic">//  卸载监听器
+</span><span style="font-style:italic"></span>  componentWillUnmount() {
+    <span style="font-weight:bold">if</span> (<span style="font-weight:bold">this</span>.unlisten) <span style="font-weight:bold">this</span>.unlisten();
+  }
+
+  <span style="font-style:italic">/**
+</span><span style="font-style:italic">   * @description
+</span><span style="font-style:italic">   * Router中的2个context由HistoryContext和RouterContext组件。 考虑到兼容性，并没有使用 React.createContext 方式  来创建
+</span><span style="font-style:italic">   * 
+</span><span style="font-style:italic">   * */</span> 
+
+  render() {
+    <span style="font-weight:bold">return</span> (
+      &lt;RouterContext.Provider
+        value={{
+          history: <span style="font-weight:bold">this</span>.props.history,
+          location: <span style="font-weight:bold">this</span>.state.location,
+          <span style="font-style:italic">// 解析得到 包含path url params isExact 四个属性的属性。 默认指向了根地址
+</span><span style="font-style:italic"></span>          match: Router.computeRootMatch(<span style="font-weight:bold">this</span>.state.location.pathname),
+          <span style="font-style:italic">// 只有StaticRouter会传staticContext用于服务端渲染。 HashRouter 和 BrowserRouter 都是 null
+</span><span style="font-style:italic"></span>          staticContext: <span style="font-weight:bold">this</span>.props.staticContext
+        }}
+      &gt;
+        &lt;HistoryContext.Provider
+          children={<span style="font-weight:bold">this</span>.props.children || <span style="font-weight:bold">null</span>}
+          value={<span style="font-weight:bold">this</span>.props.history}
+        /&gt;
+      &lt;<span style="">/RouterContext.Provider&gt;</span>
+    );
+  }
+}
+
+
+</code></pre></div><h4 id="route">
+  Route
+  <a class="heading-link" href="#route">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>Route 组件根据自身的传参，对上层 RouterContext 中的部分属性（location 和 match）进行了更新，并且如果当前路径和配置的 path 路径 match，则渲染该组件，渲染的方式有 children，component，render 三种方式，我们最常用的就是 component 方式，注意每种方式的区别</p>
+<ul>
+<li>Route的component，render，children三个属性是互斥的</li>
+<li>优先级children&gt;component&gt;render</li>
+<li>children在无论路由匹配与否，都会渲染</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">
+<span style="font-weight:bold">class</span> Route <span style="font-weight:bold">extends</span> React.Component {
+  render() {
+    <span style="font-weight:bold">return</span> (
+      <span style="font-style:italic">// 获取从RouterContext共享的context上下文
+</span><span style="font-style:italic"></span>      &lt;RouterContext.Consumer&gt;
+        {context =&gt; {
+          invariant(context, <span style="font-style:italic">&#34;You should not use &lt;Route&gt; outside a &lt;Router&gt;&#34;</span>);
+
+          <span style="font-weight:bold">const</span> location = <span style="font-weight:bold">this</span>.props.location || context.location;
+          <span style="font-weight:bold">const</span> match = <span style="font-weight:bold">this</span>.props.computedMatch
+            ? <span style="font-weight:bold">this</span>.props.computedMatch <span style="font-style:italic">// &lt;Switch&gt; already computed the match for us
+</span><span style="font-style:italic"></span>            : <span style="font-weight:bold">this</span>.props.path
+            ? matchPath(location.pathname, <span style="font-weight:bold">this</span>.props)
+            : context.match;
+
+          <span style="font-weight:bold">const</span> props = { ...context, location, match };
+
+          <span style="font-style:italic">// 提供3种渲染组件的方式
+</span><span style="font-style:italic"></span>          <span style="font-weight:bold">let</span> { children, component, render } = <span style="font-weight:bold">this</span>.props;
+
+          <span style="font-weight:bold">if</span> (Array.isArray(children) &amp;&amp; children.length === 0) {
+            children = <span style="font-weight:bold">null</span>;
+          }
+
+         <span style="font-style:italic">// 渲染逻辑
+</span><span style="font-style:italic"></span>         <span style="font-style:italic">// 当props匹配了路由时，先判断是否匹配，如果不匹配就将props向下传递。
+</span><span style="font-style:italic"></span>          <span style="font-weight:bold">return</span> (
+            &lt;RouterContext.Provider value={props}&gt;
+              {props.match
+                ? children
+                  ? <span style="font-weight:bold">typeof</span> children === <span style="font-style:italic">&#34;function&#34;</span>
+                    ? __DEV__
+                      ? evalChildrenDev(children, props, <span style="font-weight:bold">this</span>.props.path)
+                      : children(props)
+                    : children
+                  : component
+                  ? React.createElement(component, props)
+                  : render
+                  ? render(props)
+                  : <span style="font-weight:bold">null</span>
+                : <span style="font-weight:bold">typeof</span> children === <span style="font-style:italic">&#34;function&#34;</span>
+                ? __DEV__
+                  ? evalChildrenDev(children, props, <span style="font-weight:bold">this</span>.props.path)
+                  : children(props)
+                : <span style="font-weight:bold">null</span>}
+            &lt;<span style="">/RouterContext.Provider&gt;</span>
+          );
+        }}
+      &lt;<span style="">/RouterContext.Consumer&gt;</span>
+    );
+  }
+}
+
+</code></pre></div><p>组件渲染逻辑如下：</p>
+<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/806a677942be47a196b61f676fe0c9d1~tplv-k3u1fbpfcp-watermark.image?" alt="image.png"></p>
+<h4 id="switch">
+  Switch
+  <a class="heading-link" href="#switch">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>switch 用来嵌套在Route外面，当Switch中的第一个Route匹配后就不会渲染其他的Route了
+<strong>案例见switch.tsx</strong></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="font-weight:bold">class</span> Switch <span style="font-weight:bold">extends</span> React.Component {
+  render() {
+    <span style="font-weight:bold">return</span> (
+      &lt;RouterContext.Consumer&gt;
+        {context =&gt; {
+          invariant(context, <span style="font-style:italic">&#34;You should not use &lt;Switch&gt; outside a &lt;Router&gt;&#34;</span>);
+
+          <span style="font-weight:bold">const</span> location = <span style="font-weight:bold">this</span>.props.location || context.location;
+
+          <span style="font-weight:bold">let</span> element, match;
+
+
+          <span style="font-style:italic">// React.Children.forEach 对子元素做遍历
+</span><span style="font-style:italic"></span>          React.Children.forEach(<span style="font-weight:bold">this</span>.props.children, child =&gt; {
+            <span style="font-weight:bold">if</span> (match == <span style="font-weight:bold">null</span> &amp;&amp; React.isValidElement(child)) {
+              element = child;
+
+              <span style="font-style:italic">// from具体是&lt;Redirect /&gt; 使用
+</span><span style="font-style:italic"></span>              <span style="font-weight:bold">const</span> path = child.props.path || child.props.from;
+
+              <span style="font-style:italic">// 判断组件是否匹配
+</span><span style="font-style:italic"></span>              match = path
+                ? matchPath(location.pathname, { ...child.props, path })
+                : context.match;
+            }
+          });
+
+          <span style="font-weight:bold">return</span> match
+            ? React.cloneElement(element, { location, computedMatch: match })
+            : <span style="font-weight:bold">null</span>;
+        }}
+      &lt;<span style="">/RouterContext.Consumer&gt;</span>
+    );
+  }
+}
+
+<span style="font-weight:bold">export</span> <span style="font-weight:bold">default</span> Switch;
+
+</code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">
+<span style="font-weight:bold">const</span> cache = {};
+<span style="font-weight:bold">const</span> cacheLimit = 10000;
+<span style="font-weight:bold">let</span> cacheCount = 0;
+
+<span style="font-weight:bold">function</span> compilePath(path, options) {
+  <span style="font-style:italic">// 做一个全局缓存，确保计算出来的结果能够得到复用
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">const</span> cacheKey = <span style="font-style:italic">`</span><span style="font-weight:bold;font-style:italic">${</span>options.end<span style="font-weight:bold;font-style:italic">}${</span>options.strict<span style="font-weight:bold;font-style:italic">}${</span>options.sensitive<span style="font-weight:bold;font-style:italic">}</span><span style="font-style:italic">`</span>;
+  <span style="font-weight:bold">const</span> pathCache = cache[cacheKey] || (cache[cacheKey] = {});
+
+  <span style="font-weight:bold">if</span> (pathCache[path]) <span style="font-weight:bold">return</span> pathCache[path];
+
+  <span style="font-weight:bold">const</span> keys = [];
+  <span style="font-style:italic">// 将字符串路径转化成为表达式
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">const</span> regexp = pathToRegexp(path, keys, options);
+  <span style="font-weight:bold">const</span> result = { regexp, keys };
+
+  <span style="font-style:italic">// 做多缓存 10000 个
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">if</span> (cacheCount &lt; cacheLimit) {
+    pathCache[path] = result;
+    cacheCount++;
+  }
+
+  <span style="font-weight:bold">return</span> result;
+}
+
+
+<span style="font-weight:bold">function</span> matchPath(pathname, options = {}) {
+  <span style="font-style:italic">// 规范结构体
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">if</span> (<span style="font-weight:bold">typeof</span> options === <span style="font-style:italic">&#34;string&#34;</span> || Array.isArray(options)) {
+    options = { path: options };
+  }
+
+  <span style="font-weight:bold">const</span> { path, exact = <span style="font-weight:bold">false</span>, strict = <span style="font-weight:bold">false</span>, sensitive = <span style="font-weight:bold">false</span> } = options;
+
+  <span style="font-style:italic">// 转化成数组进行判断
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">const</span> paths = [].concat(path);
+
+  <span style="font-weight:bold">return</span> paths.reduce((matched, path) =&gt; {
+    <span style="font-weight:bold">if</span> (!path &amp;&amp; path !== <span style="font-style:italic">&#34;&#34;</span>) <span style="font-weight:bold">return</span> <span style="font-weight:bold">null</span>;
+    <span style="font-weight:bold">if</span> (matched) <span style="font-weight:bold">return</span> matched;
+
+    <span style="font-style:italic">// exact: 如果为 true，则只有在路径完全匹配 location.pathname 时才匹配。 
+</span><span style="font-style:italic"></span>    <span style="font-style:italic">// strict: 在确定为位置是否与当前 URL 匹配时，将考虑位置 pathname 后的斜线。
+</span><span style="font-style:italic"></span>    <span style="font-style:italic">// sensitive: 如果路径区分大小写，则为 true ，则匹配
+</span><span style="font-style:italic"></span>    <span style="font-weight:bold">const</span> { regexp, keys } = compilePath(path, {
+      end: exact,
+      strict,
+      sensitive
+    });
+    <span style="font-weight:bold">const</span> match = regexp.exec(pathname);
+
+    <span style="font-weight:bold">if</span> (!match) <span style="font-weight:bold">return</span> <span style="font-weight:bold">null</span>;
+
+    <span style="font-weight:bold">const</span> [url, ...values] = match;
+    <span style="font-weight:bold">const</span> isExact = pathname === url;
+
+    <span style="font-weight:bold">if</span> (exact &amp;&amp; !isExact) <span style="font-weight:bold">return</span> <span style="font-weight:bold">null</span>;
+
+    <span style="font-weight:bold">return</span> {
+      path, <span style="font-style:italic">// the path used to match
+</span><span style="font-style:italic"></span>      url: path === <span style="font-style:italic">&#34;/&#34;</span> &amp;&amp; url === <span style="font-style:italic">&#34;&#34;</span> ? <span style="font-style:italic">&#34;/&#34;</span> : url, <span style="font-style:italic">// the matched portion of the URL
+</span><span style="font-style:italic"></span>      isExact, <span style="font-style:italic">// whether or not we matched exactly
+</span><span style="font-style:italic"></span>      params: keys.reduce((memo, key, index) =&gt; {
+        memo[key.name] = values[index];
+        <span style="font-weight:bold">return</span> memo;
+      }, {})
+    };
+  }, <span style="font-weight:bold">null</span>);
+}
+
+</code></pre></div><h4 id="link">
+  Link
+  <a class="heading-link" href="#link">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>通过审查元素发现，link最终后悔创建一个a标签来包裹要跳转的元素的元素，但是如果只是一个普通的带 href 的 a 标签，那么就会直接跳转到一个新的页面而不是 SPA 了。所以a标签中的默认跳转事件会被禁止调。所以这里的 href 并没有实际的作用，但仍然可以标示出要跳转到的页面的 URL 并且有更好的 html 语义</p>
+<p>对没有被 “preventDefault调用 &amp;&amp; 鼠标左键点击的 &amp;&amp; 非 _blank 跳转 的&amp;&amp; 没有按住其他功能键的“ 单击进行 preventDefault，然后 push 进 history 中，这也是前面讲过的 —— 路由的变化 与 页面的跳转 是不互相关联的，react-router中  Link 中通过 history 库的 push 调用了 H5 history 的 pushState，但是这仅仅会让路由变化，其他什么都没有改变。  之前在Router创建 listen，它会监听路由的变化，然后通过 context 更新 props 和 nextContext 让下层的 Route 去重新匹配，完成需要渲染部分的更新</p>
+<p>点击时候进行如下判断。当下面4个条件都满足调用navigate方法。否则新窗口打开</p>
+<ul>
+<li>event.defaultPrevented: 返回一个boolean，表明当前事件是否调用了event.preventDefault()</li>
+<li>event.button === 0 鼠标左键</li>
+<li>target === &ldquo;_self&rdquo; 非_blank跳转</li>
+<li>!isModifiedEvent: 点击事件发生时候，没有同时按住metaKey， altKey， ctrlKey， shiftKey</li>
+</ul>
+<p><a href="https://zh-hans.reactjs.org/docs/forwarding-refs.html#forwarding-refs-in-higher-order-components">Refs转发</a></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">
+<span style="font-weight:bold">function</span> isModifiedEvent(event) {
+  <span style="font-weight:bold">return</span> !!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey);
+}
+
+<span style="">/ React 15 compat</span>
+<span style="font-weight:bold">const</span> forwardRefShim = C =&gt; C;
+<span style="font-weight:bold">let</span> { forwardRef } = React;
+<span style="font-weight:bold">if</span> (<span style="font-weight:bold">typeof</span> forwardRef === <span style="font-style:italic">&#34;undefined&#34;</span>) {
+  forwardRef = forwardRefShim;
+}
+
+<span style="font-weight:bold">function</span> isModifiedEvent(event) {
+  <span style="font-weight:bold">return</span> !!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey);
+}
+
+<span style="font-weight:bold">const</span> LinkAnchor = forwardRef(
+  (
+    {
+      innerRef, <span style="font-style:italic">// TODO: deprecate
+</span><span style="font-style:italic"></span>      navigate,
+      onClick,
+      ...rest
+    },
+    forwardedRef
+  ) =&gt; {
+    <span style="font-weight:bold">const</span> { target } = rest;
+
+    <span style="font-weight:bold">let</span> props = {
+      ...rest,
+      onClick: event =&gt; {
+        <span style="font-weight:bold">try</span> {
+          <span style="font-weight:bold">if</span> (onClick) onClick(event);
+        } <span style="font-weight:bold">catch</span> (ex) {
+          event.preventDefault();
+          <span style="font-weight:bold">throw</span> ex;
+        }
+
+        <span style="font-weight:bold">if</span> (
+          !event.defaultPrevented &amp;&amp; <span style="font-style:italic">// onClick prevented default
+</span><span style="font-style:italic"></span>          event.button === 0 &amp;&amp; <span style="font-style:italic">// ignore everything but left clicks
+</span><span style="font-style:italic"></span>          (!target || target === <span style="font-style:italic">&#34;_self&#34;</span>) &amp;&amp; <span style="font-style:italic">// let browser handle &#34;target=_blank&#34; etc.
+</span><span style="font-style:italic"></span>          !isModifiedEvent(event) <span style="font-style:italic">// ignore clicks with modifier keys
+</span><span style="font-style:italic"></span>        ) {
+          
+          <span style="font-style:italic">// event.preventDefault()阻止超链接默认事件, 避免点击&lt;Link&gt;后重新刷新页面;
+</span><span style="font-style:italic"></span>          event.preventDefault();
+          navigate();
+        }
+      }
+    };
+
+    <span style="font-weight:bold">if</span> (forwardRefShim !== forwardRef) {
+      props.ref = forwardedRef || innerRef;
+    } <span style="font-weight:bold">else</span> {
+      props.ref = innerRef;
+    }
+
+    <span style="font-style:italic">// 渲染了一个没有默认跳转行为a标签，跳转行为由navigate实现
+</span><span style="font-style:italic"></span>    <span style="font-weight:bold">return</span> &lt;a {...props} /&gt;;
+  }
+);
+
+
+<span style="font-style:italic">/**
+</span><span style="font-style:italic"> * The public API for rendering a history-aware &lt;a&gt;.
+</span><span style="font-style:italic"> */</span>
+<span style="font-weight:bold">const</span> Link = forwardRef(
+  (
+    {
+      component = LinkAnchor,
+      replace,
+      to,
+      innerRef, <span style="font-style:italic">// TODO: deprecate
+</span><span style="font-style:italic"></span>      ...rest
+    },
+    forwardedRef
+  ) =&gt; {
+    <span style="font-weight:bold">return</span> (
+      &lt;RouterContext.Consumer&gt;
+        {context =&gt; {
+          invariant(context, <span style="font-style:italic">&#34;You should not use &lt;Link&gt; outside a &lt;Router&gt;&#34;</span>);
+
+          <span style="font-weight:bold">const</span> { history } = context;
+
+         <span style="font-style:italic">// 生成location对象
+</span><span style="font-style:italic"></span>          <span style="font-weight:bold">const</span> location = normalizeToLocation(
+            resolveToLocation(to, context.location),
+            context.location
+          );
+
+          <span style="font-style:italic">// 拼接完整路径 basename+path
+</span><span style="font-style:italic"></span>          <span style="font-weight:bold">const</span> href = location ? history.createHref(location) : <span style="font-style:italic">&#34;&#34;</span>;
+          <span style="font-weight:bold">const</span> props = {
+            ...rest,
+            href,
+            navigate() {
+              <span style="font-weight:bold">const</span> location = resolveToLocation(to, context.location);
+              <span style="font-weight:bold">const</span> method = replace ? history.replace : history.push;
+
+              <span style="font-style:italic">// 执行history.push 或者 history.replace 默认 push
+</span><span style="font-style:italic"></span>              method(location);
+            }
+          };
+
+          <span style="font-weight:bold">if</span> (forwardRefShim !== forwardRef) {
+            props.ref = forwardedRef || innerRef;
+          } <span style="font-weight:bold">else</span> {
+            props.innerRef = innerRef;
+          }
+
+          <span style="font-weight:bold">return</span> React.createElement(component, props);
+        }}
+      &lt;<span style="">/RouterContext.Consumer&gt;</span>
+    );
+  }
+);
+
+</code></pre></div><h4 id="withrouter">
+  withRouter
+  <a class="heading-link" href="#withrouter">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>withRouter是一个<a href="https://zh-hans.reactjs.org/docs/higher-order-components.html">高阶组件</a>， 可以让普通非包裹在Route的组件也能获取路由信息。把react-router 的 history、location、match 三个对象传入 props上</p>
+<blockquote>
+<p>高阶组件： 高阶组件(HOC)是React中用于复用组件逻辑的一种高级技巧、自己不是React Api的一部分， 是基础React组合特性行为的设计模式</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">
+<span style="font-weight:bold">function</span> withRouter(Component) {
+  <span style="font-weight:bold">const</span> displayName = <span style="font-style:italic">`withRouter(</span><span style="font-weight:bold;font-style:italic">${</span>Component.displayName || Component.name<span style="font-weight:bold;font-style:italic">}</span><span style="font-style:italic">)`</span>;
+  <span style="font-weight:bold">const</span> C = props =&gt; {
+    <span style="font-weight:bold">const</span> { wrappedComponentRef, ...remainingProps } = props;
+
+    <span style="font-weight:bold">return</span> (
+      &lt;RouterContext.Consumer&gt;
+        {context =&gt; {
+          invariant(
+            context,
+            <span style="font-style:italic">`You should not use &lt;</span><span style="font-weight:bold;font-style:italic">${</span>displayName<span style="font-weight:bold;font-style:italic">}</span><span style="font-style:italic"> /&gt; outside a &lt;Router&gt;`</span>
+          );
+
+          {<span style="font-style:italic">/* 把context注入到Component中 */</span>}
+          <span style="font-weight:bold">return</span> (
+            &lt;Component
+              {...remainingProps}
+              {...context}
+              ref={wrappedComponentRef}
+            /&gt;
+          );
+        }}
+      &lt;<span style="">/RouterContext.Consumer&gt;</span>
+    );
+  };
+
+  C.displayName = displayName;
+  C.WrappedComponent = Component;
+
+  <span style="font-weight:bold">if</span> (__DEV__) {
+    C.propTypes = {
+      wrappedComponentRef: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.func,
+        PropTypes.object
+      ])
+    };
+  }
+
+  <span style="font-style:italic">/**
+</span><span style="font-style:italic">   * @description 
+</span><span style="font-style:italic">   * 当给组件添加至高阶组件中后，原来的组件会被一组容器组件包含。这样意味着。容器组件不会有原来组件的任何的静态方法
+</span><span style="font-style:italic">   * 为了解决这个问题， 在返回容器组件之前。务必复制wrappedComponent的静态方法到容器组件上
+</span><span style="font-style:italic">   * */</span> 
+  <span style="font-weight:bold">return</span> hoistStatics(C, Component);
+}
+
+
+</code></pre></div><p>有时候React组件定义的静态很有有用，<a href="https://zh-hans.reactjs.org/docs/higher-order-components.html#static-methods-must-be-copied-over">务必复制静态方法</a></p>
+<h4 id="redirect">
+  Redirect
+  <a class="heading-link" href="#redirect">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>该组件在componentDidMount生命周期内，通过history Api跳转到path指定位置， 默认情况下，新位置将覆盖历史堆栈中的当前位置。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="font-weight:bold">function</span> Redirect({ computedMatch, to, push = <span style="font-weight:bold">false</span> }) {
+  <span style="font-weight:bold">return</span> (
+    &lt;RouterContext.Consumer&gt;
+      {context =&gt; {
+        invariant(context, <span style="font-style:italic">&#34;You should not use &lt;Redirect&gt; outside a &lt;Router&gt;&#34;</span>);
+
+        <span style="font-weight:bold">const</span> { history, staticContext } = context;
+
+        <span style="font-weight:bold">const</span> method = push ? history.push : history.replace;
+        <span style="font-style:italic">// to 重定向地址，可以是一个string， 也可以是对象
+</span><span style="font-style:italic"></span>
+        <span style="font-style:italic">// computedMatch 从switch上面拿到match
+</span><span style="font-style:italic"></span>        <span style="font-weight:bold">const</span> location = createLocation(
+          computedMatch
+            ? <span style="font-weight:bold">typeof</span> to === <span style="font-style:italic">&#34;string&#34;</span>
+              ? generatePath(to, computedMatch.params)
+              : {
+                  ...to,
+                  pathname: generatePath(to.pathname, computedMatch.params)
+                }
+            : to
+        );
+
+        <span style="font-style:italic">// 服务端渲染直接执行方法一次
+</span><span style="font-style:italic"></span>        <span style="font-weight:bold">if</span> (staticContext) {
+          method(location);
+          <span style="font-weight:bold">return</span> <span style="font-weight:bold">null</span>;
+        }
+
+        <span style="font-style:italic">// lifeCycle不会渲染任何页面， 只有一些生命周期函数componentDidMount、componentDidUpdate、componentWillUnmount
+</span><span style="font-style:italic"></span>        <span style="font-weight:bold">return</span> (
+          &lt;Lifecycle
+            onMount={() =&gt; {
+              method(location);
+            }}
+            <span style="font-style:italic">// componentDidUpdate 时候判断当前 location 和上一个 location 是否发生变化
+</span><span style="font-style:italic"></span>            <span style="font-style:italic">// 一般来说在componentDidMount就调走了。不会走到ComponentDidUpdate
+</span><span style="font-style:italic"></span>            onUpdate={(self, prevProps) =&gt; {
+              <span style="font-weight:bold">const</span> prevLocation = createLocation(prevProps.to);
+              <span style="font-weight:bold">if</span> (
+                !locationsAreEqual(prevLocation, {
+                  ...location,
+                  key: prevLocation.key
+                })
+              ) {
+                method(location);
+              }
+            }}
+            to={to}
+          /&gt;
+        );
+      }}
+    &lt;<span style="">/RouterContext.Consumer&gt;</span>
+  );
+}
+</code></pre></div><h4 id="prompt">
+  Prompt
+  <a class="heading-link" href="#prompt">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>用于路由切换提示，在某些场景下比较有用，比较用户咋某个页面修改数据。离开页面的时候，提示用户是保存。 详细在history中block明确解释</p>
+<ul>
+<li>message：用于显示提示的文本信息。</li>
+<li>when：默认是 true，设置成 false 时，失效</li>
+</ul>
+<p>Prompt 的本质是在 when 为 true 的时候，调用 context.history.block 方法，为全局注册路由监听。<strong>见prompt.tsx</strong></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="font-weight:bold">function</span> Prompt({ message, when = <span style="font-weight:bold">true</span> }) {
+  <span style="font-weight:bold">return</span> (
+    &lt;RouterContext.Consumer&gt;
+      {context =&gt; {
+        invariant(context, <span style="font-style:italic">&#34;You should not use &lt;Prompt&gt; outside a &lt;Router&gt;&#34;</span>);
+
+        <span style="font-weight:bold">if</span> (!when || context.staticContext) <span style="font-weight:bold">return</span> <span style="font-weight:bold">null</span>;
+
+        <span style="font-style:italic">// 调用history.block注册全局路由监听器
+</span><span style="font-style:italic"></span>        <span style="font-style:italic">// message可以是字符串也可以是一个函数， 如果是字符串默认调用window.confirm方法
+</span><span style="font-style:italic"></span>        <span style="font-style:italic">// 如果是一个函数，需要返回一个boolean判断是否需要拦截
+</span><span style="font-style:italic"></span>        <span style="font-weight:bold">const</span> method = context.history.block;
+
+        <span style="font-weight:bold">return</span> (
+          &lt;Lifecycle
+            onMount={self =&gt; {
+              <span style="font-style:italic">// 调用了 history.block 方法
+</span><span style="font-style:italic"></span>              self.release = method(message);
+            }}
+            onUpdate={(self, prevProps) =&gt; {
+              <span style="font-weight:bold">if</span> (prevProps.message !== message) {
+                self.release();
+                self.release = method(message);
+              }
+            }}
+            onUnmount={self =&gt; {
+              self.release();
+            }}
+            message={message}
+          /&gt;
+        );
+      }}
+    &lt;<span style="">/RouterContext.Consumer&gt;</span>
+  );
+}
+
+</code></pre></div><h4 id="hooks">
+  hooks
+  <a class="heading-link" href="#hooks">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>hooks是react16.8引入的特性，允许我们在不写class的情况下，操作state和react其他特新。为了在hooks即函数式组件能够操作路由。react-router提供了hooks方法， 底层都是使用React.useContext api &lt;可以获取指定context的值&gt;</p>
+<ul>
+<li>useHistory: 返回一个history对象</li>
+<li>useLocation 返回context下的location对象</li>
+<li>useParams 返回当前匹配路径的params</li>
+<li>useRouteMatch   可以有一个参数 path，如果什么都不传，会返回当前 context 上的 match 的值。 如果传了 path，会比较这个 path 和当前 location 是否 match</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="font-weight:bold">const</span> useContext = React.useContext;
+
+<span style="font-weight:bold">export</span> <span style="font-weight:bold">function</span> useHistory() {
+  <span style="font-weight:bold">if</span> (__DEV__) {
+    invariant(
+      <span style="font-weight:bold">typeof</span> useContext === <span style="font-style:italic">&#34;function&#34;</span>,
+      <span style="font-style:italic">&#34;You must use React &gt;= 16.8 in order to use useHistory()&#34;</span>
+    );
+  }
+
+  <span style="font-weight:bold">return</span> useContext(HistoryContext);
+}
+
+<span style="font-weight:bold">export</span> <span style="font-weight:bold">function</span> useLocation() {
+  <span style="font-weight:bold">if</span> (__DEV__) {
+    invariant(
+      <span style="font-weight:bold">typeof</span> useContext === <span style="font-style:italic">&#34;function&#34;</span>,
+      <span style="font-style:italic">&#34;You must use React &gt;= 16.8 in order to use useLocation()&#34;</span>
+    );
+  }
+
+  <span style="font-weight:bold">return</span> useContext(Context).location;
+}
+
+<span style="font-weight:bold">export</span> <span style="font-weight:bold">function</span> useParams() {
+  <span style="font-weight:bold">if</span> (__DEV__) {
+    invariant(
+      <span style="font-weight:bold">typeof</span> useContext === <span style="font-style:italic">&#34;function&#34;</span>,
+      <span style="font-style:italic">&#34;You must use React &gt;= 16.8 in order to use useParams()&#34;</span>
+    );
+  }
+
+  <span style="font-weight:bold">const</span> match = useContext(Context).match;
+  <span style="font-weight:bold">return</span> match ? match.params : {};
+}
+
+<span style="font-weight:bold">export</span> <span style="font-weight:bold">function</span> useRouteMatch(path) {
+  <span style="font-weight:bold">if</span> (__DEV__) {
+    invariant(
+      <span style="font-weight:bold">typeof</span> useContext === <span style="font-style:italic">&#34;function&#34;</span>,
+      <span style="font-style:italic">&#34;You must use React &gt;= 16.8 in order to use useRouteMatch()&#34;</span>
+    );
+  }
+
+  <span style="font-weight:bold">const</span> location = useLocation();
+  <span style="font-weight:bold">const</span> match = useContext(Context).match;
+
+  <span style="font-weight:bold">return</span> path ? matchPath(location.pathname, path) : match;
+}
+
+</code></pre></div><h4 id="小节">
+  小节
+  <a class="heading-link" href="#%e5%b0%8f%e8%8a%82">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<ul>
+<li>Router初始化，创建监听函数， 底层逻辑全部由history库管理</li>
+<li>当点击Link标签的时候，实际上点击是页面渲染出来的a标签。通过preventDefault来组织a标签的页面跳转</li>
+<li>Link中拿到context传递的history， 进行路由跳转</li>
+<li>路由发生变化，触发了监听函数，Router会重新setState, 每次路由变化 -&gt; 触发顶层 Router 的监听事件 -&gt; Router 触发 setState -&gt; 向下传递新的 nextContext</li>
+<li>下层Route组件拿到最新nextContext后判断当前path和location是否匹配。内置component，render，children三个属性的渲染机制，并且通过switch组件匹配唯一的路由</li>
+</ul>
+<h3 id="history库源码分析">
+  history库源码分析
+  <a class="heading-link" href="#history%e5%ba%93%e6%ba%90%e7%a0%81%e5%88%86%e6%9e%90">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<p>原理就是封装了原生的html5 的history api, 如pushState, replaceState。当这些事件被触发的时候，执行响应回调函数，用于操控和观察地址栏的变更</p>
+<p>history库创建了一个虚拟的history对象， 操纵浏览器地址变更，或者操作hash变更、管理内存中的虚拟历史堆栈</p>
+<h4 id="utils">
+  utils
+  <a class="heading-link" href="#utils">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>pathUtils</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">  <span style="font-style:italic">// 对传递的path首部添加/
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">function</span> addLeadingSlash(path) {
+    <span style="font-weight:bold">return</span> path.charAt(0) === <span style="font-style:italic">&#39;/&#39;</span> ? path : <span style="font-style:italic">&#39;/&#39;</span> + path;
+  }
+  <span style="font-style:italic">// 对传递path去掉首部的/
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">function</span> stripLeadingSlash(path) {
+    <span style="font-weight:bold">return</span> path.charAt(0) === <span style="font-style:italic">&#39;/&#39;</span> ? path.substr(1) : path;
+  }
+  <span style="font-style:italic">// 判断path中是否包含basename
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">function</span> hasBasename(path, prefix) {
+    <span style="font-weight:bold">return</span> path.toLowerCase().indexOf(prefix.toLowerCase()) === 0 &amp;&amp; <span style="font-style:italic">&#39;/?#&#39;</span>.indexOf(path.charAt(prefix.length)) !== -1;
+  }
+  <span style="font-style:italic">// 如果传递了pathname， 把path中首部basename去掉
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">function</span> stripBasename(path, prefix) {
+    <span style="font-weight:bold">return</span> hasBasename(path, prefix) ? path.substr(prefix.length) : path;
+  }
+  <span style="font-style:italic">// 去掉尾部的/
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">function</span> stripTrailingSlash(path) {
+    <span style="font-weight:bold">return</span> path.charAt(path.length - 1) === <span style="font-style:italic">&#39;/&#39;</span> ? path.slice(0, -1) : path;
+  }
+
+
+
+  <span style="font-style:italic">// 在createLocation调用
+</span><span style="font-style:italic"></span>  <span style="font-style:italic">// 把字符串路径path解析成 {pathname, search, hash}的对象返回出去
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">function</span> parsePath(path) {
+    <span style="font-weight:bold">var</span> pathname = path || <span style="font-style:italic">&#39;/&#39;</span>;
+    <span style="font-weight:bold">var</span> search = <span style="font-style:italic">&#39;&#39;</span>;
+    <span style="font-weight:bold">var</span> hash = <span style="font-style:italic">&#39;&#39;</span>;
+    <span style="font-weight:bold">var</span> hashIndex = pathname.indexOf(<span style="font-style:italic">&#39;#&#39;</span>);
+
+    <span style="font-weight:bold">if</span> (hashIndex !== -1) {
+      hash = pathname.substr(hashIndex);
+      pathname = pathname.substr(0, hashIndex);
+    }
+
+    <span style="font-weight:bold">var</span> searchIndex = pathname.indexOf(<span style="font-style:italic">&#39;?&#39;</span>);
+
+    <span style="font-weight:bold">if</span> (searchIndex !== -1) {
+      search = pathname.substr(searchIndex);
+      pathname = pathname.substr(0, searchIndex);
+    }
+
+    <span style="font-weight:bold">return</span> {
+      pathname: pathname,
+      search: search === <span style="font-style:italic">&#39;?&#39;</span> ? <span style="font-style:italic">&#39;&#39;</span> : search,
+      hash: hash === <span style="font-style:italic">&#39;#&#39;</span> ? <span style="font-style:italic">&#39;&#39;</span> : hash
+    };
+  }
+  
+
+  <span style="font-style:italic">// 把location对象&lt;{pathname, search, hash}&gt; 生成最终的地址栏路径
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">function</span> createPath(location) {
+    <span style="font-weight:bold">var</span> pathname = location.pathname,
+        search = location.search,
+        hash = location.hash;
+    <span style="font-weight:bold">var</span> path = pathname || <span style="font-style:italic">&#39;/&#39;</span>;
+    <span style="font-weight:bold">if</span> (search &amp;&amp; search !== <span style="font-style:italic">&#39;?&#39;</span>) path += search.charAt(0) === <span style="font-style:italic">&#39;?&#39;</span> ? search : <span style="font-style:italic">&#34;?&#34;</span> + search;
+    <span style="font-weight:bold">if</span> (hash &amp;&amp; hash !== <span style="font-style:italic">&#39;#&#39;</span>) path += hash.charAt(0) === <span style="font-style:italic">&#39;#&#39;</span> ? hash : <span style="font-style:italic">&#34;#&#34;</span> + hash;
+    <span style="font-weight:bold">return</span> path;
+  }
+
+</code></pre></div><h4 id="domutils">
+  domUtils
+  <a class="heading-link" href="#domutils">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">
+  <span style="font-style:italic">// 是否可以操作DOM节点，即判断window.document对象是否存在
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">var</span> canUseDOM = !!(<span style="font-weight:bold">typeof</span> window !== <span style="font-style:italic">&#39;undefined&#39;</span> &amp;&amp; window.document &amp;&amp; window.document.createElement);
+
+  <span style="font-style:italic">// 路由跳转拦截回调函数，默认使用window.confirm
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">function</span> getConfirmation(message, callback) {
+    callback(window.confirm(message)); <span style="font-style:italic">// eslint-disable-line no-alert
+</span><span style="font-style:italic"></span>  }
+  <span style="font-style:italic">/**
+</span><span style="font-style:italic">   * Returns true if the HTML5 history API is supported. Taken from Modernizr.
+</span><span style="font-style:italic">   *
+</span><span style="font-style:italic">   * https://github.com/Modernizr/Modernizr/blob/master/LICENSE
+</span><span style="font-style:italic">   * https://github.com/Modernizr/Modernizr/blob/master/feature-detects/history.js
+</span><span style="font-style:italic">   * changed to avoid false negatives for Windows Phones: https://github.com/reactjs/react-router/issues/586
+</span><span style="font-style:italic">   */</span>
+
+  <span style="font-style:italic">// 不支持 安卓是2. 和 4.0版本 并且ua信息包含 ’Mobile Safari‘ &amp;&amp; Chrome &amp;&amp;  Windows Phone 
+</span><span style="font-style:italic"></span>  <span style="font-style:italic">// 判断主流浏览器平台是否支持html5 history api
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">function</span> supportsHistory() {
+    <span style="font-weight:bold">var</span> ua = window.navigator.userAgent;
+    <span style="font-weight:bold">if</span> ((ua.indexOf(<span style="font-style:italic">&#39;Android 2.&#39;</span>) !== -1 || ua.indexOf(<span style="font-style:italic">&#39;Android 4.0&#39;</span>) !== -1) &amp;&amp; ua.indexOf(<span style="font-style:italic">&#39;Mobile Safari&#39;</span>) !== -1 &amp;&amp; ua.indexOf(<span style="font-style:italic">&#39;Chrome&#39;</span>) === -1 &amp;&amp; ua.indexOf(<span style="font-style:italic">&#39;Windows Phone&#39;</span>) === -1) <span style="font-weight:bold">return</span> <span style="font-weight:bold">false</span>;
+    <span style="font-weight:bold">return</span> window.history &amp;&amp; <span style="font-style:italic">&#39;pushState&#39;</span> <span style="font-weight:bold">in</span> window.history;
+  }
+  <span style="font-style:italic">/**
+</span><span style="font-style:italic">   * Returns true if browser fires popstate on hash change.
+</span><span style="font-style:italic">   * IE10 and IE11 do not.
+</span><span style="font-style:italic">   */</span>
+
+  <span style="font-style:italic">// 判断主流浏览器平台在hashchange的时候是否会触发popstate 事件， IE10,IE10并不会
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">function</span> supportsPopStateOnHashChange() {
+    <span style="font-weight:bold">return</span> window.navigator.userAgent.indexOf(<span style="font-style:italic">&#39;Trident&#39;</span>) === -1;
+  }
+  <span style="font-style:italic">/**
+</span><span style="font-style:italic">   * Returns false if using go(n) with hash history causes a full page reload.
+</span><span style="font-style:italic">   */</span>
+
+  <span style="font-style:italic">// 当使用go变更hash的时候，会不会造成页面刷新
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">function</span> supportsGoWithoutReloadUsingHash() {
+    <span style="font-weight:bold">return</span> window.navigator.userAgent.indexOf(<span style="font-style:italic">&#39;Firefox&#39;</span>) === -1;
+  }
+  <span style="font-style:italic">/**
+</span><span style="font-style:italic">   * Returns true if a given popstate event is an extraneous WebKit event.
+</span><span style="font-style:italic">   * Accounts for the fact that Chrome on iOS fires real popstate events
+</span><span style="font-style:italic">   * containing undefined state when pressing the back button.
+</span><span style="font-style:italic">   */</span>
+  <span style="font-style:italic">// 判断popstate是否是有效的
+</span><span style="font-style:italic"></span>  <span style="font-style:italic">// 如果给定的popstate事件是无关的webkit事件， 则会返回true,
+</span><span style="font-style:italic"></span>  <span style="font-style:italic">// 在IOS上chrome会触发state为undefined 真实的popstate事件
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">function</span> isExtraneousPopstateEvent(event) {
+    <span style="font-weight:bold">return</span> event.state === <span style="font-weight:bold">undefined</span> &amp;&amp; navigator.userAgent.indexOf(<span style="font-style:italic">&#39;CriOS&#39;</span>) === -1;
+  }
+
+  <span style="font-weight:bold">var</span> PopStateEvent = <span style="font-style:italic">&#39;popstate&#39;</span>;
+  <span style="font-weight:bold">var</span> HashChangeEvent = <span style="font-style:italic">&#39;hashchange&#39;</span>;
+
+  <span style="font-style:italic">// 返回history的state
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">function</span> getHistoryState() {
+    <span style="font-weight:bold">try</span> {
+      <span style="font-style:italic">// state 必须有pustate/replaceState产生，不然都是null
+</span><span style="font-style:italic"></span>      <span style="font-weight:bold">return</span> window.history.state || {};
+    } <span style="font-weight:bold">catch</span> (e) {
+      <span style="font-style:italic">// IE11 下有时候会抛出异常， 返回返回的state的是一个对象
+</span><span style="font-style:italic"></span>      <span style="font-weight:bold">return</span> {};
+    }
+  }
+</code></pre></div><p>createLocation</p>
+<p>生成 {pathname, search, hash, state, key} 对象</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">  <span style="font-weight:bold">function</span> createLocation(path, state, key, currentLocation) {
+    <span style="font-weight:bold">var</span> location;
+
+    <span style="font-weight:bold">if</span> (<span style="font-weight:bold">typeof</span> path === <span style="font-style:italic">&#39;string&#39;</span>) {
+      <span style="font-style:italic">// 分解{pathname, search, hash}对象
+</span><span style="font-style:italic"></span>      location = parsePath(path);
+      <span style="font-style:italic">// 添加state属性到location上
+</span><span style="font-style:italic"></span>      location.state = state;
+    } <span style="font-weight:bold">else</span> {
+      location = _extends({}, path);
+
+      <span style="font-style:italic">// 补足location操作
+</span><span style="font-style:italic"></span>      <span style="font-weight:bold">if</span> (location.pathname === <span style="font-weight:bold">undefined</span>) location.pathname = <span style="font-style:italic">&#39;&#39;</span>;
+
+      <span style="font-weight:bold">if</span> (location.search) {
+        <span style="font-weight:bold">if</span> (location.search.charAt(0) !== <span style="font-style:italic">&#39;?&#39;</span>) location.search = <span style="font-style:italic">&#39;?&#39;</span> + location.search;
+      } <span style="font-weight:bold">else</span> {
+        location.search = <span style="font-style:italic">&#39;&#39;</span>;
+      }
+
+      <span style="font-weight:bold">if</span> (location.hash) {
+        <span style="font-weight:bold">if</span> (location.hash.charAt(0) !== <span style="font-style:italic">&#39;#&#39;</span>) location.hash = <span style="font-style:italic">&#39;#&#39;</span> + location.hash;
+      } <span style="font-weight:bold">else</span> {
+        location.hash = <span style="font-style:italic">&#39;&#39;</span>;
+      }
+
+      <span style="font-weight:bold">if</span> (state !== <span style="font-weight:bold">undefined</span> &amp;&amp; location.state === <span style="font-weight:bold">undefined</span>) location.state = state;
+    }
+
+    <span style="font-weight:bold">try</span> {
+      <span style="font-style:italic">// 尝试对pathname decodeURI 解码
+</span><span style="font-style:italic"></span>      location.pathname = decodeURI(location.pathname);
+    } <span style="font-weight:bold">catch</span> (e) {
+      <span style="font-weight:bold">if</span> (e <span style="font-weight:bold">instanceof</span> URIError) {
+        <span style="font-style:italic">// decodeURI() 函数能解码由encodeURI 创建或其它流程得到的统一资源标识符（URI）。
+</span><span style="font-style:italic"></span>        <span style="font-style:italic">// decodeURI在解析非合法的URI编码是抛出URIError类型错误
+</span><span style="font-style:italic"></span>        <span style="font-weight:bold">throw</span> <span style="font-weight:bold">new</span> URIError(<span style="font-style:italic">&#39;Pathname &#34;&#39;</span> + location.pathname + <span style="font-style:italic">&#39;&#34; could not be decoded. &#39;</span> + <span style="font-style:italic">&#39;This is likely caused by an invalid percent-encoding.&#39;</span>);
+      } <span style="font-weight:bold">else</span> {
+        <span style="font-weight:bold">throw</span> e;
+      }
+    }
+
+    <span style="font-weight:bold">if</span> (key) location.key = key;
+
+    <span style="font-weight:bold">if</span> (currentLocation) {
+      <span style="font-style:italic">// Resolve incomplete/relative pathname relative to current location.
+</span><span style="font-style:italic"></span>      <span style="font-weight:bold">if</span> (!location.pathname) {
+        location.pathname = currentLocation.pathname;
+      } <span style="font-weight:bold">else</span> <span style="font-weight:bold">if</span> (location.pathname.charAt(0) !== <span style="font-style:italic">&#39;/&#39;</span>) {
+        location.pathname = resolvePathname(location.pathname, currentLocation.pathname);
+      }
+    } <span style="font-weight:bold">else</span> {
+      <span style="font-style:italic">// When there is no prior location and pathname is empty, set it to /
+</span><span style="font-style:italic"></span>
+      <span style="font-style:italic">// 如果pathname为空并且，没有currentLocation 定向到根节点
+</span><span style="font-style:italic"></span>      <span style="font-weight:bold">if</span> (!location.pathname) {
+        location.pathname = <span style="font-style:italic">&#39;/&#39;</span>;
+      }
+    }
+
+    <span style="font-weight:bold">return</span> location;
+  }
+
+</code></pre></div><h4 id="createtransitionmanager">
+  createTransitionManager
+  <a class="heading-link" href="#createtransitionmanager">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>创建任务管理器=&gt; 控制路由跳转以及添加路由监听函数</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">  <span style="font-weight:bold">function</span> createTransitionManager() {
+    <span style="font-weight:bold">var</span> prompt = <span style="font-weight:bold">null</span>;
+
+    <span style="font-style:italic">// 这里使用了闭包，设置了prompt,返回了清空函数， prompt可以是一个string或者函数
+</span><span style="font-style:italic"></span>    <span style="font-weight:bold">function</span> setPrompt(nextPrompt) {
+      process.env.NODE_ENV !== <span style="font-style:italic">&#34;production&#34;</span> ? warning(prompt == <span style="font-weight:bold">null</span>, <span style="font-style:italic">&#39;A history supports only one prompt at a time&#39;</span>) : <span style="font-weight:bold">void</span> 0;
+      prompt = nextPrompt;
+      <span style="font-weight:bold">return</span> <span style="font-weight:bold">function</span> () {
+        <span style="font-weight:bold">if</span> (prompt === nextPrompt) prompt = <span style="font-weight:bold">null</span>;
+      };
+    }
+
+    <span style="font-weight:bold">function</span> confirmTransitionTo(location, action, getUserConfirmation, callback) {
+      <span style="font-style:italic">// TODO: If another transition starts while we&#39;re still confirming
+</span><span style="font-style:italic"></span>      <span style="font-style:italic">// the previous one, we may end up in a weird state. Figure out the
+</span><span style="font-style:italic"></span>      <span style="font-style:italic">// best way to handle this.
+</span><span style="font-style:italic"></span>
+      <span style="font-style:italic">// 是否设置路由跳转拦截器
+</span><span style="font-style:italic"></span>      <span style="font-weight:bold">if</span> (prompt != <span style="font-weight:bold">null</span>) {
+        <span style="font-weight:bold">var</span> result = <span style="font-weight:bold">typeof</span> prompt === <span style="font-style:italic">&#39;function&#39;</span> ? prompt(location, action) : prompt;
+
+        <span style="font-weight:bold">if</span> (<span style="font-weight:bold">typeof</span> result === <span style="font-style:italic">&#39;string&#39;</span>) {
+          <span style="font-weight:bold">if</span> (<span style="font-weight:bold">typeof</span> getUserConfirmation === <span style="font-style:italic">&#39;function&#39;</span>) {
+            getUserConfirmation(result, callback);
+          } <span style="font-weight:bold">else</span> {
+            process.env.NODE_ENV !== <span style="font-style:italic">&#34;production&#34;</span> ? warning(<span style="font-weight:bold">false</span>, <span style="font-style:italic">&#39;A history needs a getUserConfirmation function in order to use a prompt message&#39;</span>) : <span style="font-weight:bold">void</span> 0;
+            callback(<span style="font-weight:bold">true</span>);
+          }
+        } <span style="font-weight:bold">else</span> {
+          <span style="font-style:italic">// Return false from a transition hook to cancel the transition.
+</span><span style="font-style:italic"></span>          callback(result !== <span style="font-weight:bold">false</span>);
+        }
+      } <span style="font-weight:bold">else</span> {
+        <span style="font-style:italic">// 不存在pprompt，直接执行回调函数， 通知notifyListeners
+</span><span style="font-style:italic"></span>        callback(<span style="font-weight:bold">true</span>);
+      }
+    }
+
+    <span style="font-style:italic">// 发布订阅模式，将回调函数加入到listners
+</span><span style="font-style:italic"></span>    <span style="font-style:italic">// 存储监听函数
+</span><span style="font-style:italic"></span>    <span style="font-weight:bold">var</span> listeners = [];
+
+    <span style="font-style:italic">// 返回取消监听函数
+</span><span style="font-style:italic"></span>    <span style="font-weight:bold">function</span> appendListener(fn) {
+      <span style="font-weight:bold">var</span> isActive = <span style="font-weight:bold">true</span>;
+
+      <span style="font-weight:bold">function</span> listener() {
+        <span style="font-weight:bold">if</span> (isActive) fn.apply(<span style="font-weight:bold">void</span> 0, arguments);
+      }
+
+      listeners.push(listener);
+      <span style="font-weight:bold">return</span> <span style="font-weight:bold">function</span> () {
+        isActive = <span style="font-weight:bold">false</span>;
+        listeners = listeners.filter(<span style="font-weight:bold">function</span> (item) {
+          <span style="font-weight:bold">return</span> item !== listener;
+        });
+      };
+    }
+
+    <span style="font-style:italic">// 通知被订阅事件开始执行
+</span><span style="font-style:italic"></span>    <span style="font-weight:bold">function</span> notifyListeners() {
+      <span style="font-weight:bold">for</span> (<span style="font-weight:bold">var</span> _len = arguments.length, args = <span style="font-weight:bold">new</span> Array(_len), _key = 0; _key &lt; _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      <span style="font-style:italic">// 依次遍历执行监听器数组每个注册的事件
+</span><span style="font-style:italic"></span>      listeners.forEach(<span style="font-weight:bold">function</span> (listener) {
+        <span style="font-weight:bold">return</span> listener.apply(<span style="font-weight:bold">void</span> 0, args);
+      });
+    }
+
+    <span style="font-weight:bold">return</span> {
+      setPrompt: setPrompt,
+      confirmTransitionTo: confirmTransitionTo,
+      appendListener: appendListener,
+      notifyListeners: notifyListeners
+    };
+  }
+</code></pre></div><h4 id="createbrowserhistory">
+  createBrowserHistory
+  <a class="heading-link" href="#createbrowserhistory">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">
+ <span style="font-weight:bold">if</span> (props === <span style="font-weight:bold">void</span> 0) {
+    props = {};
+  }
+
+  !canUseDOM ? process.env.NODE_ENV !== <span style="font-style:italic">&#34;production&#34;</span> ? invariant(<span style="font-weight:bold">false</span>, <span style="font-style:italic">&#39;Browser history needs a DOM&#39;</span>) : invariant(<span style="font-weight:bold">false</span>) : <span style="font-weight:bold">void</span> 0;
+   <span style="font-style:italic">// 拿到全局的history对象
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">var</span> globalHistory = window.history;
+
+  <span style="font-style:italic">// 不支持 安卓是2. 和 4.0版本 并且ua信息包含 ’Mobile Safari‘ &amp;&amp; Chrome &amp;&amp;  Windows Phone 
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">var</span> canUseHistory = supportsHistory();
+
+  <span style="font-style:italic">// 当hash改变时，如果不能触发popstate事件，则添加hashchange事件当hash改变时，如果不能触发popstate事件，则添加hashchange事件
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">var</span> needsHashChangeListener = !supportsPopStateOnHashChange();
+  <span style="font-weight:bold">var</span> _props = props,
+      _props$forceRefresh = _props.forceRefresh,
+       <span style="font-style:italic">// 默认切换路由不刷新
+</span><span style="font-style:italic"></span>      forceRefresh = _props$forceRefresh === <span style="font-weight:bold">void</span> 0 ? <span style="font-weight:bold">false</span> : _props$forceRefresh,
+      <span style="font-style:italic">// 初始化是否注入getUserConfirmation函数，默认是window.confirm
+</span><span style="font-style:italic"></span>      _props$getUserConfirm = _props.getUserConfirmation,
+      getUserConfirmation = _props$getUserConfirm === <span style="font-weight:bold">void</span> 0 ? getConfirmation : _props$getUserConfirm,
+      _props$keyLength = _props.keyLength,
+      <span style="font-style:italic">// 默认6位长度随机key
+</span><span style="font-style:italic"></span>      keyLength = _props$keyLength === <span style="font-weight:bold">void</span> 0 ? 6 : _props$keyLength;
+
+      <span style="font-style:italic">// 添加basename 同时首部添加/ 去掉尾部/ eg: /ahs/xxx
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">var</span> basename = props.basename ? stripTrailingSlash(addLeadingSlash(props.basename)) : <span style="font-style:italic">&#39;&#39;</span>; 
+
+  <span style="font-weight:bold">function</span> getDOMLocation(historyState) {
+    <span style="font-style:italic">// 获取history对象的key和state
+</span><span style="font-style:italic"></span>    <span style="font-weight:bold">var</span> _ref = historyState || {},
+        key = _ref.key,
+        state = _ref.state;
+
+    <span style="font-weight:bold">var</span> _window$location = window.location,
+        pathname = _window$location.pathname,
+        search = _window$location.search,
+        hash = _window$location.hash;
+        
+    <span style="font-style:italic">// 拼一下完整的路径
+</span><span style="font-style:italic"></span>    <span style="font-weight:bold">var</span> path = pathname + search + hash;
+    process.env.NODE_ENV !== <span style="font-style:italic">&#34;production&#34;</span> ? warning(!basename || hasBasename(path, basename), <span style="font-style:italic">&#39;You are attempting to use a basename on a page whose URL path does not begin &#39;</span> + <span style="font-style:italic">&#39;with the basename. Expected path &#34;&#39;</span> + path + <span style="font-style:italic">&#39;&#34; to begin with &#34;&#39;</span> + basename + <span style="font-style:italic">&#39;&#34;.&#39;</span>) : <span style="font-weight:bold">void</span> 0;
+
+    <span style="font-style:italic">// 去掉path中的basename
+</span><span style="font-style:italic"></span>    <span style="font-weight:bold">if</span> (basename) path = stripBasename(path, basename);
+
+    <span style="font-style:italic">// 生成一个自定义location对象
+</span><span style="font-style:italic"></span>    <span style="font-weight:bold">return</span> createLocation(path, state, key);
+  }
+
+  <span style="font-style:italic">// 创建36进制的随机数key 从第2位开始截取
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">function</span> createKey() {
+    <span style="font-weight:bold">return</span> Math.random().toString(36).substr(2, keyLength);
+  }
+
+  <span style="font-weight:bold">var</span> transitionManager = createTransitionManager();
+
+  <span style="font-style:italic">// 路由发生改变的时候，更新history的部分属性，如action, location等，在路由完成跳转后
+</span><span style="font-style:italic"></span>  <span style="font-style:italic">// 通知transitionManager触发所有监听函数
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">function</span> setState(nextState) {
+    _extends(history, nextState);
+
+    <span style="font-style:italic">// 更新history的length, 实实保持和window.history.length 同步
+</span><span style="font-style:italic"></span>    history.length = globalHistory.length;
+
+    <span style="font-style:italic">// 推送至订阅者，执行响应回调函数
+</span><span style="font-style:italic"></span>    transitionManager.notifyListeners(history.location, history.action);
+  }
+
+  <span style="font-style:italic">// 监听popState事件进行处理&lt;过滤掉IOS上无效的popstate事件，即： state为undefined&gt;
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">function</span> handlePopState(event) {
+    <span style="font-weight:bold">if</span> (isExtraneousPopstateEvent(event)) <span style="font-weight:bold">return</span>;
+  
+    <span style="font-style:italic">// 拿到当前地址的event.state 传递给getDOMLocation。得到最新location对象
+</span><span style="font-style:italic"></span>    handlePop(getDOMLocation(event.state));
+  }
+
+  <span style="font-weight:bold">function</span> handleHashChange() {
+    <span style="font-style:italic">// 监听到hashchange时进行的处理，由于hashchange不会更改state
+</span><span style="font-style:italic"></span>    <span style="font-style:italic">// 此处不需要更新location的state
+</span><span style="font-style:italic"></span>    handlePop(getDOMLocation(getHistoryState()));
+  }
+
+  <span style="font-style:italic">// 是否强制路由加载
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">var</span> forceNextPop = <span style="font-weight:bold">false</span>;
+
+   <span style="font-style:italic">// handlePop是对使用go方法来回退或者前进时，对页面进行的更新，正常情况下来说没有问题
+</span><span style="font-style:italic"></span>   <span style="font-style:italic">// 但是如果页面使用Prompt，即路由拦截器。当点击回退或者前进就会触发histrory的api,改变了地址栏的路径
+</span><span style="font-style:italic"></span>   <span style="font-style:italic">// 然后弹出需要用户进行确认的提示框，如果用户点击确定，那么没问题因为地址栏改变的地址就是将要跳转到地址
+</span><span style="font-style:italic"></span>   <span style="font-style:italic">// 但是如果用户选择了取消，那么地址栏的路径已经变成了新的地址，但是页面实际还停留再之前，这就产生了bug
+</span><span style="font-style:italic"></span>   <span style="font-style:italic">// 这也就是 revertPop 这个hack的由来。因为页面的跳转可以由程序控制，但是如果操作的本身是浏览器的前进后退
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">function</span> handlePop(location) {
+    <span style="font-weight:bold">if</span> (forceNextPop) {
+      forceNextPop = <span style="font-weight:bold">false</span>;
+      setState();
+    } <span style="font-weight:bold">else</span> {
+      <span style="font-weight:bold">var</span> action = <span style="font-style:italic">&#39;POP&#39;</span>;
+      transitionManager.confirmTransitionTo(location, action, getUserConfirmation, <span style="font-weight:bold">function</span> (ok) {
+        <span style="font-weight:bold">if</span> (ok) {
+          setState({
+            action: action,
+            location: location
+          });
+        } <span style="font-weight:bold">else</span> {
+          <span style="font-style:italic">// 回滚
+</span><span style="font-style:italic"></span>          revertPop(location);
+        }
+      });
+    }
+  }
+
+  <span style="font-style:italic">// https://github.com/ReactTraining/history/issues/690
+</span><span style="font-style:italic"></span>   <span style="font-style:italic">// 这里是react-router的作者最头疼的一个地方，因为虽然用hack实现了表面上的路由拦截
+</span><span style="font-style:italic"></span>   <span style="font-style:italic">// ，但也会引起一些特殊情况下的bug。这里先说一下如何做到的假装拦截，因为本身html5 history
+</span><span style="font-style:italic"></span>   <span style="font-style:italic">// api的特性，pushState 这些操作不会引起页面的reload,所有做到拦截只需要不手懂调用setState页面不进行render即可
+</span><span style="font-style:italic"></span>   <span style="font-style:italic">// 当用户选择了取消后，再将地址栏中的路径变为当前页面的显示路径即可，这也是revertPop实现的方式
+</span><span style="font-style:italic"></span>   <span style="font-style:italic">// 这里贴出一下对这个bug的讨论：https://github.com/ReactTraining/history/issues/690
+</span><span style="font-style:italic"></span>  <span style="font-style:italic">// fromLocation 当前
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">function</span> revertPop(fromLocation) {
+    <span style="font-style:italic">// fromLocation 当前地址栏真正的地址
+</span><span style="font-style:italic"></span>
+    <span style="font-weight:bold">var</span> toLocation = history.location; <span style="font-style:italic">// TODO: We could probably make this more reliable by
+</span><span style="font-style:italic"></span>    <span style="font-style:italic">// keeping a list of keys we&#39;ve seen in sessionStorage.
+</span><span style="font-style:italic"></span>    <span style="font-style:italic">// Instead, we just default to 0 for keys we don&#39;t know.
+</span><span style="font-style:italic"></span>
+    <span style="font-style:italic">// allKeys 缓存历史堆栈数据 取出来 formLocaton 和 当天 histoty.location 维护的key在 allKeys索引中的位置
+</span><span style="font-style:italic"></span>    <span style="font-weight:bold">var</span> toIndex = allKeys.indexOf(toLocation.key);
+    <span style="font-weight:bold">if</span> (toIndex === -1) toIndex = 0;
+    <span style="font-weight:bold">var</span> fromIndex = allKeys.indexOf(fromLocation.key);
+    <span style="font-weight:bold">if</span> (fromIndex === -1) fromIndex = 0;
+
+    <span style="font-style:italic">// 两者进行相减的值就是go操作需要回退或者前进的次数
+</span><span style="font-style:italic"></span>    <span style="font-weight:bold">var</span> delta = toIndex - fromIndex;
+
+    <span style="font-style:italic">// 如果delta不为0 则进行过地址栏的变更。 浏览器历史记录重定向到当前页面的路径
+</span><span style="font-style:italic"></span>    <span style="font-weight:bold">if</span> (delta) {
+      <span style="font-style:italic">// 将forceNextPop设置为true
+</span><span style="font-style:italic"></span>      <span style="font-style:italic">// 更改地址栏的路径，又会触发handlePop 方法，此时由于forceNextPop已经为true则会执行后面的
+</span><span style="font-style:italic"></span>      <span style="font-style:italic">// setState方法，对当前页面进行rerender，注意setState是没有传递参数的，这样history当中的
+</span><span style="font-style:italic"></span>      <span style="font-style:italic">// location对象依然是之前页面存在的那个loaction，不会改变history的location数据
+</span><span style="font-style:italic"></span>      forceNextPop = <span style="font-weight:bold">true</span>;
+      go(delta);
+    }
+  }
+
+  <span style="font-style:italic">// 初始化一个location对象
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">var</span> initialLocation = getDOMLocation(getHistoryState());
+  <span style="font-weight:bold">var</span> allKeys = [initialLocation.key]; <span style="font-style:italic">// Public interface
+</span><span style="font-style:italic"></span>
+
+  <span style="font-weight:bold">function</span> createHref(location) {
+    <span style="font-weight:bold">return</span> basename + createPath(location);
+  }
+
+  <span style="font-weight:bold">function</span> push(path, state) {
+    <span style="font-style:italic">// path 可以是字符串也可以是对象，当path传递是对象，包含state并且第二个参数state也存在，会扔出警告，第二个state将会被忽略掉
+</span><span style="font-style:italic"></span>    process.env.NODE_ENV !== <span style="font-style:italic">&#34;production&#34;</span> ? warning(!(<span style="font-weight:bold">typeof</span> path === <span style="font-style:italic">&#39;object&#39;</span> &amp;&amp; path.state !== <span style="font-weight:bold">undefined</span> &amp;&amp; state !== <span style="font-weight:bold">undefined</span>), <span style="font-style:italic">&#39;You should avoid providing a 2nd state argument to push when the 1st &#39;</span> + <span style="font-style:italic">&#39;argument is a location-like object that already has state; it is ignored&#39;</span>) : <span style="font-weight:bold">void</span> 0;
+    <span style="font-weight:bold">var</span> action = <span style="font-style:italic">&#39;PUSH&#39;</span>;
+    <span style="font-style:italic">// 返回一个对象包含 pathname,search,hash,state,key
+</span><span style="font-style:italic"></span>    <span style="font-weight:bold">var</span> location = createLocation(path, state, createKey(), history.location);
+    <span style="font-style:italic">// 路由的切换，最后一个参数为回调函数，只有返回true的时候才会进行路由的切换
+</span><span style="font-style:italic"></span>    transitionManager.confirmTransitionTo(location, action, getUserConfirmation, <span style="font-weight:bold">function</span> (ok) {
+      <span style="font-weight:bold">if</span> (!ok) <span style="font-weight:bold">return</span>;
+      <span style="font-weight:bold">var</span> href = createHref(location); <span style="font-style:italic">// 拼接basename后的完整路径
+</span><span style="font-style:italic"></span>      <span style="font-weight:bold">var</span> key = location.key,          <span style="font-style:italic">// 随机生成key值
+</span><span style="font-style:italic"></span>          state = location.state;      <span style="font-style:italic">// 获取新的location中的key和state
+</span><span style="font-style:italic"></span>
+      <span style="font-style:italic">// 当可以使用原生的html5 history api的，调用原生的history.pushstate方法更改浏览器地址栏路径
+</span><span style="font-style:italic"></span>      <span style="font-style:italic">// 此时只是改变地址栏路径 页面并不会发生变化 需要手动setState从而rerender
+</span><span style="font-style:italic"></span>      <span style="font-weight:bold">if</span> (canUseHistory) {
+        globalHistory.pushState({
+          key: key,
+          state: state
+        }, <span style="font-weight:bold">null</span>, href);
+
+        <span style="font-style:italic">// 是否开启强制刷新
+</span><span style="font-style:italic"></span>        <span style="font-weight:bold">if</span> (forceRefresh) {
+          window.location.href = href;
+        } <span style="font-weight:bold">else</span> {
+          <span style="font-style:italic">// 获取上次访问key的下标
+</span><span style="font-style:italic"></span>          <span style="font-weight:bold">var</span> prevIndex = allKeys.indexOf(history.location.key);
+
+          <span style="font-style:italic">// 当下标存在时，返回截取到当前下标的数组key列表的一个新引用，不存在则返回一个新的空数组
+</span><span style="font-style:italic"></span>          <span style="font-style:italic">// 这样做的原因是什么？为什么不每次访问直接向allKeys列表中直接push要访问的key
+</span><span style="font-style:italic"></span>          <span style="font-style:italic">// 比如这样的一种场景， 1-2-3-4 的页面访问顺序，这时候使用go(-2) 回退到2的页面，假如在2
+</span><span style="font-style:italic"></span>          <span style="font-style:italic">// 的页面我们选择了push进行跳转到4页面，如果只是简单的对allKeys进行push操作那么顺序就变成了
+</span><span style="font-style:italic"></span>          <span style="font-style:italic">// 1-2-3-4-4，这时候就会产生一悖论，从4页面跳转4页面，这种逻辑是不通的，所以每当push或者replace
+</span><span style="font-style:italic"></span>          <span style="font-style:italic">// 发生的时候，一定是用当前地址栏中path的key去截取allKeys中对应的访问记录，来保证不会push连续相同的页面
+</span><span style="font-style:italic"></span>          <span style="font-weight:bold">var</span> nextKeys = allKeys.slice(0, prevIndex + 1);
+          nextKeys.push(location.key);
+          allKeys = nextKeys;
+
+          <span style="font-style:italic">// 通知事件调度中心，执行相对应监听函数，重新render页面
+</span><span style="font-style:italic"></span>          setState({
+            action: action,
+            location: location  <span style="font-style:italic">// 新的location
+</span><span style="font-style:italic"></span>          });
+        }
+      } <span style="font-weight:bold">else</span> {
+        process.env.NODE_ENV !== <span style="font-style:italic">&#34;production&#34;</span> ? warning(state === <span style="font-weight:bold">undefined</span>, <span style="font-style:italic">&#39;Browser history cannot push state in browsers that do not support HTML5 history&#39;</span>) : <span style="font-weight:bold">void</span> 0;
+        window.location.href = href;
+      }
+    });
+  }
+
+  <span style="font-weight:bold">function</span> replace(path, state) {
+    process.env.NODE_ENV !== <span style="font-style:italic">&#34;production&#34;</span> ? warning(!(<span style="font-weight:bold">typeof</span> path === <span style="font-style:italic">&#39;object&#39;</span> &amp;&amp; path.state !== <span style="font-weight:bold">undefined</span> &amp;&amp; state !== <span style="font-weight:bold">undefined</span>), <span style="font-style:italic">&#39;You should avoid providing a 2nd state argument to replace when the 1st &#39;</span> + <span style="font-style:italic">&#39;argument is a location-like object that already has state; it is ignored&#39;</span>) : <span style="font-weight:bold">void</span> 0;
+    <span style="font-weight:bold">var</span> action = <span style="font-style:italic">&#39;REPLACE&#39;</span>;
+    <span style="font-weight:bold">var</span> location = createLocation(path, state, createKey(), history.location);
+    transitionManager.confirmTransitionTo(location, action, getUserConfirmation, <span style="font-weight:bold">function</span> (ok) {
+      <span style="font-weight:bold">if</span> (!ok) <span style="font-weight:bold">return</span>;
+      <span style="font-weight:bold">var</span> href = createHref(location);
+      <span style="font-weight:bold">var</span> key = location.key,
+          state = location.state;
+
+      <span style="font-weight:bold">if</span> (canUseHistory) {
+        globalHistory.replaceState({
+          key: key,
+          state: state
+        }, <span style="font-weight:bold">null</span>, href);
+
+        <span style="font-weight:bold">if</span> (forceRefresh) {
+          window.location.replace(href);
+        } <span style="font-weight:bold">else</span> {
+          <span style="font-weight:bold">var</span> prevIndex = allKeys.indexOf(history.location.key);
+          <span style="font-weight:bold">if</span> (prevIndex !== -1) allKeys[prevIndex] = location.key;
+          setState({
+            action: action,
+            location: location
+          });
+        }
+      } <span style="font-weight:bold">else</span> {
+        process.env.NODE_ENV !== <span style="font-style:italic">&#34;production&#34;</span> ? warning(state === <span style="font-weight:bold">undefined</span>, <span style="font-style:italic">&#39;Browser history cannot replace state in browsers that do not support HTML5 history&#39;</span>) : <span style="font-weight:bold">void</span> 0;
+        window.location.replace(href);
+      }
+    });
+  }
+
+  <span style="font-weight:bold">function</span> go(n) {
+    globalHistory.go(n);
+  }
+
+  <span style="font-weight:bold">function</span> goBack() {
+    go(-1);
+  }
+
+  <span style="font-weight:bold">function</span> goForward() {
+    go(1);
+  }
+
+  <span style="font-weight:bold">var</span> listenerCount = 0;
+
+  <span style="font-style:italic">// 防止重复注册，只有 listenerCount === 1 &amp;&amp; delta === 1 进行监听事件
+</span><span style="font-style:italic"></span>  <span style="font-style:italic">// 同时在window上设置popstate、pushState 监听函数
+</span><span style="font-style:italic"></span>  <span style="font-style:italic">// delta=-1 移除window对象上popState pushState 等事件
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">function</span> checkDOMListeners(delta) {
+    listenerCount += delta;
+
+    <span style="font-weight:bold">if</span> (listenerCount === 1 &amp;&amp; delta === 1) {
+      window.addEventListener(PopStateEvent, handlePopState);
+      <span style="font-weight:bold">if</span> (needsHashChangeListener) window.addEventListener(HashChangeEvent, handleHashChange);
+    } <span style="font-weight:bold">else</span> <span style="font-weight:bold">if</span> (listenerCount === 0) {
+      window.removeEventListener(PopStateEvent, handlePopState);
+      <span style="font-weight:bold">if</span> (needsHashChangeListener) window.removeEventListener(HashChangeEvent, handleHashChange);
+    }
+  }
+
+  <span style="font-weight:bold">var</span> isBlocked = <span style="font-weight:bold">false</span>;
+
+  <span style="font-style:italic">// 设置路由跳转拦截监听器,这里的block专门为prompt组件服务，开发者可以模拟对路由的拦截
+</span><span style="font-style:italic"></span>  <span style="font-style:italic">// [Remove history.block #690](https://github.com/remix-run/history/issues/690)
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">function</span> block(prompt) {
+    <span style="font-weight:bold">if</span> (prompt === <span style="font-weight:bold">void</span> 0) {
+      prompt = <span style="font-weight:bold">false</span>;
+    }
+
+    <span style="font-weight:bold">var</span> unblock = transitionManager.setPrompt(prompt);
+
+    <span style="font-style:italic">// 监听事件只会当拦截器开启时被注册，同时设置isBlock为true,防止多次注册
+</span><span style="font-style:italic"></span>    <span style="font-weight:bold">if</span> (!isBlocked) {
+      checkDOMListeners(1);
+      isBlocked = <span style="font-weight:bold">true</span>;
+    }
+
+    <span style="font-style:italic">// 返回关闭路由拦截的方法
+</span><span style="font-style:italic"></span>    <span style="font-weight:bold">return</span> <span style="font-weight:bold">function</span> () {
+      <span style="font-weight:bold">if</span> (isBlocked) {
+        isBlocked = <span style="font-weight:bold">false</span>;
+        checkDOMListeners(-1);
+      }
+
+      <span style="font-weight:bold">return</span> unblock();
+    };
+  }
+
+  <span style="font-style:italic">// 添加自定义监听函数，并返回取消监听函数
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">function</span> listen(listener) {
+    <span style="font-weight:bold">var</span> unlisten = transitionManager.appendListener(listener); <span style="font-style:italic">// 添加订阅者
+</span><span style="font-style:italic"></span>    checkDOMListeners(1);
+    <span style="font-weight:bold">return</span> <span style="font-weight:bold">function</span> () {
+      checkDOMListeners(-1);
+      unlisten();
+    };
+  }
+
+  <span style="font-weight:bold">var</span> history = {
+    length: globalHistory.length,  <span style="font-style:italic">// 存储浏览器历史堆栈中数量
+</span><span style="font-style:italic"></span>    action: <span style="font-style:italic">&#39;POP&#39;</span>, <span style="font-style:italic">// 执行的方法名
+</span><span style="font-style:italic"></span>    location: initialLocation, <span style="font-style:italic">// 保存的location对象  {pathname, search, hash, state, key }构成
+</span><span style="font-style:italic"></span>    createHref: createHref, <span style="font-style:italic">// 构成完整的浏览器路径+basename
+</span><span style="font-style:italic"></span>    push: push, <span style="font-style:italic">// 自定义push事件, 实现路由跳转
+</span><span style="font-style:italic"></span>    replace: replace, <span style="font-style:italic">//  自定义replace事件, 实现路由跳转, 替换历史记录堆栈数据
+</span><span style="font-style:italic"></span>    go: go, <span style="font-style:italic">// 调用history.go方法
+</span><span style="font-style:italic"></span>    goBack: goBack, <span style="font-style:italic">// 调用history.go方法
+</span><span style="font-style:italic"></span>    goForward: goForward, <span style="font-style:italic">// 调用history.go方法
+</span><span style="font-style:italic"></span>    block: block, <span style="font-style:italic">// 设置路由跳转拦截监听函数
+</span><span style="font-style:italic"></span>    listen: listen <span style="font-style:italic">// 添加自定义路由监听函数
+</span><span style="font-style:italic"></span>  };
+  <span style="font-weight:bold">return</span> history;
+}
+
+
+</code></pre></div><h2 id="总结">
+  总结
+  <a class="heading-link" href="#%e6%80%bb%e7%bb%93">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h2>
+<ul>
+<li>首先BrowserRouter通过history库创建了history对象，并且把此对象通过props形势传递Router组件</li>
+<li>Router组件使用hisroty中listen，注册了资深的setState方法，当路由发生发生改变的时候&lt;出发popstate,手动push&gt;组件就会执行setState方法，完成整个组件数的render</li>
+<li>history是一个对象 包含了各种操作页面的方法。 同时会用Router的props里面forceRefresh、basename、getUserComfirmation、keyLength 来生成一个初始化的location对象</li>
+<li>拿到从初始化的location对象，history开始封装push,replace,go,goback等方法。对于任何地址栏上的更新，都会执行confirmTransitionTo验证，这个方法是为了支持prompt拦截器功能， 正常在拦截器关闭的情况下，每次调用push或者replace都会随机生成一个key，代表这个路径的唯一hash值，并将用户传递的state和key作为state，注意这部分state会被保存到 浏览器 中是一个长效的缓存，将拼接好的path作为传递给history的第三个参数</li>
+<li>地址栏地址得到更新后，页面在不使用foreceRefrsh的情况下是不会自动更新的， 需要执行setState， 同时执行调度中心里面监听函数</li>
+<li>history有block方法，这个方法初衷是实现对路由跳转的拦截，我们知道浏览器的回退和前进操作按钮是无法进行拦截的， 只能做hack。为了history抽离了一个路由控制器createTransitionManager，里面维护了一个prompt开关， 每当prompt存在的时候，默认会被window.confirm拦截，如果确认拦截，则页面仍然会停留在当前页面中，但是地址栏已经更新了地址，这就产生了矛盾。需要把地址栏路径重置为之前的路径。为了实现这功能。都会在allkeys找到当前key对应的下表，以及之前页面key对应的下标。以两者下标差做一个回滚
+<strong>正是因为有了Prompt才会促使history添加key</strong></li>
+</ul>
+<h2 id="手动实现mini-router">
+  手动实现mini-router
+  <a class="heading-link" href="#%e6%89%8b%e5%8a%a8%e5%ae%9e%e7%8e%b0mini-router">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h2>
+<h3 id="utils-1">
+  utils
+  <a class="heading-link" href="#utils-1">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">
+<span style="font-weight:bold">export</span> <span style="font-weight:bold">interface</span> Path {
+  hash: string
+  search: string
+  pathname: string
+}
+
+<span style="font-weight:bold">export</span> <span style="font-weight:bold">function</span> parsePath(path: string) {
+  <span style="font-weight:bold">const</span> partialPath = {} as Path
+  <span style="font-weight:bold">const</span> pathname = path
+
+  <span style="font-weight:bold">if</span> (path) {
+    <span style="font-weight:bold">const</span> hashIndex = path.indexOf(<span style="font-style:italic">&#39;#&#39;</span>)
+    <span style="font-weight:bold">if</span> (hashIndex &gt;= 0) {
+      partialPath.hash = path.substr(hashIndex)
+      pathname = path.substr(0, hashIndex)
+    }
+
+    <span style="font-weight:bold">const</span> searchIndex = path.indexOf(<span style="font-style:italic">&#39;?&#39;</span>)
+    <span style="font-weight:bold">if</span> (searchIndex &gt;= 0) {
+      partialPath.search = path.substr(searchIndex)
+      pathname = path.substr(0, searchIndex)
+    }
+
+    <span style="font-weight:bold">if</span> (path) {
+      partialPath.pathname = pathname
+    }
+  }
+
+  <span style="font-weight:bold">return</span> partialPath
+}
+
+
+</code></pre></div><h3 id="history-2">
+  history
+  <a class="heading-link" href="#history-2">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">
+<span style="font-weight:bold">import</span> { parsePath } from <span style="font-style:italic">&#39;./utils&#39;</span>
+
+<span style="font-weight:bold">export</span> <span style="font-weight:bold">interface</span> History {
+  push(): <span style="font-weight:bold">void</span>
+}
+
+<span style="font-weight:bold">export</span> type State = object | <span style="font-weight:bold">null</span>
+
+<span style="font-weight:bold">export</span> type Listener = (location: Location) =&gt; <span style="font-weight:bold">void</span>
+
+<span style="font-weight:bold">export</span> <span style="font-weight:bold">interface</span> Location {
+  state: State
+  hash: string
+  search: string
+  pathname: string
+}
+
+<span style="font-weight:bold">const</span> getLocation = (): Location =&gt; {
+  <span style="font-weight:bold">const</span> { pathname, search, hash } = window.location
+  <span style="font-weight:bold">return</span> {
+    pathname,
+    search,
+    hash,
+    state: <span style="font-weight:bold">null</span>,
+  }
+}
+
+<span style="font-weight:bold">let</span> location = getLocation()
+
+<span style="font-weight:bold">const</span> getNextLocation = (to: string, state: State = <span style="font-weight:bold">null</span>) =&gt; ({
+  ...parsePath(to),
+  state,
+})
+
+<span style="font-weight:bold">const</span> listeners: Listener[] = []
+
+<span style="font-weight:bold">const</span> push = (to: string, state?: State) =&gt; {
+  location = getNextLocation(to, state)
+  window.history.pushState(state, <span style="font-style:italic">&#39;&#39;</span>, to)
+  listeners.forEach((fn) =&gt; fn(location))
+}
+
+<span style="font-style:italic">// 设置监听函数
+</span><span style="font-style:italic"></span><span style="font-weight:bold">const</span> listen = (fn: Listener) =&gt; {
+  listeners.push(fn)
+  <span style="font-weight:bold">return</span> <span style="font-weight:bold">function</span> unlisten() {
+    listeners = listeners.filter((listener) =&gt; listener !== fn)
+  }
+}
+
+<span style="font-style:italic">// 处理浏览器的前进后退
+</span><span style="font-style:italic"></span>window.addEventListener(<span style="font-style:italic">&#39;popstate&#39;</span>, () =&gt; {
+  location = getLocation()
+  listeners.forEach((fn) =&gt; fn(location))
+})
+
+<span style="font-weight:bold">export</span> <span style="font-weight:bold">const</span> history = {
+  get location() {
+    <span style="font-weight:bold">return</span> location
+  },
+  push,
+  listen,
+}
+
+</code></pre></div><h3 id="router-1">
+  Router
+  <a class="heading-link" href="#router-1">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">
+<span style="font-weight:bold">import</span> { history, Location } from <span style="font-style:italic">&#39;./history&#39;</span>
+<span style="font-weight:bold">import</span> React, { useState, useEffect } from <span style="font-style:italic">&#39;react&#39;</span>
+
+<span style="font-weight:bold">interface</span> RouterContextProps {
+  location: Location
+  history: <span style="font-weight:bold">typeof</span> history
+}
+
+<span style="font-weight:bold">export</span> <span style="font-weight:bold">const</span> RouterContext = React.createContext&lt;RouterContextProps | <span style="font-weight:bold">null</span>&gt;(<span style="font-weight:bold">null</span>)
+
+<span style="font-weight:bold">export</span> <span style="font-weight:bold">const</span> Router: React.FC = ({ children }) =&gt; {
+  <span style="font-weight:bold">const</span> [location, setLocation] = useState(history.location)
+
+  useEffect(() =&gt; {
+    <span style="font-weight:bold">const</span> unlisten = history.listen((newLocation) =&gt; {
+      setLocation(newLocation)
+    })
+    <span style="font-weight:bold">return</span> unlisten
+  }, [])
+
+  <span style="font-weight:bold">return</span> &lt;RouterContext.Provider value={{ history, location }}&gt;{children}&lt;<span style="">/RouterContext.Provider&gt;</span>
+}
+
+
+</code></pre></div><h3 id="route-1">
+  Route
+  <a class="heading-link" href="#route-1">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="font-weight:bold">import</span> { ReactNode } from <span style="font-style:italic">&#39;react&#39;</span>
+<span style="font-weight:bold">import</span> { useLocation } from <span style="font-style:italic">&#39;./hooks&#39;</span>
+
+<span style="font-weight:bold">interface</span> RouteProps {
+  path: string
+  children: ReactNode
+}
+
+<span style="font-weight:bold">export</span> <span style="font-weight:bold">const</span> Route = ({ path, children }: RouteProps) =&gt; {
+  <span style="font-weight:bold">const</span> { pathname } = useLocation()
+  <span style="font-weight:bold">const</span> matched = path === pathname
+
+  <span style="font-weight:bold">if</span> (matched) {
+    <span style="font-weight:bold">return</span> children
+  }
+  <span style="font-weight:bold">return</span> <span style="font-weight:bold">null</span>
+}
+
+</code></pre></div><h3 id="hooks-1">
+  hooks
+  <a class="heading-link" href="#hooks-1">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">
+<span style="font-weight:bold">import</span> React from <span style="font-style:italic">&#39;react&#39;</span>
+<span style="font-weight:bold">import</span> { RouterContext } from <span style="font-style:italic">&#39;./Router&#39;</span>
+
+<span style="font-weight:bold">export</span> <span style="font-weight:bold">const</span> useHistory = () =&gt; React.useContext(RouterContext)!.history
+
+<span style="font-weight:bold">export</span> <span style="font-weight:bold">const</span> useLocation = () =&gt; React.useContext(RouterContext)!.location
+
+
+</code></pre></div><h3 id="demo">
+  demo
+  <a class="heading-link" href="#demo">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">
+<span style="font-weight:bold">import</span> React from <span style="font-style:italic">&#39;react&#39;</span>
+<span style="font-weight:bold">import</span> { Card, Button, Divider } from <span style="font-style:italic">&#39;antd&#39;</span>
+<span style="font-weight:bold">import</span> { Router, Route, useHistory } from <span style="font-style:italic">&#39;./customizeRouter/index&#39;</span>
+
+<span style="font-weight:bold">const</span> List = () =&gt; &lt;h1&gt;列表&lt;<span style="">/h1&gt;</span>
+<span style="font-weight:bold">const</span> Detail = () =&gt; &lt;h1&gt;详情&lt;<span style="">/h1&gt;</span>
+<span style="font-weight:bold">const</span> About = () =&gt; &lt;h1&gt;关于我&lt;<span style="">/h1&gt;</span>
+
+<span style="font-weight:bold">const</span> RenderRoute = () =&gt; {
+  <span style="font-weight:bold">const</span> history = useHistory()
+
+  <span style="font-weight:bold">const</span> go = (path: string) =&gt; {
+    <span style="font-weight:bold">const</span> state = { name: Math.random().toString(36).substr(2, 8) }
+    history.push(path, state)
+  }
+
+  <span style="font-weight:bold">return</span> (
+    &lt;div&gt;
+      &lt;Button type=<span style="font-style:italic">&#34;link&#34;</span> size=<span style="font-style:italic">&#34;small&#34;</span> onClick={() =&gt; go(<span style="font-style:italic">&#39;/list&#39;</span>)}&gt;
+        列表
+      &lt;<span style="">/Button&gt;</span>
+      &lt;Button type=<span style="font-style:italic">&#34;link&#34;</span> size=<span style="font-style:italic">&#34;small&#34;</span> onClick={() =&gt; go(<span style="font-style:italic">&#39;/detail&#39;</span>)}&gt;
+        详情
+      &lt;<span style="">/Button&gt;</span>
+      &lt;Button type=<span style="font-style:italic">&#34;link&#34;</span> size=<span style="font-style:italic">&#34;small&#34;</span> onClick={() =&gt; go(<span style="font-style:italic">&#39;/about&#39;</span>)}&gt;
+        关于我
+      &lt;<span style="">/Button&gt;</span>
+    &lt;<span style="">/div&gt;</span>
+  )
+}
+
+<span style="font-weight:bold">export</span> <span style="font-weight:bold">default</span> () =&gt; (
+  &lt;Card title=<span style="font-style:italic">&#34;自定义mini-router&#34;</span>&gt;
+    &lt;Router&gt;
+      &lt;RenderRoute /&gt;
+
+      &lt;Divider /&gt;
+
+      &lt;Route path=<span style="font-style:italic">&#34;/list&#34;</span>&gt;
+        &lt;List /&gt;
+      &lt;<span style="">/Route&gt;</span>
+
+      &lt;Route path=<span style="font-style:italic">&#34;/detail&#34;</span>&gt;
+        &lt;Detail /&gt;
+      &lt;<span style="">/Route&gt;</span>
+
+      &lt;Route path=<span style="font-style:italic">&#34;/about&#34;</span>&gt;
+        &lt;About /&gt;
+      &lt;<span style="">/Route&gt;</span>
+    &lt;<span style="">/Router&gt;</span>
+  &lt;<span style="">/Card&gt;</span>
+)
+
+
+</code></pre></div>
+      </div>
+
+
+      <footer>
+        
+
+
+        
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    ©
+    
+      2019 -
+    
+    2021
+     levi 
+    ·
+    开启美好新一天
+  </section>
+</footer>
+
+    </main>
+
+    
+      
+      <script src="/js/coder.min.03b17769f4f91ae35667e1f2a1ca8c16f50562576cf90ff32b3179926914daa5.js" integrity="sha256-A7F3afT5GuNWZ&#43;HyocqMFvUFYlds&#43;Q/zKzF5kmkU2qU="></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+  </body>
+
+</html>

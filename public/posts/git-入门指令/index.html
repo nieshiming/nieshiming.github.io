@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="color-scheme" content="light dark">
+
+    
+      <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests; block-all-mixed-content; default-src 'self'; child-src 'self'; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net/; form-action 'self'; frame-src 'self'; img-src 'self'; object-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com/ https://cdn.jsdelivr.net/; script-src 'self' 'unsafe-inline' https://www.google-analytics.com; prefetch-src 'self'; connect-src 'self' https://www.google-analytics.com;">
+
+    
+
+    <meta name="author" content="levi">
+    <meta name="description" content="
+  初始化连接 git 相关
+  
+    
+  
+
+    git clone xxx(远程仓库名)            ---克隆项目
+    git remote add origin xxx           ---本地仓库连接到远程
+
+  配置账号密码
+  
+    
+  
+
+    git config --local user.name xxx
+    git config --local user.email &#39;xxx@xx.com&#39;
+
+git 配置推送时自动保存账号密码: git config credential.helper store
+参考文章: https://cloud.tencent.com/developer/ask/131910
+
+
+  单个分支相关
+  
+    
+  
+
+
+
+创建本地分支: git branch dev/nsm
+
+
+删除本地分支： git branch -D dev/nsm
+
+
+切换到本地分支： git checkout dev/nsm
+
+
+切换上一个分支： git checkout -
+
+
+创建并切换到改分支： git checkout -b xxx
+&hellip;
+
+">
+    <meta name="keywords" content="blog,developer,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="git-入门指令"/>
+<meta name="twitter:description" content="
+  初始化连接 git 相关
+  
+    
+  
+
+    git clone xxx(远程仓库名)            ---克隆项目
+    git remote add origin xxx           ---本地仓库连接到远程
+
+  配置账号密码
+  
+    
+  
+
+    git config --local user.name xxx
+    git config --local user.email &#39;xxx@xx.com&#39;
+
+git 配置推送时自动保存账号密码: git config credential.helper store
+参考文章: https://cloud.tencent.com/developer/ask/131910
+
+
+  单个分支相关
+  
+    
+  
+
+
+
+创建本地分支: git branch dev/nsm
+
+
+删除本地分支： git branch -D dev/nsm
+
+
+切换到本地分支： git checkout dev/nsm
+
+
+切换上一个分支： git checkout -
+
+
+创建并切换到改分支： git checkout -b xxx
+&hellip;
+
+"/>
+
+    <meta property="og:title" content="git-入门指令" />
+<meta property="og:description" content="
+  初始化连接 git 相关
+  
+    
+  
+
+    git clone xxx(远程仓库名)            ---克隆项目
+    git remote add origin xxx           ---本地仓库连接到远程
+
+  配置账号密码
+  
+    
+  
+
+    git config --local user.name xxx
+    git config --local user.email &#39;xxx@xx.com&#39;
+
+git 配置推送时自动保存账号密码: git config credential.helper store
+参考文章: https://cloud.tencent.com/developer/ask/131910
+
+
+  单个分支相关
+  
+    
+  
+
+
+
+创建本地分支: git branch dev/nsm
+
+
+删除本地分支： git branch -D dev/nsm
+
+
+切换到本地分支： git checkout dev/nsm
+
+
+切换上一个分支： git checkout -
+
+
+创建并切换到改分支： git checkout -b xxx
+&hellip;
+
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://www.example.com/posts/git-%E5%85%A5%E9%97%A8%E6%8C%87%E4%BB%A4/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-12-16T13:22:54+08:00" />
+<meta property="article:modified_time" content="2021-12-16T13:22:54+08:00" />
+
+
+
+    <title>
+  git-入门指令 · levi
+</title>
+
+    
+      <link rel="canonical" href="http://www.example.com/posts/git-%E5%85%A5%E9%97%A8%E6%8C%87%E4%BB%A4/">
+    
+
+    <link rel="preload" href="/fonts/forkawesome-webfont.woff2?v=1.2.0" as="font" type="font/woff2" crossorigin>
+
+    
+      
+      
+      <link rel="stylesheet" href="/css/coder.min.d9fddbffe6f27e69985dc5fe0471cdb0e57fbf4775714bc3d847accb08f4a1f6.css" integrity="sha256-2f3b/&#43;byfmmYXcX&#43;BHHNsOV/v0d1cUvD2Eesywj0ofY=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+      
+        
+        
+        <link rel="stylesheet" href="/css/coder-dark.min.ccbbada2e264e4fdbf9b2181cccc2cdb289a63dc9520a1e96ac2b9a45778df29.css" integrity="sha256-zLutouJk5P2/myGBzMws2yiaY9yVIKHpasK5pFd43yk=" crossorigin="anonymous" media="screen" />
+      
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
+
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+    <meta name="generator" content="Hugo 0.90.1" />
+
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+  </head>
+
+  
+  
+    
+  
+  <body class="preload-transitions colorscheme-auto">
+    
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="/">
+      levi
+    </a>
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/">首页</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/posts/">博客</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/tags/">标签</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/about/">关于我</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="http://www.example.com/posts/git-%E5%85%A5%E9%97%A8%E6%8C%87%E4%BB%A4/">
+              git-入门指令
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+              <time datetime='2021-12-16T13:22:54&#43;08:00'>
+                December 16, 2021
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fa fa-clock-o" aria-hidden="true"></i>
+              4-minute read
+            </span>
+          </div>
+          
+          <div class="categories">
+  <i class="fa fa-folder" aria-hidden="true"></i>
+    <a href="/categories/git/">git</a></div>
+
+          <div class="tags">
+  <i class="fa fa-tag" aria-hidden="true"></i>
+    <span class="tag">
+      <a href="/tags/git/">git</a>
+    </span></div>
+
+        </div>
+      </header>
+
+      <div>
+        
+        <h4 id="初始化连接-git-相关">
+  初始化连接 git 相关
+  <a class="heading-link" href="#%e5%88%9d%e5%a7%8b%e5%8c%96%e8%bf%9e%e6%8e%a5-git-%e7%9b%b8%e5%85%b3">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">    git clone xxx(远程仓库名)            ---克隆项目
+    git remote add origin xxx           ---本地仓库连接到远程
+</code></pre></div><h4 id="配置账号密码">
+  配置账号密码
+  <a class="heading-link" href="#%e9%85%8d%e7%bd%ae%e8%b4%a6%e5%8f%b7%e5%af%86%e7%a0%81">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">    git config --local user.name xxx
+    git config --local user.email &#39;xxx@xx.com&#39;
+</code></pre></div><ul>
+<li>git 配置推送时自动保存账号密码: <code>git config credential.helper store</code></li>
+<li>参考文章: <a href="https://cloud.tencent.com/developer/ask/131910">https://cloud.tencent.com/developer/ask/131910</a></li>
+</ul>
+<h4 id="单个分支相关">
+  单个分支相关
+  <a class="heading-link" href="#%e5%8d%95%e4%b8%aa%e5%88%86%e6%94%af%e7%9b%b8%e5%85%b3">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<ul>
+<li>
+<p>创建本地分支: git branch dev/nsm</p>
+</li>
+<li>
+<p>删除本地分支： git branch -D dev/nsm</p>
+</li>
+<li>
+<p>切换到本地分支： git checkout dev/nsm</p>
+</li>
+<li>
+<p>切换上一个分支： git checkout -</p>
+</li>
+<li>
+<p>创建并切换到改分支： git checkout -b xxx</p>
+<p>&hellip;</p>
+</li>
+</ul>
+<ul>
+<li>查看本地分支： git branch</li>
+<li>查看远程分支： git branch -r</li>
+<li>查看本地分支和远程分支： git branch -a</li>
+<li>推送本地分支到远程： git push origin dev/nsm</li>
+<li>删除远程 git 分支： git push origin -d dev/nsm or git push origin :dev/nsm</li>
+<li>合并分支: git merge xxx ???</li>
+<li>更新关联远程分支： git fetch origin</li>
+<li>刷新远程分支列表： git remote update origin -p</li>
+<li>基于远程分支新建一个本地分支： git checkout -b xxx origin/xxxx</li>
+<li>分支操作：
+<ul>
+<li>修改分支名： git branch -m 旧分支名 新分支名 ==（这里只是把本地分支重命名， 后续还需要把 远程旧分支删除，然后 push 新分支名==</li>
+<li>刷新远程分支： git remote update origin -p</li>
+</ul>
+</li>
+</ul>
+<h4 id="日志相关">
+  日志相关
+  <a class="heading-link" href="#%e6%97%a5%e5%bf%97%e7%9b%b8%e5%85%b3">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<ul>
+<li>
+<p>查看提交日志： git log ==(q: 快速退出)==</p>
+</li>
+<li>
+<p>查看简化日期: git log &ndash;oneline</p>
+</li>
+<li>
+<p>查看分支提交树： git log &ndash;graph</p>
+</li>
+<li>
+<p>查看提交日志最新 x 次： git log -number</p>
+</li>
+<li>
+<p>查看 log 差异： git log -p -number .</p>
+</li>
+<li>
+<p>查看提交明细： git show</p>
+</li>
+<li>
+<p>查看指定 commit 修改：git show xxx(commit 号)</p>
+</li>
+<li>
+<p>查看本地提交状态： git status</p>
+</li>
+<li>
+<p>查看简化版状态： git status -s</p>
+</li>
+<li>
+<p>查看未加入暂存区(缓冲区)文件的变化： git diff</p>
+</li>
+<li>
+<p>查看已加入暂存区(缓冲区)文件的变化： git diff staged</p>
+</li>
+<li>
+<p>移除文件：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">git rm 文件名      ( 不在暂存区的文件 )
+git rm -f 强制删除 ( 已在暂存区的文件 )
+</code></pre></div></li>
+</ul>
+<h4 id="查看文件">
+  查看文件
+  <a class="heading-link" href="#%e6%9f%a5%e7%9c%8b%e6%96%87%e4%bb%b6">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">    git blame xxx(文件名)   查看文件提交信息
+    cat xxx(文件名)         查看文件
+    git reflog              获取全部版本号
+</code></pre></div><h4 id="commit-相关">
+  commit 相关
+  <a class="heading-link" href="#commit-%e7%9b%b8%e5%85%b3">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<pre><code>本地仓库：修改上一次commit信息(已commit)
+        git commit --amend -m &quot;备注&quot;
+
+实际应用中，当完成一次提交之后，可能会发现此次提交有些文件需要修改，当然我们可以在下一次提交中修改此文件
+    解决思路：
+    git add .
+    git commit --amend -m 'new remark'        2次提交合在一起，并且只有共用新的提交备注
+</code></pre>
+<h4 id="git-cherry-pick">
+  git cherry-pick
+  <a class="heading-link" href="#git-cherry-pick">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<pre><code>场景： cherry-pick和它名字一样，挑选一个我们需要的commit进行操作, 它可以用于将其他分支的commit移植到当前分支。
+步骤：
+</code></pre>
+<ul>
+<li>A 分支有部分新的 commit, 切换 B 分支</li>
+<li>(B 分支) git cherry-pick xxx xxxx xxxxx</li>
+</ul>
+<h4 id="cherry-pick-出现冲突情况-总体跟-rebase-操作类似">
+  cherry-pick 出现冲突情况： （总体跟 rebase 操作类似）
+  <a class="heading-link" href="#cherry-pick-%e5%87%ba%e7%8e%b0%e5%86%b2%e7%aa%81%e6%83%85%e5%86%b5-%e6%80%bb%e4%bd%93%e8%b7%9f-rebase-%e6%93%8d%e4%bd%9c%e7%b1%bb%e4%bc%bc">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>1、git status 查看冲突文件 =&gt; 手动解决冲突 =&gt; git add .<br>
+2、git cherry-pick &ndash;continue<br>
+3、放弃 cherry-pick =&gt; git cherry-pick &ndash;abort</p>
+<h4 id="提交代码代码相关">
+  提交代码代码相关
+  <a class="heading-link" href="#%e6%8f%90%e4%ba%a4%e4%bb%a3%e7%a0%81%e4%bb%a3%e7%a0%81%e7%9b%b8%e5%85%b3">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<ul>
+<li>拉取远程代码： git fetch origin xxxx</li>
+<li>git merge origin/xxx</li>
+<li>git add . (将文件加入到缓冲区,加入缓冲区后，发 p 现文件名变成绿色) &ndash;暂存区</li>
+<li>git reset HEAD . &ndash;撤离暂存区</li>
+<li>git commit -m &ldquo;这里是备注&rdquo;. &ndash;提交更新</li>
+<li>git push -u origin master(分支名) 推送到远程分支(第一次提交) &mdash;推送到远程</li>
+<li>git push origin master(分支名) 推送到远程分支</li>
+</ul>
+<h4 id="文件回退">
+  文件回退
+  <a class="heading-link" href="#%e6%96%87%e4%bb%b6%e5%9b%9e%e9%80%80">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">    撤回所有文件更改： git checkout .
+    修改文件未 git add., 那么直接 git checkout 文件名
+    加入到缓存区后 git add .  =&gt;    撤销暂存区更新： git reset HEAD fileName    =&gt; 然后git checkout
+
+    回退本地仓库：
+        回滚有三种方式
+        1、git reset --hard xxx         本地仓库的暂存区和工作区都将回滚到指定commit号(一般不建议使用)
+        2、git reset --soft xxx         本地仓库回滚到指定commit号，暂存区和工作区文件状态不会有任何变化
+        3、git reset --mixed xxx        本地仓库回滚到指定commit号，会重置暂存区，同时工作区的文件会处理未被跟踪状态
+        强制推送远程仓库
+            1、git push -f origin xx(远程仓库名)        强制push到远程仓库
+            2、 git reflog                             获取全部版本号
+
+    回退远程仓库：
+        git reset --hard origin/master   强制远程master 覆盖本地master
+</code></pre></div><h4 id="远程更新本地仓库">
+  远程更新本地仓库
+  <a class="heading-link" href="#%e8%bf%9c%e7%a8%8b%e6%9b%b4%e6%96%b0%e6%9c%ac%e5%9c%b0%e4%bb%93%e5%ba%93">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">    git checkout xxx
+    git fetch origin xxx   更新远程仓库同步到本地（不会merge）
+    git merge origin/xxx   本地仓库merge远程仓库，本地commit 同步
+</code></pre></div><h4 id="删除文件">
+  删除文件
+  <a class="heading-link" href="#%e5%88%a0%e9%99%a4%e6%96%87%e4%bb%b6">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">    commit后恢复文件 =&gt; 删除文件 =&gt; 恢复文件 || add.
+    执行步骤： git checkout -- 文件名
+    查看工作区要被删除的文件 git clean -n
+    删除工作区文件： git clean -f
+</code></pre></div><h4 id="远程相关">
+  远程相关
+  <a class="heading-link" href="#%e8%bf%9c%e7%a8%8b%e7%9b%b8%e5%85%b3">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">    git remote          查看远程信息
+    git remote -v       查看远程库详细信息
+    github重命名远程仓库:
+        1、github上 setting =&gt; 修改库名称
+        2、本地git项目上有以下操作
+            @ git remote rm origin
+            @ git remote add origin git@github.com:nieshiming/xxx.git
+</code></pre></div><h4 id="概念相关">
+  概念相关
+  <a class="heading-link" href="#%e6%a6%82%e5%bf%b5%e7%9b%b8%e5%85%b3">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p><strong>工作区</strong>： 就是电脑上看到的目录，日常所建的目录都是属于工作区的范畴<br>
+<strong>版本库</strong>：工作区有一个隐藏目录.git, 这个不属于工作区，这是版本库，版本库存在了很多东西，其他最重要的<br>
+就是暂存区，还有 git 为我们自动创建的 master 分支，以及只想 master 分支的 head</p>
+<p><strong>head</strong>: 指向工作所在的分支<br>
+==git 提交文件到版本库有 2 步==</p>
+<ul>
+<li>1、使用 git add . 把文件添加进去，实际就是把文件添加到暂存区</li>
+<li>2、使用 git commit 把暂存区的内容提交到当前本地仓库的分支上去</li>
+</ul>
+<h4 id="rebase-相关">
+  rebase 相关
+  <a class="heading-link" href="#rebase-%e7%9b%b8%e5%85%b3">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">rebase 实例： {
+    git checkout master
+    git fetch origin
+    git merge origin/master
+
+    git checkout development
+    git fetch origin
+    git merge origin/development
+
+    git rebase origin/master
+    git checkout master
+    git merge development
+}
+</code></pre></div><h5 id="git-rebase-原理">
+  git rebase 原理：
+  <a class="heading-link" href="#git-rebase-%e5%8e%9f%e7%90%86">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<ul>
+<li>基于远程 origin/nsm 拉出来一个 nsm 本地分支：</li>
+<li>对应文章： <a href="https://www.cnblogs.com/kevingrace/p/5896706.html">https://www.cnblogs.com/kevingrace/p/5896706.html</a></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">条件：
+    1、origin/nsm 有提交
+    2、nsm本地分支有提交
+生成条件：
+    git fetch origin nsm
+    git rebase  origin/nie  以远程复位基底
+    git push origin nsm
+</code></pre></div><h5 id="git-rebase-基于同一分支有修改有冲突">
+  git rebase 基于同一分支有修改有冲突
+  <a class="heading-link" href="#git-rebase-%e5%9f%ba%e4%ba%8e%e5%90%8c%e4%b8%80%e5%88%86%e6%94%af%e6%9c%89%e4%bf%ae%e6%94%b9%e6%9c%89%e5%86%b2%e7%aa%81">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">条件：
+   1、origin/nsm 有提交
+   2、nsm本地分支有提交
+生成条件：
+   git fetch origin nsm
+   git rebase origin/nsm
+   /****解决冲突****/
+   查看冲突文件个数： git status --uno
+   /****解决冲突****/
+   git add .
+   git rebase --continue
+   git push origin nsm
+
+不同分支：
+   基于 relase1.3 开分支nsm分支
+   git rabase origin/release1.0
+   nsm 分支提交
+   checkout release1.3
+   git merge nsm
+   git fetch origin/relase1.3
+   git rebase origin/releasa1.3
+   git push origin release1.3
+</code></pre></div><h5 id="fast-forward">
+  fast forward
+  <a class="heading-link" href="#fast-forward">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<p>描述： 分支间快速推进；
+形成条件： A 分支没有 commit , B 分支是基于 A 分支切出来的分支， 并有 commit<br>
+执行步骤
+1、执行 <strong>A merge B</strong> ; =&gt; A 分支快速合并 B 的 commit， ==不会产生新的 commit==
+2、三方合并：A 分支上切分支 B， A B 各有新的 commit, A merge B 会形成新的 commit 来链接 2 个 commit</p>
+<h5 id="git-rebase-原理-1">
+  git rebase 原理
+  <a class="heading-link" href="#git-rebase-%e5%8e%9f%e7%90%86-1">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<p>条件：A 分支上切分支 B， A B 各有新的 commit</p>
+<ul>
+<li>A rebase B, A 将除去共有祖先上的 commit 全部以 B 为基底嫁接到分支 B 上去<br>
+<em>这样 A 分全部 B 分支 commit 为基点，嫁接自身新增的 commit</em></li>
+<li>回到 B 分支，直接 merge A 分支，执行快速推荐</li>
+<li><a href="https://www.jianshu.com/p/ca76937b174f">参考文章</a></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">Rebase - 使用 Interactive 模式來精簡 commit 紀錄
+1、基于master分支开了一个dev分支, 同时master 、 dev 分支都有commit
+2、切换dev分支 git rebase -i master
+3、确认无误后, 输入: wq 退出
+4、切换master分支, 执行git merge dev
+</code></pre></div><h4 id="tag-标签相关">
+  tag 标签相关
+  <a class="heading-link" href="#tag-%e6%a0%87%e7%ad%be%e7%9b%b8%e5%85%b3">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">tag相关：
+    查看tag: git tag
+    打tag:
+        1、切换目标分支： git tag xxx
+        2、针对同一个commit号，可以打多个tag
+    删除本地tag: git tag -d xxx
+    针对某个commit号打tag  git tag nie-t-4 cdd9b49
+    查看某次tag详细信息: git show xxx
+    推送tag到远程： git push origin xxx
+    推送全部tag到远程:  git push origin --tags
+    删除远程tag：
+        1、删除本地tag: git tag -d xxx
+        2、更新至远程： git push origin :refs/tags/xxx
+</code></pre></div><h4 id="stash-存储相关">
+  stash (存储相关)
+  <a class="heading-link" href="#stash-%e5%ad%98%e5%82%a8%e7%9b%b8%e5%85%b3">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>描述： git stash 命令的作用就是将目前还不想提交的但是已经修改的内容进行保存至堆栈中，后续可以在某个分支上恢复出堆栈中的内容(不是当前分支上的 stash 也可以应用)</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">  git stash 保存当前缓存
+  git stash list 查看缓存列表
+  git stash apply 应用最近的一次缓存
+  git stash apply stash@{x} 应用指定的缓存
+
+  git stash show -p 查看缓存更改明细
+  git stash pop 应用之前最近一次保存的缓存，并且在缓存栈中删掉
+                如果应用并删除指定缓存可以： git stash pop stash@{x}
+  git stash drop stash@{x} 删除指定缓存
+  git stash clear 清空缓存栈
+</code></pre></div><h4 id="git-配置别名">
+  git 配置别名
+  <a class="heading-link" href="#git-%e9%85%8d%e7%bd%ae%e5%88%ab%e5%90%8d">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">1、安装cmder
+2、vscode配置cmder终端
+   - https://github.com/Microsoft/vscode/issues/12006
+3、cmder配置git 别名
+   - https://github.com/cmderdev/cmder/issues/421
+   - 进入到  E:\ruanjian\cmder\config\user_aliases.cmd配置别名
+             https://www.jianshu.com/p/979db1a96f6d
+4、重启vscode
+</code></pre></div><h4 id="git-教学文章">
+  git 教学文章
+  <a class="heading-link" href="#git-%e6%95%99%e5%ad%a6%e6%96%87%e7%ab%a0">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<ul>
+<li><a href="https://gitbook.tw/">https://gitbook.tw/</a></li>
+<li><a href="https://backlog.com/git-tutorial/tw/stepup/stepup2_8.html">https://backlog.com/git-tutorial/tw/stepup/stepup2_8.html</a></li>
+<li><a href="https://www.webfx.com/tools/emoji-cheat-sheet/">readMe添加emoji</a></li>
+</ul>
+<h4 id="git-提交规范">
+  git 提交规范
+  <a class="heading-link" href="#git-%e6%8f%90%e4%ba%a4%e8%a7%84%e8%8c%83">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>1、<a href="https://segmentfault.com/a/1190000009048911">https://segmentfault.com/a/1190000009048911</a><br>
+2、<a href="https://github.com/angular/angular/blob/master/CONTRIBUTING.md">https://github.com/angular/angular/blob/master/CONTRIBUTING.md</a><br>
+3、<a href="https://github.com/angular/angular-cli/commits/master">https://github.com/angular/angular-cli/commits/master</a></p>
+<h4 id="git-分支管理规范">
+  git 分支管理规范
+  <a class="heading-link" href="#git-%e5%88%86%e6%94%af%e7%ae%a1%e7%90%86%e8%a7%84%e8%8c%83">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>1、参考文章： <a href="https://cloud.tencent.com/developer/article/1110910">https://cloud.tencent.com/developer/article/1110910</a></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">    &lt;type&gt;(作用域): 描述
+    注意：作用域可精确到model，interface, service，view ，*以及具体到那个文件等等
+</code></pre></div>
+      </div>
+
+
+      <footer>
+        
+
+
+        
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    ©
+    
+      2019 -
+    
+    2021
+     levi 
+    ·
+    开启美好新一天
+  </section>
+</footer>
+
+    </main>
+
+    
+      
+      <script src="/js/coder.min.03b17769f4f91ae35667e1f2a1ca8c16f50562576cf90ff32b3179926914daa5.js" integrity="sha256-A7F3afT5GuNWZ&#43;HyocqMFvUFYlds&#43;Q/zKzF5kmkU2qU="></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+  </body>
+
+</html>

@@ -1,0 +1,2874 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="color-scheme" content="light dark">
+
+    
+      <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests; block-all-mixed-content; default-src 'self'; child-src 'self'; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net/; form-action 'self'; frame-src 'self'; img-src 'self'; object-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com/ https://cdn.jsdelivr.net/; script-src 'self' 'unsafe-inline' https://www.google-analytics.com; prefetch-src 'self'; connect-src 'self' https://www.google-analytics.com;">
+
+    
+
+    <meta name="author" content="levi">
+    <meta name="description" content="
+  0.1 &#43; 0.2 为什么不等于 0.3
+  
+    
+  
+
+
+为什么0.1&#43;0.2不等于0.3
+非科班前端人的一道送命题：0.1&#43;0.2 等于 0.3 吗？
+
+现在浏览器多数采用双精度即64存储浮点数
+
+
+第1位： 符号位，正数0，负数1
+2-11位： 指数位阶数&#43;偏移量，阶数是：2^e-1 - 1
+12-64: 小数位， 即二进制小数点后面的数
+
+
+0.1&#43;0.2 不等于 0.3 ，因为在 0.1&#43;0.2 的计算过程中发生了两次精度丢失。第一次是在 0.1 和 0.2 转成双精度二进制浮点数时，由于二进制浮点数的小数位只能存储52位，导致小数点后第53位的数要进行为1则进1为0则舍去的操作，从而造成一次精度丢失。第二次在 0.1 和 0.2 转成二进制浮点数后，二进制浮点数相加的过程中，小数位相加导致小数位多出了一位，又要让第53位的数进行为1则进1为0则舍去的操作，又造成一次精度丢失。最终导致 0.1&#43;0.2 不等于0.3 。
+
+解决
+
+toFixed var c = 0.1 &#43; 0.2; c.toFixed(2) === &ldquo;0.30&rdquo;， 在做Number转换
+">
+    <meta name="keywords" content="blog,developer,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="JS基础汇总"/>
+<meta name="twitter:description" content="
+  0.1 &#43; 0.2 为什么不等于 0.3
+  
+    
+  
+
+
+为什么0.1&#43;0.2不等于0.3
+非科班前端人的一道送命题：0.1&#43;0.2 等于 0.3 吗？
+
+现在浏览器多数采用双精度即64存储浮点数
+
+
+第1位： 符号位，正数0，负数1
+2-11位： 指数位阶数&#43;偏移量，阶数是：2^e-1 - 1
+12-64: 小数位， 即二进制小数点后面的数
+
+
+0.1&#43;0.2 不等于 0.3 ，因为在 0.1&#43;0.2 的计算过程中发生了两次精度丢失。第一次是在 0.1 和 0.2 转成双精度二进制浮点数时，由于二进制浮点数的小数位只能存储52位，导致小数点后第53位的数要进行为1则进1为0则舍去的操作，从而造成一次精度丢失。第二次在 0.1 和 0.2 转成二进制浮点数后，二进制浮点数相加的过程中，小数位相加导致小数位多出了一位，又要让第53位的数进行为1则进1为0则舍去的操作，又造成一次精度丢失。最终导致 0.1&#43;0.2 不等于0.3 。
+
+解决
+
+toFixed var c = 0.1 &#43; 0.2; c.toFixed(2) === &ldquo;0.30&rdquo;， 在做Number转换
+"/>
+
+    <meta property="og:title" content="JS基础汇总" />
+<meta property="og:description" content="
+  0.1 &#43; 0.2 为什么不等于 0.3
+  
+    
+  
+
+
+为什么0.1&#43;0.2不等于0.3
+非科班前端人的一道送命题：0.1&#43;0.2 等于 0.3 吗？
+
+现在浏览器多数采用双精度即64存储浮点数
+
+
+第1位： 符号位，正数0，负数1
+2-11位： 指数位阶数&#43;偏移量，阶数是：2^e-1 - 1
+12-64: 小数位， 即二进制小数点后面的数
+
+
+0.1&#43;0.2 不等于 0.3 ，因为在 0.1&#43;0.2 的计算过程中发生了两次精度丢失。第一次是在 0.1 和 0.2 转成双精度二进制浮点数时，由于二进制浮点数的小数位只能存储52位，导致小数点后第53位的数要进行为1则进1为0则舍去的操作，从而造成一次精度丢失。第二次在 0.1 和 0.2 转成二进制浮点数后，二进制浮点数相加的过程中，小数位相加导致小数位多出了一位，又要让第53位的数进行为1则进1为0则舍去的操作，又造成一次精度丢失。最终导致 0.1&#43;0.2 不等于0.3 。
+
+解决
+
+toFixed var c = 0.1 &#43; 0.2; c.toFixed(2) === &ldquo;0.30&rdquo;， 在做Number转换
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://www.example.com/posts/js%E5%9F%BA%E7%A1%80%E6%B1%87%E6%80%BB/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-12-16T13:25:18+08:00" />
+<meta property="article:modified_time" content="2021-12-16T13:25:18+08:00" />
+
+
+
+    <title>
+  JS基础汇总 · levi
+</title>
+
+    
+      <link rel="canonical" href="http://www.example.com/posts/js%E5%9F%BA%E7%A1%80%E6%B1%87%E6%80%BB/">
+    
+
+    <link rel="preload" href="/fonts/forkawesome-webfont.woff2?v=1.2.0" as="font" type="font/woff2" crossorigin>
+
+    
+      
+      
+      <link rel="stylesheet" href="/css/coder.min.d9fddbffe6f27e69985dc5fe0471cdb0e57fbf4775714bc3d847accb08f4a1f6.css" integrity="sha256-2f3b/&#43;byfmmYXcX&#43;BHHNsOV/v0d1cUvD2Eesywj0ofY=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+      
+        
+        
+        <link rel="stylesheet" href="/css/coder-dark.min.ccbbada2e264e4fdbf9b2181cccc2cdb289a63dc9520a1e96ac2b9a45778df29.css" integrity="sha256-zLutouJk5P2/myGBzMws2yiaY9yVIKHpasK5pFd43yk=" crossorigin="anonymous" media="screen" />
+      
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
+
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+    <meta name="generator" content="Hugo 0.90.1" />
+
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+  </head>
+
+  
+  
+    
+  
+  <body class="preload-transitions colorscheme-auto">
+    
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="/">
+      levi
+    </a>
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/">首页</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/posts/">博客</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/tags/">标签</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/about/">关于我</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="http://www.example.com/posts/js%E5%9F%BA%E7%A1%80%E6%B1%87%E6%80%BB/">
+              JS基础汇总
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+              <time datetime='2021-12-16T13:25:18&#43;08:00'>
+                December 16, 2021
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fa fa-clock-o" aria-hidden="true"></i>
+              24-minute read
+            </span>
+          </div>
+          
+          <div class="categories">
+  <i class="fa fa-folder" aria-hidden="true"></i>
+    <a href="/categories/js/">js</a></div>
+
+          <div class="tags">
+  <i class="fa fa-tag" aria-hidden="true"></i>
+    <span class="tag">
+      <a href="/tags/js/">js</a>
+    </span>
+      <span class="separator">•</span>
+    <span class="tag">
+      <a href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/">八股文</a>
+    </span></div>
+
+        </div>
+      </header>
+
+      <div>
+        
+        <h4 id="01--02-为什么不等于-03">
+  0.1 + 0.2 为什么不等于 0.3
+  <a class="heading-link" href="#01--02-%e4%b8%ba%e4%bb%80%e4%b9%88%e4%b8%8d%e7%ad%89%e4%ba%8e-03">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<ul>
+<li><a href="https://segmentfault.com/a/1190000012175422">为什么0.1+0.2不等于0.3</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/363133848">非科班前端人的一道送命题：0.1+0.2 等于 0.3 吗？</a></li>
+</ul>
+<p>现在浏览器多数采用双精度即64存储浮点数
+<!-- raw HTML omitted --></p>
+<ul>
+<li>第1位： 符号位，正数0，负数1</li>
+<li>2-11位： 指数位阶数+偏移量，阶数是：2^e-1 - 1</li>
+<li>12-64: 小数位， 即二进制小数点后面的数</li>
+</ul>
+<blockquote>
+<p>0.1+0.2 不等于 0.3 ，因为在 0.1+0.2 的计算过程中发生了两次精度丢失。第一次是在 0.1 和 0.2 转成双精度二进制浮点数时，由于二进制浮点数的小数位只能存储52位，导致小数点后第53位的数要进行为1则进1为0则舍去的操作，从而造成一次精度丢失。第二次在 0.1 和 0.2 转成二进制浮点数后，二进制浮点数相加的过程中，小数位相加导致小数位多出了一位，又要让第53位的数进行为1则进1为0则舍去的操作，又造成一次精度丢失。最终导致 0.1+0.2 不等于0.3 。</p>
+</blockquote>
+<p>解决</p>
+<ul>
+<li>toFixed var c = 0.1 + 0.2; c.toFixed(2) === &ldquo;0.30&rdquo;， 在做Number转换</li>
+</ul>
+<h4 id="typeof-null-为什么等于object">
+  typeof null 为什么等于object
+  <a class="heading-link" href="#typeof-null-%e4%b8%ba%e4%bb%80%e4%b9%88%e7%ad%89%e4%ba%8eobject">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>简单来说，就是js最初遗留的bug，数据在底层采用二进制，js设计之初才用32位字节储存，由标志位(1-3位)和数值组成。同时认为 前三位是 000 判定为object类型</p>
+<ul>
+<li>对象 000</li>
+<li>null 全为 000</li>
+<li>整数 1</li>
+<li>浮点数 010</li>
+<li>字符串 100</li>
+<li>布尔 110</li>
+<li>undefined 全为1</li>
+</ul>
+<h4 id="描述一下-reduce-的执行">
+  描述一下 reduce 的执行
+  <a class="heading-link" href="#%e6%8f%8f%e8%bf%b0%e4%b8%80%e4%b8%8b-reduce-%e7%9a%84%e6%89%a7%e8%a1%8c">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>array.reduce(callback(accumulator, currentVal, index, array), initiaValue)
+reduce 函数接受 4 个参数</p>
+<ul>
+<li>accumulator 当前累加器的返回值</li>
+<li>currentVal 数组正在处理的元素</li>
+<li>index 当前正在处理的索引</li>
+<li>array 当前操作数组</li>
+<li>initiaValue 有值，那么 callback 函数的 accumulator 为 initiaVale, currentVal 为数组的第二项值，如果没有提供改值，accumulator 为数组 array[0], currentVal 为数组 array[1]</li>
+<li><strong>注意:</strong> 空数组 &amp;&amp; initiaVal 不传，则会报错;</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">    [].reduce(callback)  // Reduce of empty array with no initial value
+    [].reduce(callback, null)  // null
+    [].reduce(callback, &#39;&#39;)    // &#39;&#39;,
+    [].reduce(callback, undefined) // undefined
+</code></pre></div><h5 id="reduce-累加求和">
+  reduce 累加求和
+  <a class="heading-link" href="#reduce-%e7%b4%af%e5%8a%a0%e6%b1%82%e5%92%8c">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">    const arr = [];
+    const sum = arr.reduce((prevVal, curVal, index, arr) =&gt; {
+        console.log(`prev:${prevVal}`);
+        console.log(`cur: ${curVal}`);
+        return prevVal + curVal;
+    }, 0);
+</code></pre></div><h5 id="reduce-打平二位数组成一维">
+  reduce 打平二位数组成一维
+  <a class="heading-link" href="#reduce-%e6%89%93%e5%b9%b3%e4%ba%8c%e4%bd%8d%e6%95%b0%e7%bb%84%e6%88%90%e4%b8%80%e7%bb%b4">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">    const arr = [[0, 1], 2, 3], [4, 5]];
+    const sum = arr.reduce((prevVal, curVal, index, arr) =&gt; prevVal.concat(curVal));
+</code></pre></div><h4 id="扁平化数组">
+  扁平化数组
+  <a class="heading-link" href="#%e6%89%81%e5%b9%b3%e5%8c%96%e6%95%b0%e7%bb%84">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>concat 不会改变原数组，返回新增后的数组<br>
+shift 删除数组第一个元素，并且返回数组被删除元素，改变原数组
+unshift 向头部添加一个元素，并且返回数组最新长度，改变原数组</p>
+<blockquote>
+<p>栈方式</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">  <span style="font-weight:bold">function</span> deelFlat(arrs) {
+    <span style="font-weight:bold">let</span> result = [];
+    <span style="font-weight:bold">while</span> (arr.length) {
+      <span style="font-weight:bold">const</span> value = arr.shift();
+      <span style="font-weight:bold">if</span> (Array.isArray(value)) {
+        result = result.concat(deepFlat(value));
+      } <span style="font-weight:bold">else</span> {
+        result.push(value);
+      }
+    }
+
+    <span style="font-weight:bold">return</span> result;
+  }
+
+
+  <span style="font-style:italic">// 方式二，向数组头部增加值
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">function</span> flatArray(arr) {
+    <span style="font-weight:bold">const</span> result = [];
+
+    <span style="font-weight:bold">while</span> (!!arr.length) {
+      <span style="font-weight:bold">let</span> item = arr.shift();
+      <span style="font-weight:bold">if</span> (Array.isArray(item)) {
+        arr.unshift(...item);
+      } <span style="font-weight:bold">else</span> {
+        result.push(item);
+      }
+    }
+
+    <span style="font-weight:bold">return</span> result;
+  }
+</code></pre></div><blockquote>
+<p>reduce</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">    <span style="font-weight:bold">function</span> deelFlat(arrs) {
+      <span style="font-weight:bold">return</span> arrs.reduce((prev, cur) =&gt; {
+        <span style="font-weight:bold">return</span> [].concat(prev, Array.isArray(cur) ? deelFlat(cur) : cur);
+      }, []);
+    }
+</code></pre></div><blockquote>
+<p>toString</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">  <span style="font-style:italic">// before [1,2,3,[1, [2]], [1, [2, [3]]]]
+</span><span style="font-style:italic"></span>  <span style="font-style:italic">// after [1, 2, 3, 1, 2, 3, 4, 2, 3, 4]
+</span><span style="font-style:italic"></span>
+  <span style="font-weight:bold">const</span> arr = [1,2,3,[1, [2]], [1, [2, [3]]]]
+  arr.toString().split(<span style="font-style:italic">&#39;,&#39;</span>)
+</code></pre></div><blockquote>
+<p>Array.prototype.flat(Infinity)  // Infinity无限大</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">  <span style="font-weight:bold">const</span> arr = [1,2,3,[1, [2]], [1, [2, [3]]]]
+  arr.flat(<span style="font-weight:bold">Infinity</span>) <span style="font-style:italic">// [1, 2, 3, 1, 2, 3, 4, 2, 3, 4]
+</span></code></pre></div><h5 id="计算数组中每个元素出现的次数">
+  计算数组中每个元素出现的次数
+  <a class="heading-link" href="#%e8%ae%a1%e7%ae%97%e6%95%b0%e7%bb%84%e4%b8%ad%e6%af%8f%e4%b8%aa%e5%85%83%e7%b4%a0%e5%87%ba%e7%8e%b0%e7%9a%84%e6%ac%a1%e6%95%b0">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">// method1
+
+const arr = [&#39;Alice&#39;, &#39;Bob&#39;, &#39;Tiff&#39;, &#39;Bruce&#39;, &#39;Alice&#39;];
+const sum = arr.reduce((prevVal, curVal, index, arr) =&gt; {
+  if (prevVal[curVal]) {
+    prevVal[curVal] = prevVal[curVal] + 1;
+  } else {
+    prevVal[curVal] = 1;
+  }
+
+  return prevVal;
+}, {});
+
+</code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">// method2
+
+const arr = [&#39;Alice&#39;, &#39;Bob&#39;, &#39;Tiff&#39;, &#39;Bruce&#39;, &#39;Alice&#39;];
+const sum = arr.reduce((obj, curVal, index, arr) =&gt; {
+  if (curVal in obj) {
+    obj[curVal]++;
+  } else {
+    obj[curVal] = 1;
+  }
+
+  return obj;
+}, {});
+
+</code></pre></div><h5 id="数组去重">
+  数组去重
+  <a class="heading-link" href="#%e6%95%b0%e7%bb%84%e5%8e%bb%e9%87%8d">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">const arr = [1, 2, 1, 2, 3, 5, 4, 5, 3, 4, 4, 4, 4];
+
+const sum = arr.reduce((prevVal, curVal, index, arr) =&gt; {
+  if (!prevVal.includes(curVal)) {
+    prevVal.push(curVal);
+  }
+  return prevVal;
+}, []);
+
+</code></pre></div><h4 id="判断数组的几种方式">
+  判断数组的几种方式
+  <a class="heading-link" href="#%e5%88%a4%e6%96%ad%e6%95%b0%e7%bb%84%e7%9a%84%e5%87%a0%e7%a7%8d%e6%96%b9%e5%bc%8f">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<ul>
+<li>obj.<strong>proto</strong> === Array.prototype</li>
+<li>obj instanceof Arrray</li>
+<li>ArraY.isArray(obj)</li>
+<li>Object.prototype.toString.call(obj).slice(8, -1) // 默认 &ldquo;[object String]&rdquo;</li>
+<li>Array.prototype.isPrototypeOf(obj)</li>
+</ul>
+<h4 id="什么是伪数组伪数组有哪些伪数组转化成数组有哪些方法">
+  什么是伪数组，伪数组有哪些，伪数组转化成数组有哪些方法
+  <a class="heading-link" href="#%e4%bb%80%e4%b9%88%e6%98%af%e4%bc%aa%e6%95%b0%e7%bb%84%e4%bc%aa%e6%95%b0%e7%bb%84%e6%9c%89%e5%93%aa%e4%ba%9b%e4%bc%aa%e6%95%b0%e7%bb%84%e8%bd%ac%e5%8c%96%e6%88%90%e6%95%b0%e7%bb%84%e6%9c%89%e5%93%aa%e4%ba%9b%e6%96%b9%e6%b3%95">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<blockquote>
+<p>描述</p>
+</blockquote>
+<ul>
+<li>伪数组是一个<strong>对象</strong></li>
+<li>伪数组具有 length 属性</li>
+<li>不具备数组的方法，但是按照索引的方式存储数据</li>
+</ul>
+<blockquote>
+<p>常见的伪数组： arguments, Dom 对象列表等</p>
+</blockquote>
+<blockquote>
+<p>伪数组转化数组的几种方式</p>
+</blockquote>
+<ul>
+<li>Array.from(xxx)</li>
+<li>Array.prototype.slice.call(xxx);</li>
+</ul>
+<h4 id="扩展运算符rest">
+  扩展运算符、rest
+  <a class="heading-link" href="#%e6%89%a9%e5%b1%95%e8%bf%90%e7%ae%97%e7%ac%a6rest">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<ul>
+<li>rest 参数只包含哪些没有对应形参的实参, reet 是一个伪数组</li>
+<li>arguments 包含了传给函数的所有实参, arguments 是一个伪数组</li>
+</ul>
+<p><strong>rest 注意点</strong></p>
+<blockquote>
+<p>1.函数的 length 属性不包括 rest 参数</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="font-weight:bold">function</span> fn(a, b) {} <span style="font-style:italic">//  fn.length ===  2
+</span><span style="font-style:italic"></span><span style="font-weight:bold">function</span> fn2(a, ...rest) {} <span style="font-style:italic">// fn.length === 1
+</span></code></pre></div><blockquote>
+<p>2.rest 参数必须是函数形参最后一位</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="font-weight:bold">function</span> fn(a, b, ...rest) {} <span style="font-style:italic">// success
+</span><span style="font-style:italic"></span><span style="font-weight:bold">function</span> fn2(a,...rest, b) {} <span style="font-style:italic">// Uncaught SyntaxError: Rest parameter must be last formal parameter
+</span></code></pre></div><p><strong>扩展运算符</strong></p>
+<blockquote>
+<p>1.拓展运算符可以看做是 rest 参数的逆运算<br>
+2.作用于普通函数调用，如：array.push(&hellip;spread);，也可用于合并数组、对象, 将字符串转换为数组 [&hellip;&lsquo;abcd&rsquo;] === [a,b,c,d]</p>
+</blockquote>
+<h4 id="callapplybind-相同点以及不同点">
+  call/apply/bind 相同点以及不同点
+  <a class="heading-link" href="#callapplybind-%e7%9b%b8%e5%90%8c%e7%82%b9%e4%bb%a5%e5%8f%8a%e4%b8%8d%e5%90%8c%e7%82%b9">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p><strong>相同点</strong></p>
+<ul>
+<li>改变函数执行上下文，通俗一点就是改变运行函数时 this 的指向</li>
+<li>接受第一个值代表函数后续的执行上下文， 传入 null 或者 undefinedn 那么函数上下文将指向 window</li>
+</ul>
+<p><strong>不同点</strong></p>
+<ul>
+<li>call(context, a1, a2, &hellip;) 接受参数为参数序列</li>
+<li>apply(context, [a1, a2, &hellip;]) 接受参数为数组</li>
+<li>const newFn = fn.bind(context); newFn(a1, a2) 先执行 bind 函数改变函数上下文，返回一个函数，后续再执行传入相关参数</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="font-weight:bold">const</span> obj = {
+  name: <span style="font-style:italic">&#39;levi&#39;</span>,
+  showName: <span style="font-weight:bold">function</span> name(params) {
+    console.log(<span style="font-weight:bold">this</span>.name);
+  },
+  output: <span style="font-weight:bold">function</span> name(age, area) {
+    console.log(age, area);
+  }
+};
+
+<span style="font-weight:bold">const</span> student = {
+  name: <span style="font-style:italic">&#39;zz&#39;</span>
+};
+
+obj.showName(); <span style="font-style:italic">// levi
+</span><span style="font-style:italic"></span>obj.showName.call(student); <span style="font-style:italic">// zz
+</span><span style="font-style:italic"></span>obj.showName.call(<span style="font-weight:bold">null</span>); <span style="font-style:italic">//  this指向了window this.name === undefined
+</span><span style="font-style:italic"></span>obj.output.call(student, 20, <span style="font-style:italic">&#39;shanghai&#39;</span>); <span style="font-style:italic">// 20 shanghai
+</span><span style="font-style:italic"></span>obj.output.apply(student, [20, <span style="font-style:italic">&#39;shanghai&#39;</span>]); <span style="font-style:italic">// 20 shanghai
+</span><span style="font-style:italic"></span>
+<span style="font-weight:bold">const</span> fn = obj.showName.bind(student);
+<span style="font-weight:bold">const</span> fn2 = obj.output.bind(student);
+fn(); <span style="font-style:italic">// zz
+</span><span style="font-style:italic"></span>fn2(20, <span style="font-style:italic">&#39;bj&#39;</span>); <span style="font-style:italic">// 20 bj
+</span></code></pre></div><blockquote>
+<p>应用</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">Math.max(<span style="font-weight:bold">null</span>, [1, 2, 3, 4]); <span style="font-style:italic">// 4
+</span><span style="font-style:italic"></span>[].slice.call([1, 2, 3, 4], 2); <span style="font-style:italic">// 3 4
+</span><span style="font-style:italic"></span>
+<span style="font-weight:bold">var</span> a = [1];
+a = Array.prototype.concat.apply(a, [2, 3, 4]);
+console.log(a); <span style="font-style:italic">// 1,2,3,4
+</span></code></pre></div><h5 id="实现call">
+  实现call
+  <a class="heading-link" href="#%e5%ae%9e%e7%8e%b0call">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">    <span style="font-style:italic">/** 手动实现call */</span>
+  Object.prototype.LeviCall = <span style="font-weight:bold">function</span> (context) {
+    <span style="font-weight:bold">const</span> params = [];
+    <span style="font-weight:bold">const</span> new_context = context || window;
+    new_context.fn = <span style="font-weight:bold">this</span>;
+
+    <span style="font-weight:bold">for</span> (<span style="font-weight:bold">let</span> i = 1; i &lt; arguments.length; i++) {
+      params.push(arguments[i]);
+    }
+
+    new_context.fn(...params);
+    <span style="font-weight:bold">delete</span> new_context.fn;
+  };
+</code></pre></div><h5 id="实现apply">
+  实现apply
+  <a class="heading-link" href="#%e5%ae%9e%e7%8e%b0apply">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">  <span style="font-style:italic">/** 手动实现apply */</span>
+  Object.prototype.LeviApply = <span style="font-weight:bold">function</span> (context) {
+    <span style="font-weight:bold">const</span> params = arguments[1] || [];
+    <span style="font-weight:bold">const</span> new_context = context || window;
+    new_context.fn = <span style="font-weight:bold">this</span>;
+
+    new_context.fn(...params);
+    <span style="font-weight:bold">delete</span> new_context.fn;
+  };
+</code></pre></div><h5 id="实现bind">
+  实现bind
+  <a class="heading-link" href="#%e5%ae%9e%e7%8e%b0bind">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">    <span style="font-weight:bold">function</span> show(name, age, area) {
+      <span style="font-weight:bold">this</span>.tag = <span style="font-style:italic">&#39;我是 show 方法的tag&#39;</span>;
+      <span style="font-weight:bold">this</span>.name = name;
+      console.log(<span style="font-weight:bold">this</span>.name, age, area);
+    }
+    show.prototype.num = 20;
+
+    <span style="font-style:italic">/** 手动实现bind */</span> 
+    Object.prototype.LeviBind = <span style="font-weight:bold">function</span> () {
+      <span style="font-weight:bold">if</span> (<span style="font-weight:bold">typeof</span> <span style="font-weight:bold">this</span> !== <span style="font-style:italic">&#39;function&#39;</span>) {
+        <span style="font-weight:bold">throw</span> <span style="font-weight:bold">new</span> Error(<span style="font-style:italic">&#39;this is not function&#39;</span>);
+      }
+
+      <span style="font-weight:bold">const</span> _this = <span style="font-weight:bold">this</span>;
+      <span style="font-weight:bold">const</span> mediaFn = <span style="font-weight:bold">function</span> () {};
+      <span style="font-weight:bold">const</span> transfer = Array.prototype.slice.call(arguments, 0, 1);
+      <span style="font-weight:bold">const</span> restParams = Array.prototype.slice.call(arguments, 1);
+
+      <span style="font-weight:bold">const</span> fn = <span style="font-weight:bold">function</span> () {
+        <span style="font-style:italic">// 实例化对象从原型链找construtor，最终会找到show.prototype
+</span><span style="font-style:italic"></span>        _this.apply(<span style="font-weight:bold">this</span>.constructor === _this ? <span style="font-weight:bold">this</span> : transfer || window, [
+          ...restParams,
+          ...arguments
+        ]);
+      };
+
+      mediaFn.prototype = _this.prototype; 
+      fn.prototype = <span style="font-weight:bold">new</span> mediaFn(); <span style="font-style:italic">// 引入中介函数，防止实例对象修改 show原型对象的属性及方法
+</span><span style="font-style:italic"></span>      <span style="font-weight:bold">return</span> fn;
+    };
+
+    <span style="font-weight:bold">const</span> newFn = show.LeviBind(obj);
+    <span style="font-weight:bold">const</span> fn = <span style="font-weight:bold">new</span> newFn(1, 2, 3); <span style="font-style:italic">// 如果指向了new 操作，开始传入obj不起作用，里面this将指向原始调用方法(show)
+</span><span style="font-style:italic"></span>    fn.__proto__.num = 21;
+    console.log(fn.num, show.prototype.num); <span style="font-style:italic">// 21 20  实例化后对象不会修改原来 构造函数show原型对象的属性及方法
+</span></code></pre></div><h4 id="js-数据类型">
+  js 数据类型
+  <a class="heading-link" href="#js-%e6%95%b0%e6%8d%ae%e7%b1%bb%e5%9e%8b">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<ul>
+<li>
+<p>基本数据类型</p>
+<ul>
+<li>
+<p>String</p>
+</li>
+<li>
+<p>Number</p>
+<ul>
+<li>JavaScript 中只有一种数字类型：基于 IEEE 754 标准的双精度 64 位二进制格式的值（-(253 -1) 到 253 -1）,超出这 2 值就不是安全的了,会返回 Infinity</li>
+<li>要检查值是否大于或者小于临界值，可以使用 Number.MAX_VALUE 和 Number.MIN_VALUE 判断</li>
+</ul>
+</li>
+<li>
+<p>BigInt</p>
+<ul>
+<li>
+<p>BigInt 类型是 JavaScript 中的一个基础的数值类型，可以用任意精度表示整数。使用 BigInt，您可以安全地存储和操作大整数，甚至可以超过数字的安全整数限制。BigInt 是通过在整数末尾附加 n 或调用构造函数来创建的</p>
+<blockquote>
+<p>BigInt 操作方法
+BigInt(&lsquo;9007199254740995&rsquo;) =&gt; 9007199254740995n<br>
+var a = 9007199254740995n</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="font-style:italic">//  BigInt 不能与 number 类型直接比较，会直接返回 false, 不允许BigInt 和 Number混合隐式类型转化，会报错
+</span><span style="font-style:italic"></span>3n === 3; <span style="font-style:italic">// false
+</span><span style="font-style:italic"></span>3n == 3; <span style="font-style:italic">// true
+</span><span style="font-style:italic"></span><span style="font-weight:bold">typeof</span> 3n; <span style="font-style:italic">// bigint
+</span><span style="font-style:italic"></span><span style="font-weight:bold">typeof</span> 3; <span style="font-style:italic">// number
+</span><span style="font-style:italic"></span>
+3n + 3; <span style="font-style:italic">// Uncaught TypeError: Cannot mix BigInt and other types, use explicit conversions
+</span></code></pre></div></li>
+</ul>
+</li>
+<li>
+<p>Boolean</p>
+</li>
+<li>
+<p>undefined</p>
+</li>
+<li>
+<p>Symbol</p>
+<blockquote>
+<p>es6 新加入的类型吗 Symbol 不可能更改，可以用作 Object 的 key <!-- raw HTML omitted -->
+Symbol(1) === Symbol(1) // false</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>
+<p>引用数据类型</p>
+<ul>
+<li>Object</li>
+<li>Null<br>
+<strong>javascript 历史遗留 bug，诞生就是如此</strong>
+<blockquote>
+<ol>
+<li>从逻辑角度来看，null 值表示一个空对象指针，而这正是使用 typeof 操作符检测 null 值时会返回“object”的原因。</li>
+<li>在 JavaScript 最初的实现中，JavaScript 中的值是由一个表示类型的标签和实际数据值表示的。对象的类型标签是 0。由于 null 代表的是空指针（大多数平台下值为 0x00），因此，null 的类型标签是 0，typeof null 也因此返回 &ldquo;object&rdquo;</li>
+<li>在 Javascript 中二进制前三位都为 0 的话会被判断为 Object 类型，null 的二进制表示全为 0，自然前三位也是 0，所以执行 typeof 时会返回&quot;object&quot;。</li>
+</ol>
+</blockquote>
+<ul>
+<li>Object.prototype.toString.call(null) // &ldquo;[object Null]&rdquo;</li>
+<li>typeof null === &lsquo;Object&rsquo; // true</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="数据类型检测方式">
+  数据类型检测方式
+  <a class="heading-link" href="#%e6%95%b0%e6%8d%ae%e7%b1%bb%e5%9e%8b%e6%a3%80%e6%b5%8b%e6%96%b9%e5%bc%8f">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<ul>
+<li>
+<p>typeof</p>
+<blockquote>
+<p>弊端，不能区分引用数据类型，另外 typeof null === object</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="font-weight:bold">typeof</span> 1; <span style="font-style:italic">// number
+</span><span style="font-style:italic"></span><span style="font-weight:bold">typeof</span> <span style="font-style:italic">&#39;a&#39;</span>; <span style="font-style:italic">// string
+</span><span style="font-style:italic"></span><span style="font-weight:bold">typeof</span> Symbol(<span style="font-style:italic">&#39;b&#39;</span>); <span style="font-style:italic">// symbol
+</span><span style="font-style:italic"></span><span style="font-weight:bold">typeof</span> 3n; <span style="font-style:italic">// bigint
+</span><span style="font-style:italic"></span><span style="font-weight:bold">typeof</span> <span style="font-weight:bold">false</span>; <span style="font-style:italic">// boolean
+</span><span style="font-style:italic"></span><span style="font-weight:bold">typeof</span> <span style="font-weight:bold">undefined</span>; <span style="font-style:italic">// undefined
+</span><span style="font-style:italic"></span><span style="font-weight:bold">typeof</span> <span style="font-weight:bold">null</span>; <span style="font-style:italic">// object
+</span><span style="font-style:italic"></span><span style="font-weight:bold">typeof</span> []; <span style="font-style:italic">// object
+</span><span style="font-style:italic"></span><span style="font-weight:bold">typeof</span> fn; <span style="font-style:italic">// function
+</span><span style="font-style:italic"></span><span style="font-weight:bold">typeof</span> {}; <span style="font-style:italic">// object
+</span></code></pre></div></li>
+<li>
+<p>instanceof
+instanceof 不太准确，原型链容易收到更改</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">  <span style="font-weight:bold">var</span> a = [];
+  a.__proto__ = <span style="font-weight:bold">null</span>
+  a <span style="font-weight:bold">instanceof</span> Array <span style="font-style:italic">// false
+</span><span style="font-style:italic"></span>  [] intsanceof Array <span style="font-style:italic">// true
+</span><span style="font-style:italic"></span>  [] <span style="font-weight:bold">instanceof</span> Object <span style="font-style:italic">// true
+</span></code></pre></div><ul>
+<li>constructor
+constructor 不太准确，原型链容易收到更改</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="font-weight:bold">var</span> c = []
+c.__proto__.constructor  ==== Array <span style="font-style:italic">// true
+</span><span style="font-style:italic"></span>
+c.__proto__.constructor = <span style="font-weight:bold">null</span>
+c.__proto__.constructor  ==== Array <span style="font-style:italic">// false
+</span><span style="font-style:italic"></span>
+</code></pre></div><ul>
+<li>Object.prototype.toString.call(xxx) <strong>推荐</strong></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">  Object.prototype.toString.call(1) <span style="font-style:italic">// &#34;[object Number]&#34;
+</span><span style="font-style:italic"></span>  Object.prototype.toString.call(<span style="font-style:italic">&#39;a&#39;</span>) <span style="font-style:italic">// &#34;[object String]&#34;
+</span><span style="font-style:italic"></span>  ...
+  Object.prototype.toString.call(<span style="font-weight:bold">undefined</span>) <span style="font-style:italic">// &#34;[object Undefined]&#34;
+</span><span style="font-style:italic"></span>  Object.prototype.toString.call([]) <span style="font-style:italic">// &#34;[object Null]&#34;
+</span><span style="font-style:italic"></span>  Object.prototype.toString.call(<span style="font-weight:bold">null</span>)  <span style="font-style:italic">// &#34;[object Null]&#34;
+</span><span style="font-style:italic"></span>  Object.prototype.toString.call(3n) <span style="font-style:italic">// &#34;[object BigInt]&#34;
+</span></code></pre></div><h4 id="类型转换隐式--显式">
+  类型转换(隐式 &amp;&amp; 显式)
+  <a class="heading-link" href="#%e7%b1%bb%e5%9e%8b%e8%bd%ac%e6%8d%a2%e9%9a%90%e5%bc%8f--%e6%98%be%e5%bc%8f">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<ul>
+<li>转换的类型只有三种：to Number,to String,to Boolean</li>
+<li>当基本类型转换成上述类型时会调用：Number() ,String(), Boolean()</li>
+<li>当 0/undefined/null/false/NaN 转换为 boolean 为 false, 其他都为 true</li>
+<li>(所有对象转换 boolean 都为 true)</li>
+<li>引用类型与基本类型做比较或者基本运算的时候，先把引用类型转换成基本类型，调用 valueOf()/toString() 方法</li>
+</ul>
+<h5 id="作比较">
+  作比较
+  <a class="heading-link" href="#%e4%bd%9c%e6%af%94%e8%be%83">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<ul>
+<li>字符串与number做比较， string转换number在比较</li>
+<li>string与boolean比较， string转换boolean在比较</li>
+<li>boolean与nunber比较，boolean转number在比较</li>
+<li>对象与字符串比较，对象调用toString在比较</li>
+<li>对象与number比较，对象先转化为字符串，在转化为数字，在比较</li>
+<li>对象与boolean比较， 对象先转化为字符串，在转化数字，在转化为布尔值，做比较</li>
+</ul>
+<h5 id="做运算">
+  做运算
+  <a class="heading-link" href="#%e5%81%9a%e8%bf%90%e7%ae%97">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<ul>
+<li>string + number, number会转化string类型相加</li>
+<li>string + boolean, 直接相加 &ldquo;2&rdquo; + false = &ldquo;2false&rdquo;</li>
+<li>number + boolean, boolean转为number，在做类型</li>
+<li>对象的话，先调用对象valueOf =&gt; 在调用toString(); 如果返回基本类型就停止，按照上述规则来运算</li>
+<li><strong>2个引用数据类型比较， 直接返回false，堆内存地址不同</strong></li>
+</ul>
+<p><strong>引用类型</strong></p>
+<blockquote>
+<p>首先调用 valueOf，如果执行结果是原始值，返回
+valueOf 返回的不是原始值，则调用 toString,如果执行结果是原始值,返回，如果不是，报错
+当使用显示类型转换成 String 时，执行顺序则是先调用 toString,其次调用 valueOf</p>
+</blockquote>
+<p>({})+[] // [object object]<br>
+{} + [] // 0<br>
+[] + {} // [object object]
+在 js 中{}代表复合语句，在一些 js 解释器会将开头的  {}  看作一个代码块，而不是一个 Object（在 es6 以前只有函数作用域与全局作用域，还没有块级作用域）而这里的{}只是空符号，不表明任何意思。这里的+[]是一个隐式转换，所以参与运算的只有+[]，在这里将[]转换成了 number 类型，所以得出结果为 0</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="font-weight:bold">let</span> obj = {
+  value: <span style="font-style:italic">&#39;你好啊&#39;</span>,
+  num: 2,
+  toString: <span style="font-weight:bold">function</span> () {
+    <span style="font-weight:bold">return</span> <span style="font-weight:bold">this</span>.value;
+  },
+  valueOf: <span style="font-weight:bold">function</span> () {
+    <span style="font-weight:bold">return</span> <span style="font-weight:bold">this</span>.num;
+  }
+};
+console.log(obj + <span style="font-style:italic">&#39;明天&#39;</span>); <span style="font-style:italic">// &#39;2明天&#39;
+</span><span style="font-style:italic"></span>
+1 + <span style="font-style:italic">&#39;1&#39;</span>; <span style="font-style:italic">// 11
+</span><span style="font-style:italic"></span><span style="font-weight:bold">true</span> + 0; <span style="font-style:italic">// 1
+</span><span style="font-style:italic"></span>{
+}
++[]; <span style="font-style:italic">// 0
+</span><span style="font-style:italic"></span>({} + []); <span style="font-style:italic">// [object object]
+</span><span style="font-style:italic"></span>4 + {}; <span style="font-style:italic">// 4 [object object]
+</span><span style="font-style:italic"></span>4 + [1]; <span style="font-style:italic">// 41
+</span><span style="font-style:italic"></span><span style="font-style:italic">&#39;a&#39;</span> + +<span style="font-style:italic">&#39;b&#39;</span>; <span style="font-style:italic">// aNaN
+</span><span style="font-style:italic"></span>console.log([] == 0); <span style="font-style:italic">// true
+</span><span style="font-style:italic"></span>console.log(![] == 0); <span style="font-style:italic">// true 有取反符号在前面，先执行取反操作(转化成boolean)，记住，对象的boolane为true，取反的为false
+</span><span style="font-style:italic"></span>console.log([] == ![]); <span style="font-style:italic">// true 
+</span><span style="font-style:italic"></span>console.log([] == []); <span style="font-style:italic">// false  引用类型之间比较的话， 因为引用存放的是指针地址，直接比较的话，其实比较的是指针，所以报错
+</span><span style="font-style:italic"></span>console.log({} == !{}); <span style="font-style:italic">// false
+</span><span style="font-style:italic"></span>console.log({} == {}); <span style="font-style:italic">// false
+</span></code></pre></div><h4 id="js-遍历方式">
+  js 遍历方式
+  <a class="heading-link" href="#js-%e9%81%8d%e5%8e%86%e6%96%b9%e5%bc%8f">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<blockquote>
+<p>forEach,map,filter,every,some，reduce 等.
+forEarch 返回值是 undefined 没有意义，map 返回具体值，可以改变用返回值</p>
+</blockquote>
+<h4 id="原型--原型对象--原型链">
+  原型 &amp;&amp; 原型对象 &amp;&amp; 原型链
+  <a class="heading-link" href="#%e5%8e%9f%e5%9e%8b--%e5%8e%9f%e5%9e%8b%e5%af%b9%e8%b1%a1--%e5%8e%9f%e5%9e%8b%e9%93%be">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>概念分为构造函数、实例对象、原型对象、原型链</p>
+<!-- raw HTML omitted -->
+<p>下面谈谈我的理解<br>
+javascript 万物皆对象，每个实例都有一个<strong>proto</strong>属性，指向了他构造函数的原型对象
+每个构造函数都有一个 prototype 属性，指向了他的原型对象</p>
+<blockquote>
+<p>实例对象创建之间判断指向关系有 <strong>proto</strong> 代表指向关系 指向了原型对象</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="font-weight:bold">function</span> A() {} <span style="font-style:italic">// A 构造函数
+</span><span style="font-style:italic"></span><span style="font-weight:bold">var</span> a = <span style="font-weight:bold">new</span> A(); <span style="font-style:italic">// a 实例对象
+</span><span style="font-style:italic"></span>
+A.prototype; <span style="font-style:italic">// 原型对象
+</span><span style="font-style:italic"></span>a.__proto__ === A.prototype;
+</code></pre></div><p>所有函数都是由 Function 创建</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">A.__proto__ === Function.prototype; <span style="font-style:italic">// true
+</span><span style="font-style:italic"></span>
+Function.__proto__ === Function.prototype; <span style="font-style:italic">// true
+</span></code></pre></div><p>Object 刚讲的是顶级函数，所以也是函数：（所有的鱼都归猫管哈哈哈哈哈）</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">Object.__proto__ === Function.prototype;
+</code></pre></div><p><strong>所有的对象都是由 Object 构造函数创建的</strong>, 所以对象<strong>proto</strong>指向了 Object 的构造函数：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">A.prototype.__proto__ === Object.prototype;
+</code></pre></div><p>Object.prototype 也是对象，比较特殊，指向了 null</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">Object.prototype.__proto__ === <span style="font-weight:bold">null</span>;
+</code></pre></div><p>原型链(一种访问机制)：</p>
+<ul>
+<li>在访问对象的某个成员的时候会先在对象中找是否存在</li>
+<li>如果当前对象中没有就在构造函数的原型对象中找</li>
+<li>如果原型对象中没有找到就到原型对象的原型上找</li>
+<li>直到 Object 的原型对象的原型是 null 为止</li>
+</ul>
+<!-- raw HTML omitted -->
+<h4 id="js-实现继承的方式">
+  js 实现继承的方式
+  <a class="heading-link" href="#js-%e5%ae%9e%e7%8e%b0%e7%bb%a7%e6%89%bf%e7%9a%84%e6%96%b9%e5%bc%8f">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<ul>
+<li>
+<h5 id="原型链继承">
+  原型链继承
+  <a class="heading-link" href="#%e5%8e%9f%e5%9e%8b%e9%93%be%e7%bb%a7%e6%89%bf">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<blockquote>
+<p>构造函数，原型，实例对象之间关系，每个构造函数中有属性(prototype)指向个原型对象(F.prototype)，原型对象上挂在公有属性、方法供子类分享， 同时原型对象有个 constructor 指向了构造函数。 实例对象有属性<strong>proto</strong>指向了原型对象， <strong>继承的本质:</strong> 重写构造函数的原型对象，使其重新指向另一个构造函数的实例</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="font-weight:bold">function</span> Animal() {
+  <span style="font-weight:bold">this</span>.tag = <span style="font-style:italic">&#39;我是动物&#39;</span>;
+  <span style="font-weight:bold">this</span>.area = [<span style="font-style:italic">&#39;china&#39;</span>, <span style="font-style:italic">&#39;japanese&#39;</span>];
+}
+
+Animal.prototype.desc = [<span style="font-style:italic">&#39;red&#39;</span>, <span style="font-style:italic">&#39;green&#39;</span>];
+Animal.prototype.say = <span style="font-weight:bold">function</span> () {
+  console.log(<span style="font-weight:bold">this</span>.name);
+};
+
+<span style="font-weight:bold">function</span> Dog(name) {
+  <span style="font-weight:bold">this</span>.name = name;
+}
+
+Dog.prototype = <span style="font-weight:bold">new</span> Animal();
+
+<span style="font-weight:bold">const</span> dog = <span style="font-weight:bold">new</span> Dog(<span style="font-style:italic">&#39;dogName&#39;</span>);
+<span style="font-weight:bold">const</span> dog2 = <span style="font-weight:bold">new</span> Dog(<span style="font-style:italic">&#39;dogName2&#39;</span>);
+
+dog.area.push(<span style="font-style:italic">&#39;uk&#39;</span>);
+console.log(dog2.area); <span style="font-style:italic">// dog.area = [&#39;china&#39;, &#39;japanese&#39;, &#39;uk&#39;]  dog2.area = [&#39;china&#39;, &#39;japanese&#39;, &#39;uk&#39;]
+</span></code></pre></div><p><strong>样例总结</strong></p>
+</li>
+<li>
+<p>父构造函数内部属性在在执行后，会挂在相应子构造函数原型对象上， 修改各自原型对象上属性(包含引用)，其他子类不受影响，例如： area 属性</p>
+<p><strong>弊端</strong></p>
+</li>
+<li>
+<p>无法实现多继承</p>
+</li>
+<li>
+<p>创建子类实例时，无法向父类构造函数传参</p>
+</li>
+<li>
+<p>多个实例对引用类型的操作会被篡改。</p>
+</li>
+<li>
+<h5 id="构造函数继承">
+  构造函数继承
+  <a class="heading-link" href="#%e6%9e%84%e9%80%a0%e5%87%bd%e6%95%b0%e7%bb%a7%e6%89%bf">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<blockquote>
+<p>使用父类构造函数来增加子类，等同于复制父类的属性及方法给子类
+核心代码是 Animal.call(this)，创建子类实例时调用 Animal 构造函数，于是 Dog,Cat 的每个实例都会将 Animal 中的属性复制一份。可以实现多继承（call 多个父类对象）</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="font-weight:bold">function</span> Animal() {
+  <span style="font-weight:bold">this</span>.tag = <span style="font-style:italic">&#39;我是动物&#39;</span>;
+  <span style="font-weight:bold">this</span>.area = [<span style="font-style:italic">&#39;china&#39;</span>, <span style="font-style:italic">&#39;japanese&#39;</span>];
+}
+
+Animal.prototype.desc = [<span style="font-style:italic">&#39;red&#39;</span>, <span style="font-style:italic">&#39;green&#39;</span>];
+Animal.prototype.say = <span style="font-weight:bold">function</span> () {
+  console.log(<span style="font-weight:bold">this</span>.name);
+};
+
+<span style="font-weight:bold">function</span> Dog(name) {
+  Animal.call(<span style="font-weight:bold">this</span>);
+
+  <span style="font-weight:bold">this</span>.name = name;
+}
+
+<span style="font-weight:bold">const</span> dog = <span style="font-weight:bold">new</span> Dog(<span style="font-style:italic">&#39;dogName&#39;</span>);
+dog.area.push(<span style="font-style:italic">&#39;uk&#39;</span>);
+dog.desc.push(<span style="font-style:italic">&#39;blue&#39;</span>); <span style="font-style:italic">// Cannot read property &#39;push&#39; of undefined
+</span><span style="font-style:italic"></span>dog.say(); <span style="font-style:italic">//  dog.say is not a function
+</span><span style="font-style:italic"></span>console.log(dog, dog.area, dog.desc); <span style="font-style:italic">// dog.area = [&#39;china&#39;, &#39;japanese&#39;, &#39;uk&#39;]  dog.desc = undefined
+</span></code></pre></div><p><strong>弊端</strong></p>
+<ul>
+<li>实例并不是父类的实例，只是子类的实例</li>
+<li>只能继承父类构造函数的属性及方法，无法继承父类原型对象属性及方法</li>
+<li>无法实现函数复用，每个子类都有父类实例函数的副本，影响性能</li>
+</ul>
+</li>
+<li>
+<h5 id="组合继承">
+  组合继承
+  <a class="heading-link" href="#%e7%bb%84%e5%90%88%e7%bb%a7%e6%89%bf">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<blockquote>
+<p>实例对象 instance1 上的两个属性就屏蔽了其原型对象 SubType.prototype 的两个同名属性。所以，组合模式的缺点就是在使用子类创建实例对象时，其原型中会存在两份相同的属性/方法</p>
+</blockquote>
+<ul>
+<li>既是子类的实例，也是父类的实例</li>
+<li>不存在引用属性共享问题</li>
+<li>可传参</li>
+<li>可传参</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="font-weight:bold">function</span> Animal() {
+  <span style="font-weight:bold">this</span>.tag = <span style="font-style:italic">&#39;我是动物&#39;</span>;
+  <span style="font-weight:bold">this</span>.area = [<span style="font-style:italic">&#39;china&#39;</span>, <span style="font-style:italic">&#39;japanese&#39;</span>];
+}
+
+Animal.prototype.desc = [<span style="font-style:italic">&#39;red&#39;</span>, <span style="font-style:italic">&#39;green&#39;</span>];
+Animal.prototype.say = <span style="font-weight:bold">function</span> () {
+  console.log(<span style="font-weight:bold">this</span>.name);
+};
+
+<span style="font-weight:bold">function</span> Dog(name) {
+  Animal.call(<span style="font-weight:bold">this</span>);
+
+  <span style="font-weight:bold">this</span>.name = name;
+}
+
+Dog.prototype = <span style="font-weight:bold">new</span> Animal();
+<span style="font-weight:bold">const</span> d1 = <span style="font-weight:bold">new</span> Dog(<span style="font-style:italic">&#39;d1&#39;</span>);
+<span style="font-weight:bold">const</span> d2 = <span style="font-weight:bold">new</span> Dog(<span style="font-style:italic">&#39;d2&#39;</span>);
+
+d1.area.push(<span style="font-style:italic">&#39;uk&#39;</span>);
+console.log(d1, d2); <span style="font-style:italic">// d1.area =  [&#34;china&#34;, &#34;japanese&#34;, &#34;uk&#34;]  d2.area = [&#39;china&#39;, &#39;japanese&#39;]
+</span></code></pre></div><p><strong>弊端</strong></p>
+<p>调用了两次父类构造函数，生成了两份实例（子类实例属性将子类原型上的那份屏蔽）</p>
+</li>
+<li>
+<h5 id="原型式继承">
+  原型式继承
+  <a class="heading-link" href="#%e5%8e%9f%e5%9e%8b%e5%bc%8f%e7%bb%a7%e6%89%bf">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<blockquote>
+<p>Object(xxx) =&gt; 创建一个空对象后来，空对象原型指向了 a.<strong>proto</strong> === xxx 、 a instanceof xxx // error instancece 右侧接受构造函数
+instanceof 运算符用于检测构造函数的 prototype 属性是否出现在某个实例对象的原型链上。
+object instanceof constructor(构造函数)</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="font-weight:bold">function</span> object(obj) {
+  <span style="font-weight:bold">function</span> F() {}
+  F.prototype = obj;
+  <span style="font-weight:bold">return</span> <span style="font-weight:bold">new</span> F();
+}
+
+<span style="font-weight:bold">const</span> anotherPerson = object(person);
+anotherPerson.name = <span style="font-style:italic">&#39;Greg&#39;</span>;
+anotherPerson.friends.push(<span style="font-style:italic">&#39;Rob&#39;</span>);
+
+<span style="font-weight:bold">var</span> yetAnotherPerson = object(person);
+yetAnotherPerson.name = <span style="font-style:italic">&#39;Linda&#39;</span>;
+yetAnotherPerson.friends.push(<span style="font-style:italic">&#39;Barbie&#39;</span>);
+
+alert(person.friends); <span style="font-style:italic">//&#34;Shelby,Court,Van,Rob,Barbie&#34;
+</span></code></pre></div><p><strong>弊端</strong></p>
+<ul>
+<li>原型链继承多个实例的引用类型属性指向相同，存在篡改的可能</li>
+<li>无法传递参数</li>
+</ul>
+</li>
+<li>
+<h5 id="寄生式继承">
+  寄生式继承
+  <a class="heading-link" href="#%e5%af%84%e7%94%9f%e5%bc%8f%e7%bb%a7%e6%89%bf">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<p>核心：在原型式继承的基础上，增强对象，返回构造函数</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="font-weight:bold">function</span> createAnther(originObj) {
+  <span style="font-weight:bold">var</span> clone = Object.create(originObj);
+  clone.fn = <span style="font-weight:bold">function</span> () {
+    console.log(<span style="font-weight:bold">this</span>.name);
+  };
+
+  <span style="font-weight:bold">return</span> clone;
+}
+
+<span style="font-weight:bold">var</span> anotherPerson = createAnther(person);
+anotherPerson.sayHi(); <span style="font-style:italic">// xxx
+</span></code></pre></div><p><strong>弊端(同原型式继承)</strong></p>
+<ul>
+<li>
+<p>1.原型链继承多个实例的引用类型属性指向相同，存在篡改的可能</p>
+</li>
+<li>
+<p>2.无法传递参数</p>
+</li>
+<li>
+<h5 id="寄生组合式继承">
+  寄生组合式继承
+  <a class="heading-link" href="#%e5%af%84%e7%94%9f%e7%bb%84%e5%90%88%e5%bc%8f%e7%bb%a7%e6%89%bf">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<blockquote>
+<p>这个例子的高效率体现在它只调用了一次 SuperType 构造函数，并且因此避免了在 SubType.prototype 上创建不必要的、多余的属性。于此同时，原型链还能保持不变；因此，还能够正常使用 instanceof 和 isPrototypeOf()</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="font-style:italic">// 利用原型链继续往上调用
+</span><span style="font-style:italic"></span><span style="font-weight:bold">function</span> inheritPrototype(subType, superType) {
+  <span style="font-weight:bold">var</span> prototype = Object.create(superType.prototype); <span style="font-style:italic">// 创建对象，创建父类原型的一个副本
+</span><span style="font-style:italic"></span>  prototype.constructor = subType; <span style="font-style:italic">// 增强对象，弥补因重写原型而失去的默认的constructor 属性
+</span><span style="font-style:italic"></span>  subType.prototype = prototype; <span style="font-style:italic">// 指定对象，将新创建的对象赋值给子类的原型
+</span><span style="font-style:italic"></span>}
+
+<span style="font-style:italic">// 父类初始化实例属性和原型属性
+</span><span style="font-style:italic"></span><span style="font-weight:bold">function</span> SuperType(name) {
+  <span style="font-weight:bold">this</span>.name = name;
+  <span style="font-weight:bold">this</span>.colors = [<span style="font-style:italic">&#39;red&#39;</span>, <span style="font-style:italic">&#39;blue&#39;</span>, <span style="font-style:italic">&#39;green&#39;</span>];
+}
+
+SuperType.prototype.sayName = <span style="font-weight:bold">function</span> () {
+  alert(<span style="font-weight:bold">this</span>.name);
+};
+
+<span style="font-style:italic">// 借用构造函数传递增强子类实例属性（支持传参和避免篡改）
+</span><span style="font-style:italic"></span><span style="font-weight:bold">function</span> SubType(name, age) {
+  SuperType.call(<span style="font-weight:bold">this</span>, name);
+  <span style="font-weight:bold">this</span>.age = age;
+}
+
+<span style="font-style:italic">// 将父类原型指向子类
+</span><span style="font-style:italic"></span>inheritPrototype(SubType, SuperType);
+
+<span style="font-style:italic">// 或者
+</span><span style="font-style:italic"></span>Subtype.prototype = Object.create(Super.prototype);
+Subtype.prototype.constructor = Subtype;
+
+<span style="font-style:italic">// 新增子类原型属性
+</span><span style="font-style:italic"></span>SubType.prototype.sayAge = <span style="font-weight:bold">function</span> () {
+  alert(<span style="font-weight:bold">this</span>.age);
+};
+
+<span style="font-weight:bold">var</span> instance1 = <span style="font-weight:bold">new</span> SubType(<span style="font-style:italic">&#39;xyc&#39;</span>, 23);
+<span style="font-weight:bold">var</span> instance2 = <span style="font-weight:bold">new</span> SubType(<span style="font-style:italic">&#39;lxy&#39;</span>, 23);
+
+instance1.colors.push(<span style="font-style:italic">&#39;2&#39;</span>); <span style="font-style:italic">// [&#34;red&#34;, &#34;blue&#34;, &#34;green&#34;, &#34;2&#34;]
+</span><span style="font-style:italic"></span>instance1.colors.push(<span style="font-style:italic">&#39;3&#39;</span>); <span style="font-style:italic">// [&#34;red&#34;, &#34;blue&#34;, &#34;green&#34;, &#34;3&#34;]
+</span></code></pre></div></li>
+<li>
+<h5 id="es6-类继承extends">
+  ES6 类继承(extends)
+  <a class="heading-link" href="#es6-%e7%b1%bb%e7%bb%a7%e6%89%bfextends">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<blockquote>
+<p>推荐</p>
+</blockquote>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">    <span style="font-weight:bold">class</span> Parent {
+      constructor(name) {
+        <span style="font-weight:bold">this</span>.name = name;
+      }
+
+      sayName() {
+        <span style="font-weight:bold">return</span> <span style="font-weight:bold">this</span>.name;
+      }
+    }
+
+    <span style="font-weight:bold">class</span> Child <span style="font-weight:bold">extends</span> Parent {
+      constructor(name, age) {
+        <span style="font-weight:bold">super</span>(name);
+        <span style="font-weight:bold">this</span>.age = age;
+      }
+
+      sayAge() {
+        <span style="font-weight:bold">return</span> <span style="font-weight:bold">this</span>.age;
+      }
+    }
+
+    <span style="font-weight:bold">const</span> levi = <span style="font-weight:bold">new</span> Child(<span style="font-style:italic">&#39;levi&#39;</span>, 20);
+    <span style="font-weight:bold">const</span> jack = <span style="font-weight:bold">new</span> Child(<span style="font-style:italic">&#39;jack&#39;</span>, 21);
+    console.log(levi, jack);
+</code></pre></div><h4 id="作用域--作用域链">
+  作用域 &amp;&amp; 作用域链
+  <a class="heading-link" href="#%e4%bd%9c%e7%94%a8%e5%9f%9f--%e4%bd%9c%e7%94%a8%e5%9f%9f%e9%93%be">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>参考文章</p>
+<ul>
+<li><a href="https://segmentfault.com/a/1190000014899566">JavaScript基础系列&mdash;执行环境与作用域链</a></li>
+<li><a href="https://www.cnblogs.com/no-particular/archive/2013/01/31/2887293.html">JavaScript执行环境 + 变量对象 + 作用域链 + 闭包</a></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">js执行过程中会创建执行上下文，分为全局执行上下文以及函数执行上下文。
+javascript是单线程，每次创建执行上下文时候，这个上下文就会被推入一个环境栈中，我们称为这个栈叫做执行上下文栈，当执行上下文结束以后，就会被释放，并且销毁，并且销毁执行上下文中的变量对象，继续执行其他上下文
+</code></pre></div><ul>
+<li>每当执行流转到可执行代码时，即会进入一个执行环境。活动的执行环境构成一个栈：栈的底部始终是全局环境，顶部是当前活动的执行环境</li>
+<li>全局执行环境是最外围的一个执行环境。在浏览器中，全局环境就是window对象，因此所有全局变量和函数都是作为window对象的属性和方法创建的</li>
+<li>每个函数都有自己的执行环境。当执行流进入一个函数时，函数的环境被推入栈中。而在函数执行之后，栈将其环境弹出，把控制权返回给之前的执行环境。某个执行环境中的代码执行完后，该环境销毁，保存在其中的所有变量和函数定义也随之销毁。而全局执行环境直到应用程序退出才会被销毁（这里面会有垃圾回收机制问题）</li>
+<li></li>
+</ul>
+<h5 id="执行上下文概念">
+  执行上下文概念
+  <a class="heading-link" href="#%e6%89%a7%e8%a1%8c%e4%b8%8a%e4%b8%8b%e6%96%87%e6%a6%82%e5%bf%b5">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<p>在JavaScript解释器内部，每次调用Execution Context都会经历下面两个阶段：</p>
+<ul>
+<li>创建阶段（发生在函数调用时，但是内部代码执行前，这将解释声明提升现象）
+<ul>
+<li>创建作用域链</li>
+<li>创建变量对象VO</li>
+<li>确定this的值</li>
+</ul>
+</li>
+<li>激活/执行代码阶段</li>
+<li>变量赋值、执行代码</li>
+</ul>
+<p><strong>创建阶段</strong></p>
+<ul>
+<li>Global Execution Context中没有这一步） 创建arguments对象，扫描函数的所有形参，并将形参名称 和对应值组成的键值对作为变量对象VO的属性。如果没有传递对应的实参，将undefined作为对应值。如果形参名为arguments，将覆盖arguments对象</li>
+<li>扫描Execution Context中所有的函数声明（注意是函数声明，函数表达式不算）
+<ul>
+<li>将函数名和对应值（指向内存中该函数的引用指针）组成组成的键值对作为变量对象VO的属性</li>
+<li>如果变量对象VO已经存在同名的属性，则覆盖这个属性</li>
+</ul>
+</li>
+<li>扫描Execution Context中所有的变量声明
+<ul>
+<li>由变量名和对应值（此时为undefined） 组成，作为变量对象的属性</li>
+<li>如果变量名与已经声明的形参或函数相同，此时什么都不会发生，变量声明不会干扰已经存在的这个同名属性。</li>
+</ul>
+</li>
+</ul>
+<h5 id="作用域链-scope">
+  作用域链 scope
+  <a class="heading-link" href="#%e4%bd%9c%e7%94%a8%e5%9f%9f%e9%93%be-scope">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<blockquote>
+<p>作用域链本质上，是一个指向变量对象的指针列表，它只引用但不实际包含变量对象。<br>
+注意重要的一点：[[scope]]属性在函数创建时被存储，永远不变，直到函数销毁。函数可以不被调用，但这个属性一直存在。
+且，与作用域链相比，作用域链是执行环境的一个属性，而[[scope]]是函数的属性。</p>
+</blockquote>
+<ul>
+<li>形参优先级高于当前函数名，低于内部函数名(函数提升最高优先级)
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">  <span style="font-weight:bold">function</span> fn(aa){
+    console.log(arguments);<span style="font-style:italic">// Arguments [&#34;hello world&#34;]
+</span><span style="font-style:italic"></span>  }
+  fn(<span style="font-style:italic">&#39;hello world&#39;</span>);
+
+  <span style="font-weight:bold">function</span> fn(arguments){
+      console.log(arguments);<span style="font-style:italic">// hello world
+</span><span style="font-style:italic"></span>  }
+  fn(<span style="font-style:italic">&#39;hello world&#39;</span>);
+
+  <span style="font-weight:bold">function</span> show(fn) {
+    console.log(fn); <span style="font-style:italic">//  11
+</span><span style="font-style:italic"></span>    <span style="font-weight:bold">function</span> fn () {}
+    console.log(fn); <span style="font-style:italic">//  22
+</span><span style="font-style:italic"></span>  }
+  show(111)
+</code></pre></div></li>
+<li>形参优先级高于arguments</li>
+<li>形参优先级高于只声明却未赋值的局部变量，但是低于声明且赋值的局部变量</li>
+<li>函数和变量都会声明提升，函数名和变量名同名时，函数名的优先级要高。执行代码时，同名函数会覆盖只声明却未赋值的变量，但是它不能覆盖声明且赋值的变量</li>
+<li>局部变量也会声明提升，可以先使用后声明，不影响外部同名变量</li>
+</ul>
+<h4 id="变量提升">
+  变量提升
+  <a class="heading-link" href="#%e5%8f%98%e9%87%8f%e6%8f%90%e5%8d%87">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>主要原因在执行上下文中，创建变量对象(活动对象)会出现变量提升以及函数提升<br>
+<strong>注意形参也会在内存中开辟一个栈</strong></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">    <span style="font-style:italic">/**
+</span><span style="font-style:italic">     * 
+</span><span style="font-style:italic">     *  老版浏览器（IE10以下）忽略“{}”的影响，继续声明/定义，不存在块级作用域
+</span><span style="font-style:italic">        新版浏览器中“{}”里的function只声明不定义，“{}”若出现funciton/let/const关键字，会创建一个块级上下文
+</span><span style="font-style:italic">     * 
+</span><span style="font-style:italic">     * @descript if语句中快级上下文，进入该快级上下文，创建活动对象a 
+</span><span style="font-style:italic">     *           最终快级a被赋值21，window的a仍是
+</span><span style="font-style:italic">     * */</span>
+    <span style="font-weight:bold">var</span> a = 0;
+
+    <span style="font-weight:bold">if</span> (<span style="font-weight:bold">true</span>) {
+      a = 1;
+      <span style="font-weight:bold">function</span> a() {} <span style="font-style:italic">// 执行这一步的时候，会在window上创建a a = 1。。。 后续a仍是改变快级作用域内部a
+</span><span style="font-style:italic"></span>      a = 21;
+      console.log(a); <span style="font-style:italic">// 21 内部a
+</span><span style="font-style:italic"></span>    }
+
+    console.log(a); <span style="font-style:italic">// 1
+</span><span style="font-style:italic"></span>
+
+    <span style="font-style:italic">/** 匿名函数内部自己的作用域，外部变量不可访问 */</span> 
+    <span style="font-weight:bold">var</span> a = 10;
+    (<span style="font-weight:bold">function</span> () {
+        console.log(a) <span style="font-style:italic">// undefined
+</span><span style="font-style:italic"></span>        a = 5
+        console.log(window.a) <span style="font-style:italic">// 10
+</span><span style="font-style:italic"></span>        <span style="font-weight:bold">var</span> a = 20;  <span style="font-style:italic">// 变量提升
+</span><span style="font-style:italic"></span>        console.log(a)  <span style="font-style:italic">// 20
+</span><span style="font-style:italic"></span>    })()
+
+
+    <span style="font-style:italic">/**
+</span><span style="font-style:italic">     * 形参会开辟一个变量，指向了和window中a相同的内存地址，然后在修改对象增加了age属性，后续再改变形参的指针，使其指向了 {age: 21}
+</span><span style="font-style:italic">     * */</span>
+    <span style="font-weight:bold">var</span> a = { name: <span style="font-style:italic">&#39;levi&#39;</span> };
+    <span style="font-weight:bold">function</span> init(a) {
+      a.age = 20;
+      a = { age: 21 };
+
+      console.log(a); <span style="font-style:italic">// {age: 21}
+</span><span style="font-style:italic"></span>    }
+
+    init(a); <span style="font-style:italic">// {name: &#34;levi&#34;, age: 20}
+</span><span style="font-style:italic"></span>
+
+    <span style="font-style:italic">/**
+</span><span style="font-style:italic">      1、声明一个变量，为引用类型
+</span><span style="font-style:italic">        2和8、声明一个匿名函数，并立即执行，传递的参数是第1行中的foo。将一个对象类型赋值给一个新的变量，由于对象是引用类型，
+</span><span style="font-style:italic">        实质上是指将对象的地址赋值给该变量（也就是说这两个变量指向同一个地址空间），因此改变新的变量中的属性值或方法，对应的原来对象的值也会改变。
+</span><span style="font-style:italic">      3、原题中的第5行，由于存在变量提升，因此会在函数开始就声明，此时为undefined；然而由于一个变量的声明优先级低于形参，所以这行没有任何效果
+</span><span style="font-style:italic">      4、打印形参的foo.n,打印1
+</span><span style="font-style:italic">      5、改变第1行变量foo的属性n的值为3；
+</span><span style="font-style:italic">      6、重新声明并定义了一个变量，开辟了新的内存空间，n为2
+</span><span style="font-style:italic">      7、由于js中的代码是自上而下执行，所以此时输出2
+</span><span style="font-style:italic">      9、上面的函数调用结束后，局部变量被销毁，而之前的内存空间值已经变为3，所以输出3
+</span><span style="font-style:italic">     * */</span>
+    <span style="font-weight:bold">var</span> foo = { n: 1 };
+    (<span style="font-weight:bold">function</span> (foo) {
+      console.log(foo.n);  <span style="font-style:italic">// 1
+</span><span style="font-style:italic"></span>      foo.n = 3;
+      <span style="font-weight:bold">var</span> foo = { n: 2 };
+      console.log(foo.n); <span style="font-style:italic">// 2
+</span><span style="font-style:italic"></span>    })(foo);
+    console.log(foo.n); <span style="font-style:italic">// 3
+</span><span style="font-style:italic"></span>
+</code></pre></div><h4 id="普通函数与箭头函数的区别">
+  普通函数与箭头函数的区别
+  <a class="heading-link" href="#%e6%99%ae%e9%80%9a%e5%87%bd%e6%95%b0%e4%b8%8e%e7%ae%ad%e5%a4%b4%e5%87%bd%e6%95%b0%e7%9a%84%e5%8c%ba%e5%88%ab">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<ul>
+<li>语法更加清晰、简洁</li>
+<li>箭头函数没有this,没有原型对象，因此。call/apply/bind 无法动态改变（运行时）改变箭头中this指向, this在定义时候已经确认</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">  <span style="font-weight:bold">var</span> id = 10; <span style="font-style:italic">// 不能使用const id， 不会挂在window.id
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">const</span> fn = () =&gt; console.log(<span style="font-weight:bold">this</span>.id);
+
+  fn(); <span style="font-style:italic">// 10
+</span><span style="font-style:italic"></span>  fn.call({id: 20}); <span style="font-style:italic">// 10
+</span><span style="font-style:italic"></span>  fn.apply({id: 20}); <span style="font-style:italic">// 10
+</span><span style="font-style:italic"></span>  fn.bind({id: 20})(); <span style="font-style:italic">// 10
+</span><span style="font-style:italic"></span>
+</code></pre></div><ul>
+<li>不能作为构造函数被实例化</li>
+<li>箭头函数没有arguments，取而代之是rest代替arguments对象，借此来访问参数序列</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">  <span style="font-weight:bold">const</span> levi_r = () =&gt; {
+    console.log(arguments);
+  };
+  levi_r(1, 2, 3); <span style="font-style:italic">// arguments is not undefined
+</span><span style="font-style:italic"></span>
+  <span style="font-weight:bold">const</span> levi_fn = (...rest) =&gt; {
+    console.log(rest);
+  };
+  levi_fn(1, 2, 3, 4); <span style="font-style:italic">// [1, 2, 3, 4]
+</span></code></pre></div><ul>
+<li>箭头函数不能作为Generator函数，直接报错</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">  <span style="font-weight:bold">function</span>* levi() {
+    <span style="font-weight:bold">yield</span> 1;
+    <span style="font-weight:bold">yield</span> 2;
+  }
+  <span style="font-weight:bold">const</span> itr = levi(); <span style="font-style:italic">// 返回一个迭代器
+</span><span style="font-style:italic"></span>  console.log(itr.next()); <span style="font-style:italic">// {value: 1, done: false}
+</span><span style="font-style:italic"></span>
+    <span style="font-weight:bold">const</span> levi_arrowa = * () =&gt; {} <span style="font-style:italic">// error 运行时报错，无法识别函数
+</span><span style="font-style:italic"></span>    <span style="font-weight:bold">const</span> * levi_arrowb = () =&gt; {} <span style="font-style:italic">// error 运行时报错，无法识别函数
+</span></code></pre></div><h4 id="闭包">
+  闭包
+  <a class="heading-link" href="#%e9%97%ad%e5%8c%85">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>闭包是存在自由变量的函数，即：闭包可以访问所在的词法作用域，并且拥有更长的生命周期，保持对上一层词法作用域的引用
+闭包是有权访问一个函数内部变量的函数，说到底就是执行上下文执行结束之后，活动对象即变量对象没有被垃圾回收机制回收（存在自由变量的函数），被外部所引用，从而导致内存泄露</p>
+<ul>
+<li>
+<p>从理论角度：所有函数都是闭包。因为它们在创建的时候就将所有父环境的数据保存起来了。哪怕是简单的全局变量也是如此，
+因为在函数中访问全局变量就相当于在访问自由变量（指不在参数声明，也不在局部声明的变量），这个时候使用最外层的作用域</p>
+</li>
+<li>
+<p>代码执行完毕后，所在的环境会被销毁，web中全局执行环境是window对象，全局环境会在应用程序退出时被销毁</p>
+</li>
+<li>
+<p>从实践角度：以下函数才算是闭包：</p>
+<ul>
+<li>即使创建它的环境销毁，它仍然存在（比如，内部函数从父函数返回</li>
+<li>在代码中引用了自由变量</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="font-style:italic">&lt;!--</span> demo --&gt;
+<span style="font-weight:bold">function</span> init() {
+  <span style="font-weight:bold">const</span> str = 1;
+  <span style="font-weight:bold">return</span> () =&gt; str;
+}
+console.log(init()());
+
+<span style="font-style:italic">&lt;!--</span> demo --&gt;
+<span style="font-weight:bold">var</span> data = [];
+<span style="font-weight:bold">for</span> (<span style="font-weight:bold">var</span> k = 0; k &lt; 3; k++) {
+  data[k] = (<span style="font-weight:bold">function</span> _helper(x) {
+    <span style="font-weight:bold">return</span> <span style="font-weight:bold">function</span> () {
+      alert(x);
+    };
+  })(k); <span style="font-style:italic">// 传入&#34;k&#34;值
+</span><span style="font-style:italic"></span>}
+
+<span style="font-style:italic">// 现在结果是正确的了
+</span><span style="font-style:italic"></span>data[0](); <span style="font-style:italic">// 0
+</span><span style="font-style:italic"></span>data[1](); <span style="font-style:italic">// 1
+</span><span style="font-style:italic"></span>data[2](); <span style="font-style:italic">// 2
+</span><span style="font-style:italic"></span>
+<span style="font-style:italic">&lt;!--</span> demo --&gt;
+<span style="font-weight:bold">const</span> data = [];
+<span style="font-weight:bold">for</span> (<span style="font-weight:bold">let</span> k = 0; k &lt; 3; k++) {
+  data[k] = <span style="font-weight:bold">function</span> () {
+    console.log(k);
+  }; <span style="font-style:italic">// 传入&#34;k&#34;值
+</span><span style="font-style:italic"></span>}
+data[0](); <span style="font-style:italic">// 0
+</span><span style="font-style:italic"></span>data[1](); <span style="font-style:italic">// 1
+</span><span style="font-style:italic"></span>data[2](); <span style="font-style:italic">// 2
+</span></code></pre></div></li>
+</ul>
+<h4 id="垃圾回收机制">
+  垃圾回收机制
+  <a class="heading-link" href="#%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e6%9c%ba%e5%88%b6">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>js中垃圾回收机制是为了防止内存泄露，垃圾回收机制就是间歇的不定期的寻找到不再使用的变量，并释放掉它们所指向的内存
+<strong>垃圾回收机制运行在cup空闲的时候</strong></p>
+<h5 id="场景">
+  场景
+  <a class="heading-link" href="#%e5%9c%ba%e6%99%af">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<ul>
+<li>全局变量不能被垃圾回收机制回收，全局变量始终活跃在global执行环境中， 只有程序退出的时候才会退出</li>
+<li>闭包引起的内存泄露</li>
+<li>定时器造成的内存泄露，定时器可能会使用其他变量或者DOM元素。 解决办法：执行一段时间后需手动清除定时器</li>
+</ul>
+<h5 id="标记清除">
+  标记清除
+  <a class="heading-link" href="#%e6%a0%87%e8%ae%b0%e6%b8%85%e9%99%a4">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<p>该算法假定设置一个叫做根（root）的对象（在Javascript里，根是全局对象）。垃圾回收器将定期从根开始（在JS中就是全局对象）扫描内存中的对象。凡是能从根部到达的对象，都是还需要使用的。
+那些无法由根部出发触及到的对象被标记为不再使用，稍后进行回收。
+此算法可以分为两个阶段，一个是标记阶段（mark），一个是清除阶段(sweep)。</p>
+<ul>
+<li>标记阶段： 标记为可达对象，垃圾回收器会从根对象开始遍历。每一个可以从根对象访问到的对象都会被添加一个标识，于是这个对象就被标识为可到达对象。</li>
+<li>清除阶段： 不定时进行先行遍历，垃圾回收器会对堆内存从头到尾进行线性遍历，如果发现有对象没有被标识为可到达对象，那么就将此对象占用的内存回收，并且将原来标记为可到达对象的标识清除，以便进行下一次垃圾回收操作。</li>
+</ul>
+<p>标记清除算法缺陷</p>
+<ul>
+<li>哪些无法从根查询的到对象将被清除</li>
+<li>造成内存碎片化</li>
+</ul>
+<h5 id="引用计数">
+  引用计数
+  <a class="heading-link" href="#%e5%bc%95%e7%94%a8%e8%ae%a1%e6%95%b0">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<blockquote>
+<p>跟踪并记录每个变量被引用的次数
+统计引用类型变量声明后被引用的次数，当次数为 0 时，该变量将被回收</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="font-weight:bold">function</span> func4 () {
+      <span style="font-weight:bold">const</span> c = {} <span style="font-style:italic">// 引用类型变量 c的引用计数为 0
+</span><span style="font-style:italic"></span>      <span style="font-weight:bold">let</span> d = c <span style="font-style:italic">// c 被 d 引用 c的引用计数为 1
+</span><span style="font-style:italic"></span>      <span style="font-weight:bold">let</span> e = c <span style="font-style:italic">// c 被 e 引用 c的引用计数为 2
+</span><span style="font-style:italic"></span>      d = {} <span style="font-style:italic">// d 不再引用c c的引用计数减为 1
+</span><span style="font-style:italic"></span>      e = <span style="font-weight:bold">null</span> <span style="font-style:italic">// e 不再引用 c c的引用计数减为 0 将被回收
+</span><span style="font-style:italic"></span>}
+</code></pre></div><blockquote>
+<p>引用计数弊端
+但是引用计数的方式，有一个相对明显的缺点——循环引用</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="font-weight:bold">function</span> func5 () {
+      <span style="font-weight:bold">let</span> f = {}
+      <span style="font-weight:bold">let</span> g = {}
+      f.prop = g
+      g.prop = f
+      <span style="font-style:italic">// 由于 f 和 g 互相引用，计数永远不可能为 0
+</span><span style="font-style:italic"></span>}
+</code></pre></div><p>像上面这种情况就需要手动将变量的内存释放</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">  f.prop = <span style="font-weight:bold">null</span>;
+  g.prop = <span style="font-weight:bold">null</span>;
+</code></pre></div><p>主流浏览器中都是使用标记清除</p>
+<h5 id="引用文章">
+  引用文章
+  <a class="heading-link" href="#%e5%bc%95%e7%94%a8%e6%96%87%e7%ab%a0">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<ul>
+<li><a href="https://www.jianshu.com/p/a8a04fd00c3c">垃圾回收机制算法</a></li>
+<li><a href="https://juejin.cn/post/6844903652331618312">掘金 javascript 垃圾回收机制</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/60336501">知乎 javascript 垃圾回收机制</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/60279001">浅谈 javascript垃圾回收机制</a></li>
+</ul>
+<h4 id="new-本质">
+  new 本质
+  <a class="heading-link" href="#new-%e6%9c%ac%e8%b4%a8">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<ul>
+<li>创建一个空对象，并将空对象的原型指向了构造函数的原型对象</li>
+<li>使用传入的参数，执行构造函数，并将构造函数的this改写为改空对象</li>
+<li>构造函数执行完毕，存在返回值并且是一个对象，那么实例化的变量指向该对象，否则指向刚刚创建的空对象</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">  <span style="font-weight:bold">function</span> New(age, fn) {
+    <span style="font-style:italic">// const instance = Object.create(New.prototype);  方式1
+</span><span style="font-style:italic"></span>
+    <span style="font-style:italic">// 方式2
+</span><span style="font-style:italic"></span>    <span style="font-weight:bold">const</span> obj = {};
+    obj.__proto__ = fn.prototype;
+
+    <span style="font-weight:bold">const</span> result = fn.call(instance, age);
+    <span style="font-weight:bold">return</span> <span style="font-weight:bold">typeof</span> result === <span style="font-style:italic">&#39;object&#39;</span> ? result : instance;
+  }
+
+  <span style="font-weight:bold">function</span> Demo(age) {
+    <span style="font-weight:bold">this</span>.age = age;
+
+    <span style="font-weight:bold">return</span> [];
+  }
+
+  <span style="font-weight:bold">const</span> a = New(20, Demo);
+</code></pre></div><h4 id="this-指向">
+  this 指向
+  <a class="heading-link" href="#this-%e6%8c%87%e5%90%91">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>this是运行的决定的，不是定义决定，es6中箭头函数除外，是定义的时候决定的。
+this指向调用它的对象，可能是对象也有可能是window(也是对象)</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">    <span style="font-weight:bold">function</span> Foo() {
+      getName = <span style="font-weight:bold">function</span> () {
+        console.log(1);
+      };
+      <span style="font-weight:bold">return</span> <span style="font-weight:bold">this</span>;
+    }
+    Foo.getName = <span style="font-weight:bold">function</span> () {
+      console.log(2);
+    };
+    Foo.prototype.getName = <span style="font-weight:bold">function</span> () {
+      console.log(3);
+    };
+    <span style="font-weight:bold">var</span> getName = <span style="font-weight:bold">function</span> () {
+      console.log(4);
+    };
+    <span style="font-weight:bold">function</span> getName() {
+      console.log(5);
+    }
+
+    Foo.getName(); <span style="font-style:italic">// 2
+</span><span style="font-style:italic"></span>    getName(); <span style="font-style:italic">// 4
+</span><span style="font-style:italic"></span>    Foo().getName(); <span style="font-style:italic">// 1
+</span><span style="font-style:italic"></span>    getName(); <span style="font-style:italic">// 1
+</span><span style="font-style:italic"></span>    <span style="font-weight:bold">new</span> Foo.getName(); <span style="font-style:italic">// 2
+</span><span style="font-style:italic"></span>
+    <span style="font-weight:bold">new</span> Foo().getName(); <span style="font-style:italic">// 3   点操作大于() 所以相当于先执行了Foo.getName在执行 new操作
+</span><span style="font-style:italic"></span>    <span style="font-weight:bold">new</span> <span style="font-weight:bold">new</span> Foo().getName(); <span style="font-style:italic">//3
+</span></code></pre></div><ul>
+<li>如果一个函数中有this，但是它没有被上一级的对象所调用，那么this指向的就是window，这里需要说明的是在js的严格版中this指向的不是window</li>
+<li>如果一个函数中有this，这个函数有被上一级的对象所调用，那么this指向的就是上一级的对象</li>
+<li>如果一个函数中有this，这个函数中包含多个对象，尽管这个函数是被最外层的对象所调用，this指向的也只是它上一级的对象</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">    <span style="font-weight:bold">var</span> obj = {
+      a: 10,
+      b: {
+        a: 20,
+        fn() {
+          console.log(<span style="font-weight:bold">this</span>.a);
+        }
+      }
+    };
+    window.obj.b.fn(); <span style="font-style:italic">// 20 this指向了b
+</span></code></pre></div><blockquote>
+<p>1.this永远指向最后调用的对象<br>
+2. 构造函数内部的this指向了实例化对象</p>
+</blockquote>
+<h4 id="promisea规范">
+  Promise/A+规范
+  <a class="heading-link" href="#promisea%e8%a7%84%e8%8c%83">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">    <span style="font-style:italic">// 处理大量try catch造成的造成问题
+</span><span style="font-style:italic"></span>    <span style="font-weight:bold">const</span> request = <span style="font-weight:bold">async</span> promise =&gt;
+      Promise.resolve(promise)
+        .then(res =&gt; [<span style="font-weight:bold">null</span>, res])
+        .<span style="font-weight:bold">catch</span>(err =&gt; [err, <span style="font-weight:bold">null</span>]);
+
+    <span style="font-weight:bold">async</span> <span style="font-weight:bold">function</span> init() {
+      <span style="font-weight:bold">const</span> data = <span style="font-weight:bold">await</span> request(Promise.reject(<span style="font-style:italic">&#39;eee&#39;</span>));
+      console.log(data);
+    }
+
+    init();
+</code></pre></div><h5 id="实现">
+  实现
+  <a class="heading-link" href="#%e5%ae%9e%e7%8e%b0">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">  <span style="font-style:italic">/**
+</span><span style="font-style:italic">   * @description promise手动实现
+</span><span style="font-style:italic">   * */</span>
+  <span style="font-weight:bold">const</span> isFunction = fn =&gt; <span style="font-weight:bold">typeof</span> fn === <span style="font-style:italic">&#39;function&#39;</span>;
+  <span style="font-weight:bold">const</span> PENDING = <span style="font-style:italic">&#39;PENDING&#39;</span>;
+  <span style="font-weight:bold">const</span> FULLFILLED = <span style="font-style:italic">&#39;FULLFILLED&#39;</span>;
+  <span style="font-weight:bold">const</span> REJECTED = <span style="font-style:italic">&#39;REJECTED&#39;</span>;
+
+  <span style="font-weight:bold">class</span> LeviPromise {
+    constructor(callback) {
+      <span style="font-weight:bold">if</span> (!isFunction(callback)) {
+        <span style="font-weight:bold">throw</span> <span style="font-weight:bold">new</span> Error(<span style="font-style:italic">&#39;this is not a function&#39;</span>);
+      }
+
+      <span style="font-weight:bold">this</span>._status = PENDING;
+      <span style="font-weight:bold">this</span>._value = <span style="font-weight:bold">undefined</span>;
+      <span style="font-weight:bold">this</span>._fullFilledQueues = [];
+      <span style="font-weight:bold">this</span>._rejectedQueues = [];
+
+      <span style="font-weight:bold">try</span> {
+        callback(<span style="font-weight:bold">this</span>._resolve.bind(<span style="font-weight:bold">this</span>), <span style="font-weight:bold">this</span>._reject.bind(<span style="font-weight:bold">this</span>));
+      } <span style="font-weight:bold">catch</span> (err) {}
+    }
+
+    _resolve(value) {
+      <span style="font-weight:bold">const</span> run = () =&gt; {
+        <span style="font-weight:bold">if</span> (<span style="font-weight:bold">this</span>._status !== PENDING) <span style="font-weight:bold">return</span>;
+
+        <span style="font-weight:bold">const</span> runFullFilled = value =&gt; {
+          <span style="font-weight:bold">let</span> cb;
+          <span style="font-weight:bold">while</span> ((cb = <span style="font-weight:bold">this</span>._fullFilledQueues.shift())) {
+            cb(value);
+          }
+        };
+
+        <span style="font-weight:bold">const</span> runRejected = value =&gt; {
+          <span style="font-weight:bold">let</span> cb;
+          <span style="font-weight:bold">while</span> ((cb = <span style="font-weight:bold">this</span>._rejectedQueues.shift())) {
+            cb(value);
+          }
+        };
+
+        <span style="font-style:italic">/** 构造函数内部resolve promise
+</span><span style="font-style:italic">         *  new LeviPromise(resolve =&gt; resolve(LeviPromise.resolve(2))).then(res =&gt; console.log(res));
+</span><span style="font-style:italic">         *  */</span>
+        <span style="font-weight:bold">if</span> (value <span style="font-weight:bold">instanceof</span> LeviPromise) {
+          value.then(
+            res =&gt; {
+              <span style="font-weight:bold">this</span>._value = res;
+              <span style="font-weight:bold">this</span>._status = FULLFILLED;
+              runFullFilled(value);
+            },
+            err =&gt; {
+              <span style="font-weight:bold">this</span>._value = err;
+              <span style="font-weight:bold">this</span>._status = REJECTED;
+              runRejected(err);
+            }
+          );
+        } <span style="font-weight:bold">else</span> {
+          <span style="font-weight:bold">this</span>._status = FULLFILLED;
+          <span style="font-weight:bold">this</span>._value = value;
+          runFullFilled(value);
+        }
+      };
+
+      setTimeout(() =&gt; run(), 0);
+    }
+
+    _reject(err) {
+      <span style="font-weight:bold">if</span> (<span style="font-weight:bold">this</span>._status !== PENDING) <span style="font-weight:bold">return</span>;
+
+      <span style="font-weight:bold">const</span> run = () =&gt; {
+        <span style="font-weight:bold">this</span>._status = REJECTED;
+        <span style="font-weight:bold">this</span>._value = err;
+        <span style="font-weight:bold">let</span> cb;
+        <span style="font-weight:bold">while</span> ((cb = <span style="font-weight:bold">this</span>._rejectedQueues.shift())) {
+          cb(err);
+        }
+      };
+
+      setTimeout(() =&gt; run(), 0);
+    }
+
+    then(onFullFilled, onRejected) {
+      <span style="font-weight:bold">const</span> { _value, _status } = <span style="font-weight:bold">this</span>;
+
+      <span style="font-style:italic">/**
+</span><span style="font-style:italic">       *  @desc: 最终思想，
+</span><span style="font-style:italic">       *  then 方法返回一个promise,并且将回调函数加入事件队列中，定时器过后拿出队列的回调函数执行。
+</span><span style="font-style:italic">       *   如果函数有返回值，则需要将返回值传入下一个promise的 onFullFilledfn中（resolve方法）
+</span><span style="font-style:italic">       * */</span>
+      <span style="font-weight:bold">return</span> <span style="font-weight:bold">new</span> LeviPromise((onFullFilledfn, onRejectedFn) =&gt; {
+        <span style="font-weight:bold">const</span> fullFilled = value =&gt; {
+          <span style="font-weight:bold">try</span> {
+            <span style="font-weight:bold">if</span> (!isFunction(onFullFilled)) {
+              onFullFilledfn(value);
+              <span style="font-weight:bold">return</span>;
+            }
+
+            <span style="font-weight:bold">const</span> res = onFullFilled(value);
+            <span style="font-weight:bold">if</span> (res <span style="font-weight:bold">instanceof</span> LeviPromise) {
+              res.then(onFullFilledfn, onRejectedFn);
+            } <span style="font-weight:bold">else</span> {
+              onFullFilledfn(res); <span style="font-style:italic">// 当前第二个promise的resolve方法
+</span><span style="font-style:italic"></span>            }
+          } <span style="font-weight:bold">catch</span> (err) {
+            onRejectedFn(err);
+          }
+        };
+
+        <span style="font-weight:bold">const</span> reject = err =&gt; {
+          <span style="font-weight:bold">try</span> {
+            <span style="font-weight:bold">if</span> (!isFunction(onRejected)) {
+              onRejectedFn(err);
+              <span style="font-weight:bold">return</span>;
+            }
+
+            <span style="font-weight:bold">const</span> res = onRejected(err);
+            <span style="font-weight:bold">if</span> (res <span style="font-weight:bold">instanceof</span> LeviPromise) {
+              res.then(onFullFilledfn, onRejectedFn);
+            } <span style="font-weight:bold">else</span> {
+              onFullFilledfn(res);
+            }
+          } <span style="font-weight:bold">catch</span> (err) {
+            onRejectedFn(err);
+          }
+        };
+
+        <span style="font-weight:bold">switch</span> (_status) {
+          <span style="font-weight:bold">case</span> PENDING:
+            <span style="font-weight:bold">this</span>._fullFilledQueues.push(fullFilled);
+            <span style="font-weight:bold">this</span>._rejectedQueues.push(reject);
+            <span style="font-weight:bold">break</span>;
+          <span style="font-weight:bold">case</span> FULLFILLED:
+            fullFilled(_value);
+            <span style="font-weight:bold">break</span>;
+          <span style="font-weight:bold">case</span> REJECTED:
+            reject(_value);
+            <span style="font-weight:bold">break</span>;
+        }
+      });
+    }
+
+    <span style="font-weight:bold">static</span> resolve(value) {
+      <span style="font-weight:bold">if</span> (value <span style="font-weight:bold">instanceof</span> LeviPromise) <span style="font-weight:bold">return</span> value;
+      <span style="font-weight:bold">return</span> <span style="font-weight:bold">new</span> LeviPromise(resolve =&gt; resolve(value));
+    }
+
+    <span style="font-weight:bold">static</span> reject(value) {
+      <span style="font-weight:bold">if</span> (value <span style="font-weight:bold">instanceof</span> LeviPromise) <span style="font-weight:bold">return</span> value;
+      <span style="font-weight:bold">return</span> <span style="font-weight:bold">new</span> LeviPromise(resolve =&gt; resolve(value));
+    }
+
+    <span style="font-weight:bold">static</span> all(list = []) {
+      <span style="font-weight:bold">return</span> <span style="font-weight:bold">new</span> LeviPromise((resolve, reject) =&gt; {
+        <span style="font-weight:bold">const</span> values = [];
+        <span style="font-weight:bold">let</span> count = 0;
+
+        <span style="font-weight:bold">for</span> (<span style="font-weight:bold">let</span> [i, p] <span style="font-weight:bold">of</span> list.entries()) {
+          console.log(i);
+          LeviPromise.resolve(p).then(
+            res =&gt; {
+              values[i] = res;
+              count++;
+
+              <span style="font-weight:bold">if</span> (count === list.length) {
+                resolve(values);
+              }
+            },
+            err =&gt; {
+              reject(err);
+            }
+          );
+        }
+      });
+    }
+
+    <span style="font-weight:bold">static</span> race(list = []) {
+      <span style="font-weight:bold">return</span> <span style="font-weight:bold">new</span> LeviPromise((resolve, reject) =&gt; {
+        <span style="font-weight:bold">for</span> (<span style="font-weight:bold">let</span> [i, p] <span style="font-weight:bold">of</span> list.entries()) {
+          console.log(i);
+          LeviPromise.resolve(p).then(
+            res =&gt; {
+              resolve(res);
+            },
+            err =&gt; {
+              reject(err);
+            }
+          );
+        }
+      });
+    }
+
+    <span style="font-weight:bold">finally</span>(cb) {
+      <span style="font-weight:bold">if</span> (!isFunction(cb)) {
+        <span style="font-weight:bold">throw</span> <span style="font-weight:bold">new</span> Error(<span style="font-style:italic">&#39;this is not a functiom&#39;</span>);
+      }
+
+      <span style="font-weight:bold">return</span> <span style="font-weight:bold">this</span>.then(
+        res =&gt;
+          LeviPromise.resolve(cb()).then(() =&gt; {
+            <span style="font-weight:bold">return</span> res;
+          }),
+        err =&gt;
+          LeviPromise.reject(cb()).then(() =&gt; {
+            <span style="font-weight:bold">throw</span> <span style="font-weight:bold">new</span> Error(err);
+          })
+      );
+    }
+  }
+
+  LeviPromise.race([
+    LeviPromise.resolve(<span style="font-style:italic">&#39;a&#39;</span>),
+    <span style="font-weight:bold">new</span> LeviPromise((resolve, reject) =&gt; reject(<span style="font-style:italic">&#39;err&#39;</span>)),
+    LeviPromise.resolve(<span style="font-style:italic">&#39;b&#39;</span>)
+  ]).then(
+    res =&gt; console.log(res),
+    err =&gt; console.log(err)
+  );
+</code></pre></div><h4 id="es6">
+  ES6
+  <a class="heading-link" href="#es6">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<blockquote>
+<p><a href="https://es6.ruanyifeng.com/#docs/set-map">阮一峰es6</a>
+涵盖点</p>
+</blockquote>
+<ul>
+<li>let const / 解构赋值</li>
+<li>字符串扩展
+<ul>
+<li>字符串迭代器接口 可被for of 消费</li>
+<li>模板字符串</li>
+<li>String.prototype.indexOf / String.prototype.includes /  String.prototype.startsWith /  String.prototype.endsWith</li>
+<li>String.prototype.repeat /  String.prototype.padStart /  String.prototype.padEnd</li>
+<li>String.prototype.trimStart /  String.prototype.trimEnd</li>
+<li>String.prototype.replace /  String.prototype.replaceAll</li>
+</ul>
+</li>
+<li>数值扩展</li>
+<li>函数扩展
+<ul>
+<li>箭头函数</li>
+<li>剩余参数 function (a = 1, &hellip;b) {}</li>
+<li>函数参数带有默认值 eg: a = 1</li>
+<li>function.length / function.name</li>
+</ul>
+</li>
+<li>数组扩展
+<ul>
+<li>Array.from() / Array.of /  Array.find / Array.findIndex / Array.fill /</li>
+<li>Array.keys / Array.values / Array.entries /</li>
+<li>Array.includes / Array.flat /</li>
+<li>扩展运算符</li>
+</ul>
+</li>
+<li>对象扩展
+<ul>
+<li>扩展对象/解构赋值</li>
+<li>属性名简写、属性名表达式obj[&lsquo;a&rsquo; + &lsquo;bc&rsquo;] = 123;</li>
+<li>链判断运算符 obj?.info?.name</li>
+<li>null 运算符 var b  = undefined ?? 12</li>
+<li>Object.is 、 Object.getPropertypeOf 、 Object.setPropertyOf()</li>
+<li>Object.keys 、 Object.values 、 Object.entries 、 Object.fromEntries(map: Map) =&gt; object</li>
+</ul>
+</li>
+<li>Symbol / Symbol.for</li>
+<li>Proxy/Reflect</li>
+<li>class</li>
+<li>module加载实现</li>
+<li>set
+<ul>
+<li>基本方法
+<ul>
+<li>set.add(x)</li>
+<li>set.has(x)</li>
+<li>set.delete(x)</li>
+<li>set.clear() 清空</li>
+<li>set.size</li>
+</ul>
+</li>
+<li>其他方法
+<ul>
+<li>set.keys()</li>
+<li>set.values()</li>
+<li>set.entries()</li>
+<li>Set.prototype[Symbol.Iterator] === Set.prototype.values 返回的是一个迭代器</li>
+</ul>
+</li>
+<li>set 转化为数组
+<ul>
+<li>Array.from(set)</li>
+<li>[&hellip;set]</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>weakSet
+<ul>
+<li>接受数组并且数组内部成员是 数组或者对象 new WeakSet([{}, []])</li>
+<li>方法</li>
+<li>weakSet.add(x)</li>
+<li>weakSet.has(x)</li>
+<li>weakSet.delete(x)</li>
+</ul>
+</li>
+<li>map new Map([[&lsquo;key&rsquo;, &lsquo;value&rsquo;], [&lsquo;key&rsquo;, &lsquo;value&rsquo;]])
+<ul>
+<li>基本方法</li>
+<li>map.set(x)</li>
+<li>map.get</li>
+<li>map.has</li>
+<li>map.delete</li>
+<li>map.clear</li>
+<li>map.size</li>
+<li>其他方法</li>
+<li>map.keys()</li>
+<li>map.values()</li>
+<li>map.entries()</li>
+</ul>
+</li>
+<li>转化为数组</li>
+<li>[&hellip;map]</li>
+<li>[&hellip;map.keys()]</li>
+<li>[&hellip;map.values()]</li>
+<li>[&hellip;map.entries()]</li>
+<li>weakMap const wm2 = new WeakMap([[object1, &lsquo;foo&rsquo;], [object2, &lsquo;bar&rsquo;]]);
+<ul>
+<li>WeakMap只接受对象作为键名（null除外），不接受其他类型的值作为键名</li>
+<li>基本方法</li>
+<li>weakMap.set()</li>
+<li>weakMap.get()</li>
+<li>weakMap.has()</li>
+<li>weakMap.delete()</li>
+</ul>
+</li>
+</ul>
+<h4 id="用array的-reduce实现map">
+  用Array的 reduce实现map
+  <a class="heading-link" href="#%e7%94%a8array%e7%9a%84-reduce%e5%ae%9e%e7%8e%b0map">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">    Array.prototype.LMap = <span style="font-weight:bold">function</span> (fn, thisArg) {
+      <span style="font-weight:bold">return</span> <span style="font-weight:bold">this</span>.reduce((prev, cur, index, arr) =&gt; {
+        prev.push(fn.call(thisArg, arr[index]));
+        <span style="font-weight:bold">return</span> prev;
+      }, []);
+    };
+
+    <span style="font-weight:bold">const</span> a = [1, 2, 3, 4];
+    console.log(a.LMap(item =&gt; item * 2)); <span style="font-style:italic">// 2,4,6,8
+</span><span style="font-style:italic"></span>
+    Array.prototype.LMap = <span style="font-weight:bold">function</span> (fn, args) {
+      <span style="font-weight:bold">return</span> <span style="font-weight:bold">this</span>.reduce((prev, cur, index, arr) =&gt; {
+        prev[index] = fn.call(args, cur, index);
+        <span style="font-weight:bold">return</span> prev;
+      }, []);
+    };
+
+    Array.prototype.LFilter = <span style="font-weight:bold">function</span> (fn, args) {
+      <span style="font-weight:bold">return</span> <span style="font-weight:bold">this</span>.reduce((prev, cur, index, arr) =&gt; {
+        <span style="font-weight:bold">if</span> (fn.call(args, cur, index)) {
+          prev.push(cur);
+        }
+        console.log(cur);
+
+        <span style="font-weight:bold">return</span> prev;
+      }, []);
+    };
+
+    Array.prototype.LFindInIndex = <span style="font-weight:bold">function</span> (fn, args) {
+      <span style="font-weight:bold">return</span> <span style="font-weight:bold">this</span>.reduce((prev, cur, index) =&gt; {
+        <span style="font-weight:bold">return</span> prev &gt; -1 ? prev : fn.call(args, cur, index) ? index : -1;
+      }, -1);
+    };
+
+    Array.prototype.LFinedLastIndex = <span style="font-weight:bold">function</span> (fn, args) {
+      <span style="font-weight:bold">const</span> indexList = [];
+      <span style="font-weight:bold">this</span>.reduce((prev, cur, index, arr) =&gt; {
+        <span style="font-weight:bold">if</span> (fn.call(args, cur, index)) {
+          indexList.push(index);
+        }
+      }, []);
+
+      <span style="font-weight:bold">return</span> indexList.length ? indexList[indexList.length - 1] : -1;
+    };
+</code></pre></div><h4 id="设计模式">
+  设计模式
+  <a class="heading-link" href="#%e8%ae%be%e8%ae%a1%e6%a8%a1%e5%bc%8f">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>可分为以下几种</p>
+<ul>
+<li>单例模式</li>
+<li>发布订阅模式</li>
+<li>观察者模式</li>
+<li>&hellip;.</li>
+</ul>
+<blockquote>
+<p>观察者模式是面向目标(subject)和观察者(observer)编程，而发布订阅则是面向调度中心编程， 观察者用于耦合目标和观察者，发布订阅则是用于松耦发布者和订阅者</p>
+</blockquote>
+<h5 id="发布订阅模式">
+  发布订阅模式
+  <a class="heading-link" href="#%e5%8f%91%e5%b8%83%e8%ae%a2%e9%98%85%e6%a8%a1%e5%bc%8f">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<p>发布订阅模式比观察者模式多一个事件调度中心，管理事件的订阅以及发布，隔绝了发布者和订阅者的依赖关系，即订阅者在订阅事件的时候，只关注事件本身，无需关注谁发布这个事件；
+发布者在发布事件的时候，同样只需关注事件本身，无需关注该事件被谁订阅了。<br>
+举个例子。你在微博关注了蔡徐坤。同时也有很多人关注他，当蔡徐坤发布一条微博，微博就会他发布这条消息。你也会受到这个消息的推送。这个流程中。 蔡徐坤就是发布者，微博平台就是事件调度中心。你就是订阅者。实现发布者和订阅者的松耦合
+<!-- raw HTML omitted --></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"> <span style="font-weight:bold">class</span> PubSub {
+      constructor() {
+        <span style="font-weight:bold">this</span>.events = {};
+      }
+
+      subcribe(type, callback) {
+        <span style="font-weight:bold">if</span> (!type) {
+          <span style="font-weight:bold">throw</span> <span style="font-weight:bold">new</span> Error(<span style="font-style:italic">&#39;please enter subscribe type&#39;</span>);
+        }
+
+        <span style="font-weight:bold">if</span> (!<span style="font-weight:bold">this</span>.events[type]) {
+          <span style="font-weight:bold">this</span>.events[type] = [];
+        }
+
+        <span style="font-weight:bold">this</span>.events[type].push(callback);
+      }
+
+      publish(type, ...args) {
+        <span style="font-weight:bold">if</span> (!type || !<span style="font-weight:bold">this</span>.events[type]) {
+          <span style="font-weight:bold">return</span> <span style="font-weight:bold">false</span>;
+        }
+
+        <span style="font-weight:bold">this</span>.events[type].forEach(event =&gt; {
+          event(...args);
+        });
+      }
+
+      unSubscribeByFn(type, callback) {
+        <span style="font-weight:bold">if</span> (!type || !callback || !<span style="font-weight:bold">this</span>.events[type]) {
+          <span style="font-weight:bold">return</span> <span style="font-weight:bold">false</span>;
+        }
+
+        <span style="font-weight:bold">const</span> index = <span style="font-weight:bold">this</span>.events[type].findIndex(event =&gt; event === callback);
+        <span style="font-weight:bold">this</span>.events[type].splice(index, 1);
+      }
+
+      unSubscribeAll(type) {
+        <span style="font-weight:bold">if</span> (type) {
+          <span style="font-weight:bold">this</span>.events[type] = [];
+        } <span style="font-weight:bold">else</span> {
+          <span style="font-weight:bold">this</span>.events = {};
+        }
+      }
+    }
+
+    <span style="font-weight:bold">const</span> pubsub = <span style="font-weight:bold">new</span> PubSub();
+    <span style="font-weight:bold">const</span> leviRun = name =&gt; {
+      console.log(<span style="font-style:italic">`</span><span style="font-weight:bold;font-style:italic">${</span>name<span style="font-weight:bold;font-style:italic">}</span><span style="font-style:italic"> is running`</span>);
+    };
+
+    pubsub.subcribe(<span style="font-style:italic">&#39;run&#39;</span>, name =&gt; {
+      console.log(name);
+    });
+
+    pubsub.subcribe(<span style="font-style:italic">&#39;run&#39;</span>, name =&gt; {
+      console.log(name);
+    });
+
+    pubsub.subcribe(<span style="font-style:italic">&#39;run&#39;</span>, leviRun);
+
+    pubsub.publish(<span style="font-style:italic">&#39;run&#39;</span>, <span style="font-style:italic">&#39;levi&#39;</span>); <span style="font-style:italic">// levi / levi /  levi is running
+</span><span style="font-style:italic"></span>
+    pubsub.subcribe(<span style="font-style:italic">&#39;getScore&#39;</span>, score =&gt; {
+      console.log(<span style="font-style:italic">`you score: </span><span style="font-weight:bold;font-style:italic">${</span>score<span style="font-weight:bold;font-style:italic">}</span><span style="font-style:italic">`</span>);
+    });
+
+    pubsub.unSubscribeByFn(<span style="font-style:italic">&#39;run&#39;</span>, leviRun);
+    pubsub.publish(<span style="font-style:italic">&#39;run&#39;</span>, <span style="font-style:italic">&#39;levi&#39;</span>); <span style="font-style:italic">// levi / levi
+</span><span style="font-style:italic"></span>
+    pubsub.unSubscribeAll(<span style="font-style:italic">&#39;run&#39;</span>);
+
+    pubsub.publish(<span style="font-style:italic">&#39;run&#39;</span>, <span style="font-style:italic">&#39;levi&#39;</span>); <span style="font-style:italic">// false
+</span><span style="font-style:italic"></span>    pubsub.publish(<span style="font-style:italic">&#39;getScore&#39;</span>, 20); <span style="font-style:italic">// you score: 20
+</span></code></pre></div><h5 id="观察者模式">
+  观察者模式
+  <a class="heading-link" href="#%e8%a7%82%e5%af%9f%e8%80%85%e6%a8%a1%e5%bc%8f">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<p>观察者有2个重要角色。即：目标和观察者，在目标和观察者质检没有事件调度通道，一方面观察者如果想要订阅目标事件，需要把自己添加至目标(subject)进行管理。
+另一方面，目标在触发事件，也无法将通知操作委托给事件调度中心，因此只能亲自通知观察者， 例如levi创建了一个公众号，文章重量极高，多个用户关注了”前端xxx“公众号，这些用户会定期收到该公众号的文章推送， levi的公众号被称为主体(Subject)，他的公众号粉丝称为订阅者(Observer)
+<!-- raw HTML omitted --></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">    <span style="font-weight:bold">class</span> Subject {
+      constructor() {
+        <span style="font-weight:bold">this</span>.observers = [];
+      }
+
+      addObserver(observer) {
+        <span style="font-weight:bold">this</span>.observers.push(observer);
+      }
+
+      removeObserver(observer) {
+        <span style="font-weight:bold">const</span> targetIndex = <span style="font-weight:bold">this</span>.observers.findIndex(obs =&gt; obs.id === observer.id);
+        <span style="font-weight:bold">if</span> (!targetIndex !== -1) {
+          <span style="font-weight:bold">this</span>.observers.splice(targetIndex, 1);
+        }
+      }
+
+      removeObserverByIndex(index) {
+        <span style="font-weight:bold">this</span>.observers.splice(index, 1);
+      }
+
+      notify(bookname) {
+        <span style="font-weight:bold">this</span>.observers.forEach(observer =&gt; {
+          observer.update(bookname);
+        });
+      }
+    }
+
+    <span style="font-weight:bold">class</span> Observer {
+      constructor(id, name) {
+        <span style="font-weight:bold">this</span>.id = id;
+        <span style="font-weight:bold">this</span>.name = name;
+      }
+
+      update(title) {
+        console.log(<span style="font-style:italic">`我是</span><span style="font-weight:bold;font-style:italic">${</span><span style="font-weight:bold">this</span>.name<span style="font-weight:bold;font-style:italic">}</span><span style="font-style:italic">, 接受levi更新: </span><span style="font-weight:bold;font-style:italic">${</span>title<span style="font-weight:bold;font-style:italic">}</span><span style="font-style:italic">`</span>); 
+      }
+    }
+
+    <span style="font-weight:bold">const</span> leviSubject = <span style="font-weight:bold">new</span> Subject();
+
+    <span style="font-weight:bold">const</span> jack = <span style="font-weight:bold">new</span> Observer(1, <span style="font-style:italic">&#39;jack&#39;</span>);
+    <span style="font-weight:bold">const</span> mark = <span style="font-weight:bold">new</span> Observer(2, <span style="font-style:italic">&#39;mark&#39;</span>);
+
+    leviSubject.addObserver(jack);
+    leviSubject.addObserver(mark);
+
+    leviSubject.notify(<span style="font-style:italic">&#39;观察者模式详解&#39;</span>); <span style="font-style:italic">// 我是jack, 接受levi更新: 观察者模式详解 、 我是mark, 接受levi更新: 观察者模式详解
+</span><span style="font-style:italic"></span>
+    leviSubject.removeObserver(jack);
+    leviSubject.notify(<span style="font-style:italic">&#39;发布订阅详解&#39;</span>); <span style="font-style:italic">// 我是mark, 接受levi更新: 发布订阅详解
+</span></code></pre></div><p>参考文章：</p>
+<ul>
+<li><a href="https://www.zhihu.com/question/23486749">观察者模式和发布订阅模式有什么不同？</a></li>
+</ul>
+<h4 id="排序">
+  排序
+  <a class="heading-link" href="#%e6%8e%92%e5%ba%8f">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>const leviArr = [1, 3, 4, 6, 2, 4, 6];</p>
+<h5 id="冒泡排序">
+  冒泡排序
+  <a class="heading-link" href="#%e5%86%92%e6%b3%a1%e6%8e%92%e5%ba%8f">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">  <span style="font-weight:bold">const</span> leviArr = [1, 3, 4, 6, 2, 4, 6];
+  <span style="font-weight:bold">function</span> init(arr) {
+    <span style="font-weight:bold">for</span> (<span style="font-weight:bold">let</span> i = 0; i &lt; arr.length - 1; i++) {
+      <span style="font-weight:bold">for</span> (<span style="font-weight:bold">let</span> j = 0; j &lt; arr.length - 1 - i; j++) {
+        <span style="font-weight:bold">if</span> (arr[j] &gt;= arr[j + 1]) {
+          <span style="font-weight:bold">let</span> temp = arr[j + 1];
+          arr[j + 1] = arr[j];
+          arr[j] = temp;
+        }
+      }
+    }
+
+    <span style="font-weight:bold">return</span> arr;
+  }
+
+  <span style="font-style:italic">// [1, 2, 3, 4, 4, 6, 6]
+</span></code></pre></div><h5 id="选择排序">
+  选择排序
+  <a class="heading-link" href="#%e9%80%89%e6%8b%a9%e6%8e%92%e5%ba%8f">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="font-weight:bold">function</span> init(arr) {
+  <span style="font-weight:bold">var</span> minIndex, temp;
+  <span style="font-weight:bold">for</span> (<span style="font-weight:bold">let</span> i = 0; i &lt; arr.length - 1; i++) {
+    minIndex = i;
+    <span style="font-weight:bold">for</span> (<span style="font-weight:bold">let</span> j = i + 1; j &lt; arr.length; j++) {
+      <span style="font-weight:bold">if</span> (arr[j] &lt;= arr[minIndex]) {
+        minIndex = j;
+        console.log(j);
+      }
+    }
+
+    temp = arr[i];
+    arr[i] = arr[minIndex];
+    arr[minIndex] = temp;
+  }
+  <span style="font-weight:bold">return</span> arr; <span style="font-style:italic">// [1, 2, 3, 4, 4, 6, 6, 6]
+</span><span style="font-style:italic"></span>}
+</code></pre></div><h5 id="快速排序">
+  快速排序
+  <a class="heading-link" href="#%e5%bf%ab%e9%80%9f%e6%8e%92%e5%ba%8f">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="font-weight:bold">const</span> leviArr = [7, 4, 2, 8, 7, 6, 1, 9, 5];
+
+<span style="font-weight:bold">function</span> quickSort(arr, left, right) {
+  <span style="font-weight:bold">var</span> _left = left || 0;
+  <span style="font-weight:bold">var</span> _right = right || arr.length - 1;
+
+  <span style="font-weight:bold">if</span> (_left &lt; _right) {
+    <span style="font-weight:bold">const</span> middleIndex = getIndex(arr, _left, _right);
+    quickSort(arr, _left, middleIndex - 1);
+    quickSort(arr, middleIndex + 1, _right);
+  }
+
+  <span style="font-weight:bold">return</span> arr;
+}
+
+<span style="font-style:italic">/** 重点跟随指针移动  没交换一次，指针一栋一格， 最后指针后退一格，交换指针元素与首部元素。 最终结果指针右侧比当前元素大，指针左侧比当前元素小 */</span>
+<span style="font-weight:bold">function</span> getIndex(arr, left, right) {
+  <span style="font-weight:bold">const</span> value = arr[left];
+  <span style="font-weight:bold">let</span> index = left + 1;
+
+  <span style="font-weight:bold">for</span> (<span style="font-weight:bold">let</span> i = index; i &lt;= right; i++) {
+    <span style="font-weight:bold">if</span> (arr[i] &lt;= value) {
+      withTemp(arr, i, index);
+      index++; <span style="font-style:italic">// 交换值指针前进
+</span><span style="font-style:italic"></span>    }
+  }
+
+  withTemp(arr, left, index - 1); <span style="font-style:italic">// 前后交换指针
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">return</span> index - 1;
+}
+
+<span style="font-weight:bold">function</span> withTemp(arr, i, j) {
+  <span style="font-weight:bold">let</span> temp = arr[i];
+  arr[i] = arr[j];
+  arr[j] = temp;
+}
+
+console.log(quickSort(leviArr));
+</code></pre></div><h4 id="去重">
+  去重
+  <a class="heading-link" href="#%e5%8e%bb%e9%87%8d">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<h5 id="newset">
+  newSet
+  <a class="heading-link" href="#newset">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">  <span style="font-weight:bold">const</span> leviArr = [1, 2, 3, 4, 5, 6];
+  console.log(Array.from(<span style="font-weight:bold">new</span> Set(leviArr))); <span style="font-style:italic">// 1,2,3,4,5,6
+</span></code></pre></div><h5 id="arr-reduce--includes">
+  arr reduce &amp;&amp; includes
+  <a class="heading-link" href="#arr-reduce--includes">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="font-weight:bold">function</span> init(arr) {
+  <span style="font-weight:bold">return</span> arr.reduce((prev, cur) =&gt; {
+    <span style="font-weight:bold">if</span> (!prev.includes(cur)) {
+      prev.push(cur);
+    }
+
+    <span style="font-weight:bold">return</span> prev;
+  }, []);
+}
+
+init(leviArr); <span style="font-style:italic">// 1,2,3,4,5,6
+</span></code></pre></div><h5 id="indexof">
+  indexOf
+  <a class="heading-link" href="#indexof">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="font-weight:bold">function</span> init(arr) {
+  <span style="font-weight:bold">const</span> result = [];
+  <span style="font-weight:bold">for</span> (<span style="font-weight:bold">let</span> i = 0; i &lt; arr.length; i++) {
+    <span style="font-weight:bold">if</span> (i === arr.indexOf(arr[i])) {
+      result.push(arr[i]);
+    }
+  }
+
+  <span style="font-weight:bold">return</span> result;
+}
+</code></pre></div><h5 id="filter--对象属性值判断">
+  filter &amp;&amp; 对象属性值判断
+  <a class="heading-link" href="#filter--%e5%af%b9%e8%b1%a1%e5%b1%9e%e6%80%a7%e5%80%bc%e5%88%a4%e6%96%ad">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="font-weight:bold">function</span> init(arr) {
+  <span style="font-weight:bold">const</span> obj = {};
+  <span style="font-weight:bold">return</span> arr.filter(item =&gt; {
+    <span style="font-weight:bold">return</span> obj[item + item] ? <span style="font-weight:bold">false</span> : (obj[item + item] = 1);
+  });
+}
+</code></pre></div><h4 id="高级函数">
+  高级函数
+  <a class="heading-link" href="#%e9%ab%98%e7%ba%a7%e5%87%bd%e6%95%b0">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> componse</li>
+<li><input checked="" disabled="" type="checkbox"> 柯里化</li>
+<li><input checked="" disabled="" type="checkbox"> 节流</li>
+<li><input checked="" disabled="" type="checkbox"> 防抖</li>
+<li><input checked="" disabled="" type="checkbox"> 深拷贝 &amp;&amp; 浅拷贝</li>
+<li>&hellip;</li>
+</ul>
+<h5 id="防抖">
+  防抖
+  <a class="heading-link" href="#%e9%98%b2%e6%8a%96">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<blockquote>
+<p>事件在指定N秒后执行，如果N秒期间在被触发，则重新计时</p>
+</blockquote>
+<ul>
+<li>一般用于相应用户输入，多次提交等</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">    <span style="font-weight:bold">function</span> print(value) {
+      console.log(value);
+    }
+
+    <span style="font-weight:bold">const</span> debounce = <span style="font-weight:bold">function</span> (fn, delay = 500) {
+      <span style="font-weight:bold">if</span> (<span style="font-weight:bold">typeof</span> fn !== <span style="font-style:italic">&#39;function&#39;</span>) {
+        <span style="font-weight:bold">throw</span> <span style="font-weight:bold">new</span> Error(<span style="font-style:italic">&#39;this is not a function&#39;</span>);
+      }
+      
+      <span style="font-weight:bold">let</span> timer;
+
+      <span style="font-weight:bold">return</span> <span style="font-weight:bold">function</span> () {
+        <span style="font-style:italic">// const _this = this; 不需要引用this,setTimeout使用箭头函数
+</span><span style="font-style:italic"></span>        <span style="font-weight:bold">if</span> (timer) {
+          clearTimeout(timer);
+        }
+
+        timer = setTimeout(() =&gt; {
+          fn(...arguments);
+        }, delay);
+      };
+    };
+    <span style="font-weight:bold">const</span> debouncePrint = debounce(print);
+
+    <span style="font-weight:bold">const</span> ele = document.getElementById(<span style="font-style:italic">&#39;input&#39;</span>);
+    ele.addEventListener(<span style="font-style:italic">&#39;keyup&#39;</span>, e =&gt; {
+      debouncePrint(e.target.value);
+    });
+</code></pre></div><h5 id="节流">
+  节流
+  <a class="heading-link" href="#%e8%8a%82%e6%b5%81">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<blockquote>
+<p>在指定时间内触发事件一次</p>
+</blockquote>
+<ul>
+<li>鼠标/触摸屏的mouseover/touchmove事件</li>
+<li>页面窗口的resize事件</li>
+<li>滚动条的scroll事件</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">    <span style="font-weight:bold">function</span> print(value) {
+      console.log(value);
+    }
+
+    <span style="font-weight:bold">const</span> throttle = <span style="font-weight:bold">function</span> (fn, delay = 2000) {
+      <span style="font-weight:bold">if</span> (<span style="font-weight:bold">typeof</span> fn !== <span style="font-style:italic">&#39;function&#39;</span>) {
+        <span style="font-weight:bold">throw</span> <span style="font-weight:bold">new</span> Error(<span style="font-style:italic">&#39;this is not a function&#39;</span>);
+      }
+
+      <span style="font-weight:bold">let</span> isStart = <span style="font-weight:bold">false</span>;
+
+      <span style="font-weight:bold">return</span> <span style="font-weight:bold">function</span> () {
+        <span style="font-weight:bold">if</span> (isStart) {
+          <span style="font-weight:bold">return</span>;
+        }
+        isStart = <span style="font-weight:bold">true</span>; <span style="font-style:italic">// 初始化设置start 要执行一次
+</span><span style="font-style:italic"></span>
+        <span style="font-style:italic">/**
+</span><span style="font-style:italic">         * @description 利用定时器回调来控制start流转状态
+</span><span style="font-style:italic">         * */</span>
+        setTimeout(() =&gt; {
+          fn(...arguments);
+          isStart = <span style="font-weight:bold">false</span>;
+        }, delay);
+      };
+    };
+    <span style="font-weight:bold">const</span> throttlePrint = throttle(print);
+
+    <span style="font-weight:bold">const</span> ele = document.getElementById(<span style="font-style:italic">&#39;input&#39;</span>);
+    ele.addEventListener(<span style="font-style:italic">&#39;keyup&#39;</span>, e =&gt; {
+      throttlePrint(e.target.value);
+    });
+</code></pre></div><h5 id="柯里化">
+  柯里化
+  <a class="heading-link" href="#%e6%9f%af%e9%87%8c%e5%8c%96">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">  <span style="font-weight:bold">function</span> curry(fn, length) {
+    <span style="font-weight:bold">const</span> l = length || fn.length;
+
+    <span style="font-weight:bold">return</span> <span style="font-weight:bold">function</span> method(...args) {
+      <span style="font-weight:bold">if</span> (args.length &gt;= l) {
+        fn.call(<span style="font-weight:bold">this</span>, ...args);
+      } <span style="font-weight:bold">else</span> {
+        <span style="font-weight:bold">return</span> curry(fn.bind(<span style="font-weight:bold">this</span>, ...args), l - args.length); <span style="font-style:italic">// bind 返回一个新函数，接收了之前参数
+</span><span style="font-style:italic"></span>      }
+    };
+  }
+
+  <span style="font-weight:bold">const</span> sum = curry(<span style="font-weight:bold">function</span> (a, b, c) {
+    console.log(a, b, c);
+  });
+
+  sum(1, 2)(3); <span style="font-style:italic">// 1, 2, 3
+</span><span style="font-style:italic"></span>  sum(1)(2)(3); <span style="font-style:italic">// 1, 2, 3
+</span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">    <span style="font-style:italic">// 柯里化
+</span><span style="font-style:italic"></span>    <span style="font-weight:bold">const</span> fn = x =&gt; y =&gt; z =&gt; j =&gt; k =&gt; x + y + z + j + k;
+
+    <span style="font-style:italic">/**
+</span><span style="font-style:italic">     * @description 每次执行完curry函数后，返回一个新的函数, 判断入参是否达到函数形参个数， 否则不断柯里化返回函数，最后满足条件，执行fn
+</span><span style="font-style:italic">     *
+</span><span style="font-style:italic">     * 如果存在n个参数一起执行 eg: const fn = x =&gt; y =&gt; z =&gt; j =&gt; k =&gt; ...... =&gt; x+y+z+....+n   写一个通用函数
+</span><span style="font-style:italic">     * */</span>
+    <span style="font-weight:bold">function</span> sub_curry(fn) {
+      <span style="font-weight:bold">const</span> args = Array.prototype.slice.call(arguments, 1);
+
+      <span style="font-style:italic">// 返回函数，被调用直接执行，接受返回过来的参数
+</span><span style="font-style:italic"></span>      <span style="font-weight:bold">return</span> <span style="font-weight:bold">function</span> () {
+        fn.apply(<span style="font-weight:bold">this</span>, [...arguments, ...args]);
+      };
+    }
+
+    <span style="font-weight:bold">function</span> curry(fn, length) {
+      <span style="font-weight:bold">const</span> l = length || fn.length;
+
+      <span style="font-weight:bold">return</span> <span style="font-weight:bold">function</span> () {
+        <span style="font-weight:bold">if</span> (arguments.length &lt; l) {
+          <span style="font-weight:bold">const</span> combined = [fn].concat(Array.prototype.slice.call(arguments));
+
+          <span style="font-weight:bold">return</span> curry(sub_curry.apply(<span style="font-weight:bold">this</span>, combined), l - arguments.length);
+        } <span style="font-weight:bold">else</span> {
+          <span style="font-weight:bold">return</span> fn.apply(<span style="font-weight:bold">this</span>, arguments);
+        }
+      };
+    }
+
+    <span style="font-weight:bold">var</span> method = curry(<span style="font-weight:bold">function</span> (a, b, c) {
+      console.log(a + b + c);
+    });
+
+    method(1, 2, 3); <span style="font-style:italic">// 6
+</span><span style="font-style:italic"></span>    method(1, 2)(3); <span style="font-style:italic">// 6
+</span><span style="font-style:italic"></span>    method(1)(2)(3); <span style="font-style:italic">// 6
+</span></code></pre></div><h5 id="compose">
+  compose
+  <a class="heading-link" href="#compose">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<blockquote>
+<p>compose 数据流从右往左流转</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">  <span style="font-weight:bold">function</span> add1(str){
+    <span style="font-weight:bold">return</span> str+=<span style="font-style:italic">&#39;1&#39;</span>;
+  }
+  <span style="font-weight:bold">function</span> add2(str){
+    <span style="font-weight:bold">return</span> str+=<span style="font-style:italic">&#39;2&#39;</span>;
+  }
+  <span style="font-style:italic">// 想要str先加上 &#39;1&#39;再加上&#39;2&#39;,一般这么写
+</span><span style="font-style:italic"></span>  add2(add1(str))
+
+  <span style="font-style:italic">// 但很多层之后，可读性会很差,于是想到组合函数，将要处理的功能组合成一个函数，再传入一个参数即可。
+</span><span style="font-style:italic"></span>  compose(add1,add2)(str)
+
+  <span style="font-style:italic">// 从左到右，从右到左的话，for那边改为--之类的即可
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">function</span> compose(...rest) {
+    <span style="font-weight:bold">return</span> <span style="font-weight:bold">function</span>(str) {
+      <span style="font-weight:bold">var</span> val = str;
+      <span style="font-weight:bold">for</span> (<span style="font-weight:bold">var</span> i = rest.length - 1; i &gt; -1; i--) {
+        val = rest[i](val);
+      }
+      <span style="font-weight:bold">return</span> val
+    }
+  }
+
+  <span style="font-style:italic">// 升级版，同样从右到左的话，reduceRight,这个简直了,这个不记得从哪看到的，不是原创
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">function</span> compose(...rest) {
+    <span style="font-weight:bold">return</span> str =&gt; rest.reduce((params, cb) =&gt; cb(params), str);
+  }
+
+</code></pre></div><p><strong>redux compose补充</strong>
+compose从右往左执行</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">  <span style="font-weight:bold">export</span> <span style="font-weight:bold">default</span> <span style="font-weight:bold">function</span> compose(...funcs) {
+    <span style="font-weight:bold">if</span> (funcs.length === 0) {
+      <span style="font-weight:bold">return</span> arg =&gt; arg
+    }
+
+    <span style="font-weight:bold">if</span> (funcs.length === 1) {
+      <span style="font-weight:bold">return</span> funcs[0]
+    }
+    <span style="font-weight:bold">return</span> funcs.reduce((a, b) =&gt; (...args) =&gt; a(b(...args)))
+  }
+
+
+  <span style="font-weight:bold">import</span> {compose} from <span style="font-style:italic">&#39;redux&#39;</span>
+  <span style="font-weight:bold">let</span> x = 10
+  <span style="font-weight:bold">function</span> fn1 (x) {<span style="font-weight:bold">return</span> x + 1}
+  <span style="font-weight:bold">function</span> fn2(x) {<span style="font-weight:bold">return</span> x + 2}
+  <span style="font-weight:bold">function</span> fn3(x) {<span style="font-weight:bold">return</span> x + 3}
+  <span style="font-weight:bold">function</span> fn4(x) {<span style="font-weight:bold">return</span> x + 4}
+
+  <span style="font-style:italic">// 假设我这里想求得这样的值
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">let</span> a = fn1(fn2(fn3(fn4(x)))) <span style="font-style:italic">// 10 + 4 + 3 + 2 + 1 = 20
+</span><span style="font-style:italic"></span>
+  <span style="font-style:italic">// 根据compose的功能，我们可以把上面的这条式子改成如下：
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">let</span> composeFn = compose(fn1, fn2, fn3, fn4)
+  <span style="font-weight:bold">let</span> b = composeFn(x) <span style="font-style:italic">// 理论上也应该得到20
+</span></code></pre></div><h5 id="深拷贝">
+  深拷贝
+  <a class="heading-link" href="#%e6%b7%b1%e6%8b%b7%e8%b4%9d">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">  <span style="font-weight:bold">const</span> getType = obj =&gt; Object.prototype.toString.call(obj).slice(8, -1);
+
+  <span style="font-weight:bold">function</span> deepClone(target) {
+    <span style="font-weight:bold">const</span> type = getType(target);
+    <span style="font-weight:bold">if</span> (![<span style="font-style:italic">&#39;Array&#39;</span>, <span style="font-style:italic">&#39;Object&#39;</span>].includes(type)) {
+      <span style="font-weight:bold">return</span> target;
+    }
+
+    <span style="font-weight:bold">const</span> result = type === <span style="font-style:italic">&#39;Array&#39;</span> ? [] : {};
+    <span style="font-weight:bold">for</span> (<span style="font-weight:bold">let</span> key <span style="font-weight:bold">in</span> target) {
+      <span style="font-weight:bold">if</span> (Object.prototype.hasOwnProperty.call(target, key)) {
+        <span style="font-weight:bold">if</span> (type === <span style="font-style:italic">&#39;Array&#39;</span>) {
+          result.push(deepClone(target[key]));
+        } <span style="font-weight:bold">else</span> {
+          result[key] = deepClone(target[key]);
+        }
+      }
+    }
+
+    <span style="font-weight:bold">return</span> result;
+  }
+</code></pre></div><p>克隆对象改变不会影响原对象</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">    <span style="font-weight:bold">const</span> person = {
+      info: {
+        name: <span style="font-style:italic">&#39;levi&#39;</span>,
+        age: 20
+      },
+      company: <span style="font-style:italic">&#39;ahs&#39;</span>,
+      address: <span style="font-weight:bold">null</span>
+    };
+
+    <span style="font-weight:bold">const</span> arr = [1, 2, person];
+
+    <span style="font-weight:bold">function</span> getObjectType(obj) {
+      <span style="font-weight:bold">return</span> Object.prototype.toString.call(obj).slice(8, -1);
+    }
+
+    <span style="font-weight:bold">const</span> _deepClone = obj =&gt; {
+      <span style="font-weight:bold">const</span> type = getObjectType(obj);
+      <span style="font-weight:bold">const</span> target = type === <span style="font-style:italic">&#39;Array&#39;</span> ? [] : {};
+
+      <span style="font-weight:bold">for</span> (<span style="font-weight:bold">let</span> key <span style="font-weight:bold">in</span> obj) {
+        <span style="font-weight:bold">if</span> (!obj.hasOwnProperty(key)) {
+          <span style="font-weight:bold">continue</span>;
+        }
+
+        <span style="font-weight:bold">if</span> ([<span style="font-style:italic">&#39;Array&#39;</span>, <span style="font-style:italic">&#39;Object&#39;</span>].includes(getObjectType(obj[key]))) {
+          target[key] = _deepClone(obj[key]);
+          <span style="font-weight:bold">continue</span>;
+        }
+
+        target[key] = obj[key];
+      }
+
+      <span style="font-weight:bold">return</span> target;
+    };
+
+    <span style="font-weight:bold">const</span> newObj = _deepClone(person);
+    <span style="font-weight:bold">const</span> newArr = _deepClone(arr);
+
+    newObj.company = <span style="font-style:italic">&#39;aaa&#39;</span>;
+    newObj.info.age = 30;
+
+    newArr[0] = 100;
+    newArr[2].company = <span style="font-style:italic">&#39;blibli&#39;</span>;
+    newArr[2].info.age = 40;
+
+    console.log(person, newObj);
+    console.log(arr, newArr);
+</code></pre></div><h5 id="浅拷贝">
+  浅拷贝
+  <a class="heading-link" href="#%e6%b5%85%e6%8b%b7%e8%b4%9d">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<p>浅拷贝会造成对象容易受到克隆对象影响</p>
+<ul>
+<li>直接赋值  =</li>
+<li>Object.assign()</li>
+<li>es6 扩展运算符  const a = {&hellip;obj}</li>
+<li>JSON.parse(JSON.stringfy(obj))</li>
+</ul>
+<h4 id="事件委托---dom事件捕获目标冒泡">
+  事件委托 &amp;&amp;  DOM事件捕获、目标、冒泡
+  <a class="heading-link" href="#%e4%ba%8b%e4%bb%b6%e5%a7%94%e6%89%98---dom%e4%ba%8b%e4%bb%b6%e6%8d%95%e8%8e%b7%e7%9b%ae%e6%a0%87%e5%86%92%e6%b3%a1">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>事件模型中分为： 事件捕获、目标以及事件冒泡阶段。  先开始事件捕获 =&gt; 目标 =&gt; 事件冒泡</p>
+<blockquote>
+<p>获取当前事件目标 e.target or e.srcElement</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">  xxx.addEventListener([事件名称], 方法, 冒泡or捕获)
+
+  <span style="font-style:italic">// 事件名称： click, mouseenter等
+</span><span style="font-style:italic"></span>  <span style="font-style:italic">// 方法： 函数
+</span><span style="font-style:italic"></span>  <span style="font-style:italic">// 冒泡or捕获： 传true 则代表是捕获阶段出发， 传false 或者不传代表冒泡阶段出发
+</span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">    <span style="font-weight:bold">const</span> btn = document.getElementById(<span style="font-style:italic">&#39;btn&#39;</span>);
+    <span style="font-weight:bold">const</span> container = document.getElementById(<span style="font-style:italic">&#39;container&#39;</span>);
+
+    document.body.addEventListener(<span style="font-style:italic">&#39;click&#39;</span>, e =&gt; console.log(<span style="font-style:italic">&#39;body&#39;</span>, <span style="font-style:italic">&#39;捕获&#39;</span>, e), <span style="font-weight:bold">true</span>);
+    document.body.addEventListener(<span style="font-style:italic">&#39;click&#39;</span>, e =&gt; console.log(<span style="font-style:italic">&#39;body&#39;</span>, <span style="font-style:italic">&#39;冒泡&#39;</span>, e), <span style="font-weight:bold">false</span>);
+
+    container.addEventListener(<span style="font-style:italic">&#39;click&#39;</span>, e =&gt; {
+      console.log(<span style="font-style:italic">`container`</span>, <span style="font-style:italic">&#39;冒泡&#39;</span>, e);
+    });
+    container.addEventListener(
+      <span style="font-style:italic">&#39;click&#39;</span>,
+      e =&gt; {
+        console.log(<span style="font-style:italic">`container`</span>, <span style="font-style:italic">&#39;捕获&#39;</span>, e);
+      },
+      <span style="font-weight:bold">true</span>
+    );
+
+    <span style="font-style:italic">/** 冒泡阶段 */</span>
+    btn.addEventListener(<span style="font-style:italic">&#39;click&#39;</span>, e =&gt; {
+      console.log(<span style="font-style:italic">`btn1`</span>, e);
+      console.log(e.target, e.srcElement, e.target === e.srcElement); <span style="font-style:italic">// btn, btn  true
+</span><span style="font-style:italic"></span>      <span style="font-style:italic">// e.stopPropagation();
+</span><span style="font-style:italic"></span>      <span style="font-style:italic">// e.stopImmediatePropagation(); // 自身的事件都会组织，例如 btn2 不会输出
+</span><span style="font-style:italic"></span>    });
+
+    btn.addEventListener(<span style="font-style:italic">&#39;click&#39;</span>, e =&gt; {
+      console.log(<span style="font-style:italic">`btn2`</span>, e);
+    });
+
+    <span style="font-style:italic">/***
+</span><span style="font-style:italic">      执行顺序
+</span><span style="font-style:italic">      1、body 捕获
+</span><span style="font-style:italic">      2. container 捕获
+</span><span style="font-style:italic">      3. btn 第一次点击
+</span><span style="font-style:italic">      4. btn第二次点击
+</span><span style="font-style:italic">      5. container 冒泡
+</span><span style="font-style:italic">      6. body 冒泡
+</span><span style="font-style:italic">    */</span>
+</code></pre></div><!-- raw HTML omitted -->
+<ul>
+<li>
+<h5 id="事件委托">
+  事件委托
+  <a class="heading-link" href="#%e4%ba%8b%e4%bb%b6%e5%a7%94%e6%89%98">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+</li>
+</ul>
+<p>事件委托利用事件冒泡机制，将子元素事件挂在父元素上绑定函数
+如下面实例，不利用事件委托的话，要给所有li添加方法的话，会循环遍历所有li，给每个li添加函数，这样会这样内存消费过大，并且动态li，也要重新绑定事件，可维护性差</p>
+<blockquote>
+<p>事件委托： 节省内存，可读性强</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">
+    <span style="font-style:italic">// &lt;ul id=&#34;ul&#34;&gt;
+</span><span style="font-style:italic"></span>    <span style="font-style:italic">//   &lt;li&gt;1111&lt;/li&gt;
+</span><span style="font-style:italic"></span>    <span style="font-style:italic">//   &lt;li&gt;2222&lt;/li&gt;
+</span><span style="font-style:italic"></span>    <span style="font-style:italic">//   &lt;li&gt;3333&lt;/li&gt;
+</span><span style="font-style:italic"></span>    <span style="font-style:italic">//   &lt;li&gt;4444&lt;/li&gt;
+</span><span style="font-style:italic"></span>    <span style="font-style:italic">//   &lt;li&gt;5555&lt;/li&gt;
+</span><span style="font-style:italic"></span>    <span style="font-style:italic">// &lt;/ul&gt;
+</span><span style="font-style:italic"></span>    
+    <span style="font-weight:bold">const</span> li = document.getElementsByTagName(<span style="font-style:italic">&#39;li&#39;</span>);
+    <span style="font-weight:bold">const</span> ul = document.getElementById(<span style="font-style:italic">&#39;ul&#39;</span>);
+
+    <span style="font-weight:bold">for</span> (<span style="font-weight:bold">let</span> i = 0; i &lt; li.length; i++) {
+      li[i].onclick = <span style="font-weight:bold">function</span> () {
+        console.log(li[i].innerText);
+      };
+    }
+
+    <span style="font-style:italic">//  事件委托
+</span><span style="font-style:italic"></span>    ul.addEventListener(
+      <span style="font-style:italic">&#39;click&#39;</span>,
+      e =&gt; {
+        console.log(e.target.innerText);
+      },
+      <span style="font-weight:bold">true</span>
+    );
+
+</code></pre></div><h4 id="事件循坏">
+  事件循坏
+  <a class="heading-link" href="#%e4%ba%8b%e4%bb%b6%e5%be%aa%e5%9d%8f">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>浏览器维护了一个事件队列，当主线程任务执行完成后，每隔相应的时间就会来事件队列查看，看看有咩有需要执行的任务。任务又分为宏任务和微任务，宏任务快于微任务</p>
+<blockquote>
+<p>宏任务放入宏任务队列
+微任务放入微任务队列</p>
+</blockquote>
+<ul>
+<li>常见的宏任务：script（整体代码）、setTimeout、setInterval、I/O、setImmedidate，ajax</li>
+<li>常见的微任务：process.nextTick、MutationObserver、Promise.then catch finally</li>
+</ul>
+<p><strong>执行宏任务先检测是否有微任务，有微任务的话，先执行微任务，在执行宏任务</strong></p>
+<!-- raw HTML omitted -->
+<hr>
+<!-- raw HTML omitted -->
+<p>整体执行如上图所示</p>
+<ol>
+<li>按照代码加载顺序执行，遇到宏任务放入宏任务队列，遇到微任务放入微任务队列， 同步执行代码块立即执行</li>
+<li>先执行一个宏任务, 检查是否有微任务，全部执行。（微任务产生的微任务也会全部执行）,然后清空微任务队列</li>
+<li>渲染 - 开启下一个宏任务 ，重复步骤 2</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">setTimeout(() =&gt; {
+  console.log(<span style="font-style:italic">&#39;timer1&#39;</span>);
+
+  Promise.resolve().then(<span style="font-weight:bold">function</span> () {
+    console.log(<span style="font-style:italic">&#39;promise1&#39;</span>);
+  });
+}, 0);
+<span style="font-style:italic">// 简称set2
+</span><span style="font-style:italic"></span>setTimeout(() =&gt; {
+  console.log(<span style="font-style:italic">&#39;timer2&#39;</span>);
+
+  Promise.resolve().then(<span style="font-weight:bold">function</span> () {
+    console.log(<span style="font-style:italic">&#39;promise2&#39;</span>);
+  });
+  <span style="font-style:italic">// 简称set3
+</span><span style="font-style:italic"></span>  setTimeout(() =&gt; {
+    console.log(<span style="font-style:italic">&#39;timer3&#39;</span>);
+  }, 0);
+}, 0);
+
+Promise.resolve().then(<span style="font-weight:bold">function</span> () {
+  console.log(<span style="font-style:italic">&#39;promise3&#39;</span>);
+});
+
+console.log(<span style="font-style:italic">&#39;start&#39;</span>);
+
+<span style="font-style:italic">/***
+</span><span style="font-style:italic"> @description 输出结果
+</span><span style="font-style:italic">
+</span><span style="font-style:italic"> 1. start
+</span><span style="font-style:italic"> 2. promise3
+</span><span style="font-style:italic"> 3. timer1 
+</span><span style="font-style:italic"> 4. promise1
+</span><span style="font-style:italic"> 5. timer2
+</span><span style="font-style:italic"> 6. promise2
+</span><span style="font-style:italic"> 7. timer3
+</span><span style="font-style:italic"> 
+</span><span style="font-style:italic">**/</span>
+
+
+
+  <span style="font-weight:bold">async</span> <span style="font-weight:bold">function</span> async1() {
+    console.log(<span style="font-style:italic">&#39;async1 start&#39;</span>);
+    <span style="font-weight:bold">await</span> async2();
+    console.log(<span style="font-style:italic">&#39;async1 end&#39;</span>);
+  }
+
+  <span style="font-weight:bold">async</span> <span style="font-weight:bold">function</span> async2() {
+    console.log(<span style="font-style:italic">&#39;async2&#39;</span>);
+  }
+
+  async1();
+
+  <span style="font-weight:bold">new</span> Promise(<span style="font-weight:bold">function</span> (resolve) {
+    console.log(<span style="font-style:italic">&#39;promise1&#39;</span>);
+    resolve();
+  }).then(<span style="font-weight:bold">function</span> () {
+    console.log(<span style="font-style:italic">&#39;promise2&#39;</span>);
+  });
+  console.log(<span style="font-style:italic">&#39;script end&#39;</span>);
+
+  <span style="font-style:italic">/**
+</span><span style="font-style:italic">    @description 输出
+</span><span style="font-style:italic">    1. async1 start
+</span><span style="font-style:italic">    2. async2
+</span><span style="font-style:italic">    3. promise1
+</span><span style="font-style:italic">    4. script end 
+</span><span style="font-style:italic">    5. async1 end
+</span><span style="font-style:italic">    6. promise2
+</span><span style="font-style:italic">
+</span><span style="font-style:italic">    async await 相当于 Promise的语法糖
+</span><span style="font-style:italic">    async1 () {
+</span><span style="font-style:italic">      console.log(&#39;async1 start&#39;);
+</span><span style="font-style:italic">      Promise.resolve(async2()).then(() =&gt; console.log(async1 end))
+</span><span style="font-style:italic">    }
+</span><span style="font-style:italic">    async1();
+</span><span style="font-style:italic">  */</span> 
+
+</code></pre></div>
+      </div>
+
+
+      <footer>
+        
+
+
+        
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    ©
+    
+      2019 -
+    
+    2021
+     levi 
+    ·
+    开启美好新一天
+  </section>
+</footer>
+
+    </main>
+
+    
+      
+      <script src="/js/coder.min.03b17769f4f91ae35667e1f2a1ca8c16f50562576cf90ff32b3179926914daa5.js" integrity="sha256-A7F3afT5GuNWZ&#43;HyocqMFvUFYlds&#43;Q/zKzF5kmkU2qU="></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+  </body>
+
+</html>

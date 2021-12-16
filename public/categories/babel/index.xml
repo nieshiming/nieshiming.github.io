@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>babel on levi</title>
+    <link>http://www.example.com/categories/babel/</link>
+    <description>Recent content in babel on levi</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 16 Dec 2021 13:17:23 +0800</lastBuildDate><atom:link href="http://www.example.com/categories/babel/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>吃一堑长一智系列_babel基础知识</title>
+      <link>http://www.example.com/posts/%E5%90%83%E4%B8%80%E5%A0%91%E9%95%BF%E4%B8%80%E6%99%BA%E7%B3%BB%E5%88%97_babel%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</link>
+      <pubDate>Thu, 16 Dec 2021 13:17:23 +0800</pubDate>
+      
+      <guid>http://www.example.com/posts/%E5%90%83%E4%B8%80%E5%A0%91%E9%95%BF%E4%B8%80%E6%99%BA%E7%B3%BB%E5%88%97_babel%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</guid>
+      <description>&lt;p&gt;作为工具开发者，babel 关联问题是难绕过去的砍。
+在 babel@6 时候，最常收到反馈之一就是 regeneratorRuntime is not defined
+而到了 babel@7，最常收到反馈之一 Cannot find module &amp;lsquo;core-js/library/fn/**&amp;rsquo;.
+那是什么问题导致这些问题的出现呢，我觉得有一个 issue 特别能代表这一类的开发者。大家不要笑，我们内部一些基础模块也有这个问题
+&lt;strong&gt;总结来讲：Babel 在编译大家的代码时候，会依据大家配置的 preset or plugin 注入一些模块依赖，而这些模块依赖是大家需要在 pkg.dependencies 里面体现出来的，否则很可能出现的问题就是加载不到具体的文件或者加载错误的版本的文件。&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

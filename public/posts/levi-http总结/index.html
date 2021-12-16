@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="color-scheme" content="light dark">
+
+    
+      <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests; block-all-mixed-content; default-src 'self'; child-src 'self'; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net/; form-action 'self'; frame-src 'self'; img-src 'self'; object-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com/ https://cdn.jsdelivr.net/; script-src 'self' 'unsafe-inline' https://www.google-analytics.com; prefetch-src 'self'; connect-src 'self' https://www.google-analytics.com;">
+
+    
+
+    <meta name="author" content="levi">
+    <meta name="description" content="
+  http 协商缓存 &amp; 强制缓存
+  
+    
+  
+
+
+http面试必会的：强制缓存和协商缓存
+10分钟彻底搞懂Http的强制缓存和协商缓存
+
+
+强缓存是利用http头部中的cache-control和expries控制
+
+expries: (http1.0) 属于过时的验证缓存的方式，其值保存的是服务器返回的过期时间，再次发起请求的时候，如果客户端时间小于资源expires则不会发起请求   
+cache-control: (http1.1) 现在最多使用的控制缓存的方式，服务器返回的一个相对时间(会设置一个毫秒数，在有效时间内发起服务器请求，会读取缓存内容，直至失效，重新发起服务器请求)，解决expires比较时间造成的问题，请求服务器资源时，比较缓存资源时间和客户端当前时间(发生更改)，则会重新请求资源
+通常来说，强缓存不会向浏览器发起请求，直接从缓存中读取内容，在在chrome控制台的network的size选项中可以看到该请求返回200的状态码。分为 from disk cache 和 from memory cache。
+
+from disk cache：（硬盘中缓存） 一般非脚本内容，例如css/html
+from memory cache: （内存中缓存）一般是脚本、字体、图片
+">
+    <meta name="keywords" content="blog,developer,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="levi_http总结"/>
+<meta name="twitter:description" content="
+  http 协商缓存 &amp; 强制缓存
+  
+    
+  
+
+
+http面试必会的：强制缓存和协商缓存
+10分钟彻底搞懂Http的强制缓存和协商缓存
+
+
+强缓存是利用http头部中的cache-control和expries控制
+
+expries: (http1.0) 属于过时的验证缓存的方式，其值保存的是服务器返回的过期时间，再次发起请求的时候，如果客户端时间小于资源expires则不会发起请求   
+cache-control: (http1.1) 现在最多使用的控制缓存的方式，服务器返回的一个相对时间(会设置一个毫秒数，在有效时间内发起服务器请求，会读取缓存内容，直至失效，重新发起服务器请求)，解决expires比较时间造成的问题，请求服务器资源时，比较缓存资源时间和客户端当前时间(发生更改)，则会重新请求资源
+通常来说，强缓存不会向浏览器发起请求，直接从缓存中读取内容，在在chrome控制台的network的size选项中可以看到该请求返回200的状态码。分为 from disk cache 和 from memory cache。
+
+from disk cache：（硬盘中缓存） 一般非脚本内容，例如css/html
+from memory cache: （内存中缓存）一般是脚本、字体、图片
+"/>
+
+    <meta property="og:title" content="levi_http总结" />
+<meta property="og:description" content="
+  http 协商缓存 &amp; 强制缓存
+  
+    
+  
+
+
+http面试必会的：强制缓存和协商缓存
+10分钟彻底搞懂Http的强制缓存和协商缓存
+
+
+强缓存是利用http头部中的cache-control和expries控制
+
+expries: (http1.0) 属于过时的验证缓存的方式，其值保存的是服务器返回的过期时间，再次发起请求的时候，如果客户端时间小于资源expires则不会发起请求   
+cache-control: (http1.1) 现在最多使用的控制缓存的方式，服务器返回的一个相对时间(会设置一个毫秒数，在有效时间内发起服务器请求，会读取缓存内容，直至失效，重新发起服务器请求)，解决expires比较时间造成的问题，请求服务器资源时，比较缓存资源时间和客户端当前时间(发生更改)，则会重新请求资源
+通常来说，强缓存不会向浏览器发起请求，直接从缓存中读取内容，在在chrome控制台的network的size选项中可以看到该请求返回200的状态码。分为 from disk cache 和 from memory cache。
+
+from disk cache：（硬盘中缓存） 一般非脚本内容，例如css/html
+from memory cache: （内存中缓存）一般是脚本、字体、图片
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://www.example.com/posts/levi-http%E6%80%BB%E7%BB%93/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-12-16T13:26:42+08:00" />
+<meta property="article:modified_time" content="2021-12-16T13:26:42+08:00" />
+
+
+
+    <title>
+  levi_http总结 · levi
+</title>
+
+    
+      <link rel="canonical" href="http://www.example.com/posts/levi-http%E6%80%BB%E7%BB%93/">
+    
+
+    <link rel="preload" href="/fonts/forkawesome-webfont.woff2?v=1.2.0" as="font" type="font/woff2" crossorigin>
+
+    
+      
+      
+      <link rel="stylesheet" href="/css/coder.min.d9fddbffe6f27e69985dc5fe0471cdb0e57fbf4775714bc3d847accb08f4a1f6.css" integrity="sha256-2f3b/&#43;byfmmYXcX&#43;BHHNsOV/v0d1cUvD2Eesywj0ofY=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+      
+        
+        
+        <link rel="stylesheet" href="/css/coder-dark.min.ccbbada2e264e4fdbf9b2181cccc2cdb289a63dc9520a1e96ac2b9a45778df29.css" integrity="sha256-zLutouJk5P2/myGBzMws2yiaY9yVIKHpasK5pFd43yk=" crossorigin="anonymous" media="screen" />
+      
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
+
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+    <meta name="generator" content="Hugo 0.90.1" />
+
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+  </head>
+
+  
+  
+    
+  
+  <body class="preload-transitions colorscheme-auto">
+    
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="/">
+      levi
+    </a>
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/">首页</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/posts/">博客</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/tags/">标签</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/about/">关于我</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="http://www.example.com/posts/levi-http%E6%80%BB%E7%BB%93/">
+              levi_http总结
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+              <time datetime='2021-12-16T13:26:42&#43;08:00'>
+                December 16, 2021
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fa fa-clock-o" aria-hidden="true"></i>
+              5-minute read
+            </span>
+          </div>
+          
+          <div class="categories">
+  <i class="fa fa-folder" aria-hidden="true"></i>
+    <a href="/categories/http/">http</a></div>
+
+          <div class="tags">
+  <i class="fa fa-tag" aria-hidden="true"></i>
+    <span class="tag">
+      <a href="/tags/http/">http</a>
+    </span>
+      <span class="separator">•</span>
+    <span class="tag">
+      <a href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/">八股文</a>
+    </span></div>
+
+        </div>
+      </header>
+
+      <div>
+        
+        <h4 id="http-协商缓存--强制缓存">
+  http 协商缓存 &amp; 强制缓存
+  <a class="heading-link" href="#http-%e5%8d%8f%e5%95%86%e7%bc%93%e5%ad%98--%e5%bc%ba%e5%88%b6%e7%bc%93%e5%ad%98">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<ul>
+<li><a href="https://juejin.cn/post/6844903838768431118">http面试必会的：强制缓存和协商缓存</a></li>
+<li><a href="https://segmentfault.com/a/1190000016199807">10分钟彻底搞懂Http的强制缓存和协商缓存</a></li>
+</ul>
+<blockquote>
+<p>强缓存是利用http头部中的cache-control和expries控制</p>
+</blockquote>
+<p>expries: (http1.0) 属于过时的验证缓存的方式，其值保存的是服务器返回的过期时间，再次发起请求的时候，如果客户端时间小于资源expires则不会发起请求   <br>
+cache-control: (http1.1) 现在最多使用的控制缓存的方式，服务器返回的一个相对时间(会设置一个毫秒数，在有效时间内发起服务器请求，会读取缓存内容，直至失效，重新发起服务器请求)，解决expires比较时间造成的问题，请求服务器资源时，比较缓存资源时间和客户端当前时间(发生更改)，则会重新请求资源</p>
+<p>通常来说，强缓存不会向浏览器发起请求，直接从缓存中读取内容，在在chrome控制台的network的size选项中可以看到该请求返回200的状态码。分为 from disk cache 和 from memory cache。</p>
+<ul>
+<li>from disk cache：（硬盘中缓存） 一般非脚本内容，例如css/html</li>
+<li>from memory cache: （内存中缓存）一般是脚本、字体、图片</li>
+</ul>
+<p><strong>浏览器读取缓存优先级： memory &gt; disk &gt; 服务器请求</strong></p>
+<p>浏览器缓存过程</p>
+<ul>
+<li>浏览器第一次加载资源，服务器返回200，浏览器将资源文件从服务器上请求下载下来，并把response header及该请求的返回时间一并缓存</li>
+<li>下一次加载资源时，先比较当前时间和上一次返回200时的时间差，如果没有超过cache-control设置的max-age，则没有过期，命中强缓存，不发请求直接从本地缓存读取该文件（如果浏览器不支持HTTP1.1，则用expires判断是否过期）；如果时间过期，则向服务器发送header带有If-None-Match和If-Modified-Since的请求</li>
+<li>服务器收到请求后，优先根据Etag的值判断被请求的文件有没有做修改，Etag值一致则没有修改，命中协商缓存，返回304；如果不一致则有改动，直接返回新的资源文件带上新的Etag值并返回200</li>
+<li>如果服务器收到的请求没有Etag值，则将If-Modified-Since和被请求文件的最后修改时间做比对，一致则命中协商缓存，返回304；不一致则返回新的last-modified和文件并返回200</li>
+</ul>
+<blockquote>
+<p>强缓存情况下， 设置 cache-control 为 no-cache会走 协商缓存的判断，优先判断ETag , 没有的话判断last-modified对比和服务器资源修改时间，一直的话，返回200， 从缓存中读取<br>
+<strong>ETag &gt; last-modify</strong></p>
+</blockquote>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h4 id="浏览器输入url地址后发生了什么">
+  浏览器输入URL地址后发生了什么
+  <a class="heading-link" href="#%e6%b5%8f%e8%a7%88%e5%99%a8%e8%be%93%e5%85%a5url%e5%9c%b0%e5%9d%80%e5%90%8e%e5%8f%91%e7%94%9f%e4%ba%86%e4%bb%80%e4%b9%88">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<ul>
+<li>浏览器想DNS服务器查找输入URL对应的IP地址</li>
+<li>DNS服务器返回请求域名对应的ip地址</li>
+<li>浏览器根据IP地址与目标web服务器建立起TCP连接</li>
+<li>浏览器获取服务器返回的内容</li>
+<li>浏览器渲染html、加载script脚本等</li>
+<li>窗口关闭后浏览器终止与web服务器连接</li>
+</ul>
+<p>参考文章</p>
+<blockquote>
+<p><strong>TCP三次握手  重点看文章</strong><br>
+<a href="https://juejin.cn/post/6965544021833809928#comment">三次握手、四次挥手告别</a></p>
+<!-- raw HTML omitted -->
+</blockquote>
+<p>那么为什么要三次握手呢？两次不行吗？</p>
+<ul>
+<li>为了防止服务器端开启一些无用的连接增加服务器开销</li>
+<li>防止已失效的连接请求报文段突然又传送到了服务端，因而产生错误</li>
+</ul>
+<h4 id="常见http状态码">
+  常见http状态码
+  <a class="heading-link" href="#%e5%b8%b8%e8%a7%81http%e7%8a%b6%e6%80%81%e7%a0%81">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<ul>
+<li>1xx, 表示请求已被接收，继续处理
+<ul>
+<li>100 客户端必须继续发出请求</li>
+<li>101 客户端要求服务端根据请求转换http协议版本</li>
+</ul>
+</li>
+<li>2xx, 成功–表示请求已被成功接收、理解、接受
+<ul>
+<li>200 请求成功</li>
+</ul>
+</li>
+<li>3xx, 重定向，完成请求必须更进一步的操作
+<ul>
+<li>301 （永久移动） 请求的网页已永久移动到新位置。 服务器返回此响应（对 GET 或 HEAD 请求的响应）时，会自动将请求者转到新位置</li>
+</ul>
+</li>
+<li>4xx：客户端错误–请求有语法错误或请求无法实现。
+<ul>
+<li>400 （错误请求） 服务器不理解请求的语法</li>
+<li>401 （未授权） 请求要求身份验证。 对于需要登录的网页，服务器可能返回此响应</li>
+<li>403  服务器拒绝响应</li>
+<li>404  请求地址找不到</li>
+</ul>
+</li>
+<li>5xx：服务器端错误–服务器未能实现合法的请求
+<ul>
+<li>500 （服务器内部错误） 服务器遇到错误，无法完成请求</li>
+<li>502 （错误网关） 服务器作为网关或代理，从上游服务器收到无效响应</li>
+<li>504 （网关超时） 服务器作为网关或代理，但是没有及时从上游服务器收到请求</li>
+<li>505 （HTTP 版本不受支持） 服务器不支持请求中所用的 HTTP 协议版本</li>
+</ul>
+</li>
+</ul>
+<h4 id="请列举常用的-http-方法并介绍-get-与-post-请求之间的区别">
+  请列举常用的 HTTP 方法，并介绍 GET 与 POST 请求之间的区别
+  <a class="heading-link" href="#%e8%af%b7%e5%88%97%e4%b8%be%e5%b8%b8%e7%94%a8%e7%9a%84-http-%e6%96%b9%e6%b3%95%e5%b9%b6%e4%bb%8b%e7%bb%8d-get-%e4%b8%8e-post-%e8%af%b7%e6%b1%82%e4%b9%8b%e9%97%b4%e7%9a%84%e5%8c%ba%e5%88%ab">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<ul>
+<li>get请求数据量较小，可以在URL展示出来,可以被缓存</li>
+<li>post请求，报文数据量比get多</li>
+</ul>
+<h4 id="cookies-sessionstorage和localstorage的区别">
+  cookies sessionstorage和localstorage的区别
+  <a class="heading-link" href="#cookies-sessionstorage%e5%92%8clocalstorage%e7%9a%84%e5%8c%ba%e5%88%ab">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<ul>
+<li>cookie：存储在用户本地终端上的数据</li>
+<li>cookie数据始终在同源的http请求中携带(cookie在浏览器和服务器间来回传递)， 每次http请求都会携带cookie 大小为4k</li>
+<li>sessionstorage和localstorage存储在浏览器中，不参与服务器的通信,大于5M</li>
+<li>sessionstorage：客户端存储数据，当用户关闭浏览器以后，数据就会被删除</li>
+<li>localstorage：客户端存储数据,没有时间限制的数据存储</li>
+</ul>
+<h4 id="http-和-https-的共同点和区别">
+  HTTP 和 HTTPS 的共同点和区别
+  <a class="heading-link" href="#http-%e5%92%8c-https-%e7%9a%84%e5%85%b1%e5%90%8c%e7%82%b9%e5%92%8c%e5%8c%ba%e5%88%ab">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>经典五层模型： 应用层(http/https)、传输层(TCP)、网络层(IP)、数据链路层<br>
+http: 超文本传输协议 <br>
+https： 超文本传输安全协议 <br>
+<!-- raw HTML omitted --></p>
+<ul>
+<li>https 协议需要到 ca 申请证书，一般免费证书较少，因而需要一定费用</li>
+<li>http 和 https 使用的是完全不同的连接方式，用的端口也不一样，前者是80，后者是443</li>
+<li>http 是超文本传输协议，信息是明文传输， https 则是具有安全性的TLS/SSHL加密传输协议，相当加了一层(安全层)， 更加消费服务器资源</li>
+<li>http请求比https响应更快， 因为https加了TLS，建立连接更加复杂，也要交换更多的数据，难免会影响速度</li>
+<li>http的连接很简单，是无状态的，https协议是有SSL+HTTP 协议构建的可进行加密传输，身份认证的网络协议，比http更加安全</li>
+</ul>
+<h4 id="https加密过程">
+  HTTPS加密过程
+  <a class="heading-link" href="#https%e5%8a%a0%e5%af%86%e8%bf%87%e7%a8%8b">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<h5 id="对称加密">
+  对称加密
+  <a class="heading-link" href="#%e5%af%b9%e7%a7%b0%e5%8a%a0%e5%af%86">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<blockquote>
+<p>简单来说就是一个密钥，可以用它加密数据，也可以用它解密数据, eg: 客户端和服务器用同一个密钥来进行加密、解密工作
+缺点：密钥容易受到第三方劫持
+<!-- raw HTML omitted --></p>
+</blockquote>
+<h5 id="非对称加密">
+  非对称加密
+  <a class="heading-link" href="#%e9%9d%9e%e5%af%b9%e7%a7%b0%e5%8a%a0%e5%af%86">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<blockquote>
+<p>简单来说就是有2个密钥： 公钥和私钥。若使用私钥加密，公钥可用来解密。反之，可以用公钥加密，私钥解密
+eg: 服务器维护一组公钥、私钥。在客户端TLS阶段传递客户端公钥，客户端用公钥对数据解密。 服务器解密操作。
+<!-- raw HTML omitted --></p>
+</blockquote>
+<h5 id="握手流程">
+  握手流程
+  <a class="heading-link" href="#%e6%8f%a1%e6%89%8b%e6%b5%81%e7%a8%8b">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<ul>
+<li>客户端通过URL访问服务器建立TLS连接</li>
+<li>服务器把证书、公钥、公司信息，证书有效期等信息传递给客户端</li>
+<li>客户端随机生成一个对称密钥(随机key)，在用公钥加密尬该密钥，加密后密钥回传给服务器</li>
+<li>服务器用私钥解密客户端传递密钥</li>
+<li>&hellip;后续客户端和服务端就用该密钥进行数据通信</li>
+</ul>
+<!-- raw HTML omitted -->
+<h5 id="每次进行https请求时都必须在ssltls层进行握手传输密钥吗">
+  每次进行HTTPS请求时都必须在SSL/TLS层进行握手传输密钥吗？
+  <a class="heading-link" href="#%e6%af%8f%e6%ac%a1%e8%bf%9b%e8%a1%8chttps%e8%af%b7%e6%b1%82%e6%97%b6%e9%83%bd%e5%bf%85%e9%a1%bb%e5%9c%a8ssltls%e5%b1%82%e8%bf%9b%e8%a1%8c%e6%8f%a1%e6%89%8b%e4%bc%a0%e8%be%93%e5%af%86%e9%92%a5%e5%90%97">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<p>服务器会给每个客户端维护一个sessionId,在TLS阶段传递给浏览器，浏览器生成好的密钥传递给服务器，服务器会把密钥和sessionId对应存在起来，之后再浏览器每次请求的时候
+带上sessionId，服务器根据sessionId,找到对应的密钥并进行解密工作。这样就不用每次让客户端只做密钥，服务器保存密钥操作了。</p>
+<p>参考文章：</p>
+<ul>
+<li><a href="https://zhuanlan.zhihu.com/p/43789231">彻底搞懂HTTPS的加密原理 - 知乎</a></li>
+<li><a href="https://segmentfault.com/a/1190000021494676">HTTPS 详解一：附带最精美详尽的 HTTPS 原理图</a></li>
+</ul>
+<h4 id="什么是跨域">
+  什么是跨域
+  <a class="heading-link" href="#%e4%bb%80%e4%b9%88%e6%98%af%e8%b7%a8%e5%9f%9f">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>跨域本质是浏览器的同源策略造成，指的是浏览器不能执行其他网站的脚本</p>
+<blockquote>
+<p>什么是同源策略： 协议，端口，域名</p>
+</blockquote>
+<ul>
+<li>同源策略限制了一下行为</li>
+<li>Cookie、LocalStorage 和 IndexDB 无法读取</li>
+<li>Ajax请求可以发出来，但是接收不到响应</li>
+</ul>
+<h5 id="解决跨域">
+  解决跨域
+  <a class="heading-link" href="#%e8%a7%a3%e5%86%b3%e8%b7%a8%e5%9f%9f">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<ul>
+<li>利用jsonp跨域，  传递服务器callback函数，同时callback挂载在window上 =&gt; 缺点只支持get，存在csrf风险</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="font-style:italic">// 客户端代码
+</span><span style="font-style:italic"></span><span style="font-weight:bold">const</span> Jsonp = <span style="font-weight:bold">async</span> (
+  request: { params: object; callback: string; url: string },
+  timeout: number = 2000
+) =&gt; {
+  <span style="font-weight:bold">return</span> <span style="font-weight:bold">new</span> Promise((resolve, reject) =&gt; {
+    <span style="font-weight:bold">const</span> { url, params, callback } = request;
+    <span style="font-weight:bold">const</span> method = <span style="font-style:italic">`</span><span style="font-weight:bold;font-style:italic">${</span>callback<span style="font-weight:bold;font-style:italic">}</span><span style="font-style:italic">_</span><span style="font-weight:bold;font-style:italic">${</span>Date.now()<span style="font-weight:bold;font-style:italic">}</span><span style="font-style:italic">`</span>;
+
+    <span style="font-weight:bold">let</span> src: string = url.indexOf(<span style="font-style:italic">&#39;?&#39;</span>) &gt; -1 ? url : <span style="font-style:italic">`</span><span style="font-weight:bold;font-style:italic">${</span>url<span style="font-weight:bold;font-style:italic">}</span><span style="font-style:italic">?`</span>;
+    <span style="font-weight:bold">for</span> (<span style="font-weight:bold">let</span> key <span style="font-weight:bold">in</span> params) {
+      src += <span style="font-style:italic">`&amp;</span><span style="font-weight:bold;font-style:italic">${</span>key<span style="font-weight:bold;font-style:italic">}</span><span style="font-style:italic">=</span><span style="font-weight:bold;font-style:italic">${</span>params[key]<span style="font-weight:bold;font-style:italic">}</span><span style="font-style:italic">`</span>;
+    }
+
+    <span style="font-weight:bold">const</span> script = document.createElement(<span style="font-style:italic">&#39;script&#39;</span>);
+    script.setAttribute(<span style="font-style:italic">&#39;src&#39;</span>, <span style="font-style:italic">`</span><span style="font-weight:bold;font-style:italic">${</span>src<span style="font-weight:bold;font-style:italic">}</span><span style="font-style:italic">&amp;callback=</span><span style="font-weight:bold;font-style:italic">${</span>encodeURIComponent(method)<span style="font-weight:bold;font-style:italic">}</span><span style="font-style:italic">`</span>);
+    document.body.appendChild(script);
+
+    <span style="font-weight:bold">const</span> clean = () =&gt; {
+      clearTimeout(timer);
+      <span style="font-weight:bold">delete</span> window[method];
+      document.body.removeChild(script);
+    };
+
+    <span style="font-weight:bold">const</span> timer = setTimeout(() =&gt; {
+      clean();
+      reject(<span style="font-style:italic">&#39;timeout 超时啦&#39;</span>);
+    }, timeout);
+
+    window[method] = data =&gt; {
+      clean();
+      resolve(data);
+    };
+
+    script.addEventListener(<span style="font-style:italic">&#39;error&#39;</span>, () =&gt; {
+      clean();
+      reject(<span style="font-style:italic">&#39;资源加载失败&#39;</span>);
+    });
+  });
+};
+
+<span style="font-style:italic">// 服务端
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">const</span> qs = require(<span style="font-style:italic">&#39;qs&#39;</span>)
+  <span style="font-weight:bold">const</span> http = require(<span style="font-style:italic">&#39;http&#39;</span>)
+
+  http
+    .createServer((req, res) =&gt; {
+      <span style="font-weight:bold">const</span> [path, query] = req.url.split(<span style="font-style:italic">&#39;?&#39;</span>)
+      <span style="font-weight:bold">const</span> params = qs.parse(query, { ignoreQueryPrefix: <span style="font-weight:bold">true</span> })
+      res.writeHead(200, { <span style="font-style:italic">&#39;Content-Type&#39;</span>: <span style="font-style:italic">&#39;text/javascript&#39;</span> })
+      setTimeout(() =&gt; {
+        res.end(
+          <span style="font-style:italic">`</span><span style="font-weight:bold;font-style:italic">${</span>params.callback<span style="font-weight:bold;font-style:italic">}</span><span style="font-style:italic">(</span><span style="font-weight:bold;font-style:italic">${</span>JSON.stringify({
+            path,
+            name: params.name,
+            date: params.date,
+          <span style="font-weight:bold;font-style:italic">}</span><span style="font-style:italic">)})`</span>
+        )
+      }, 3000)
+    })
+    .listen(8081)
+
+  console.log(<span style="font-style:italic">&#39;http serve running at 8081&#39;</span>)
+</code></pre></div><ul>
+<li>window.name</li>
+<li>postMessage 跨域
+<blockquote>
+<p>实现： window.top.postMessage(message, targetOrigin);  message: 需要传递数据， targetOrigin: 通过origin指定哪些窗口可以接受消息事件(message, 可以设置为 * )
+新老crm模块切换使用，老的crm任务单还未下线，新的已经完成</p>
+</blockquote>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">  <span style="font-style:italic">// 新crm逻辑， 部分页面跳转到指定老的crm详情页
+</span><span style="font-style:italic"></span>  <span style="font-style:italic">//  searchresult组件 判断是否跳转新老详情页面
+</span><span style="font-style:italic"></span>  <span style="font-weight:bold">private</span> gotoDetail = (item: ITask) =&gt; {
+    <span style="font-weight:bold">let</span> url = <span style="font-style:italic">`/</span><span style="font-weight:bold;font-style:italic">${</span>ENV_CONFIG.baseName<span style="font-weight:bold;font-style:italic">}</span><span style="font-style:italic">/task/detail/</span><span style="font-weight:bold;font-style:italic">${</span>item.taskKey<span style="font-weight:bold;font-style:italic">}</span><span style="font-style:italic">`</span>;
+
+    <span style="font-weight:bold">if</span> (getQueryString(<span style="font-style:italic">&#39;viewtype&#39;</span>) === <span style="font-style:italic">&#39;old&#39;</span> || <span style="font-weight:bold">this</span>.props.isIframe) {
+      <span style="font-weight:bold">switch</span> (item.taskCategoryCode) {
+        <span style="font-weight:bold">case</span> ETaskCategory.审批:
+        <span style="font-weight:bold">case</span> ETaskCategory.升级处理:
+        <span style="font-weight:bold">case</span> ETaskCategory.拍拍升级处理:
+        <span style="font-weight:bold">case</span> ETaskCategory.新机退款:
+          url = <span style="font-style:italic">`/</span><span style="font-weight:bold;font-style:italic">${</span>ENV_CONFIG.baseName<span style="font-weight:bold;font-style:italic">}</span><span style="font-style:italic">/task/detail/</span><span style="font-weight:bold;font-style:italic">${</span>item.taskKey<span style="font-weight:bold;font-style:italic">}</span><span style="font-style:italic">`</span>;
+          <span style="font-weight:bold">break</span>;
+        <span style="font-weight:bold">default</span>:
+          url = <span style="font-style:italic">`/#/mission/</span><span style="font-weight:bold;font-style:italic">${</span>item.taskKey<span style="font-weight:bold;font-style:italic">}</span><span style="font-style:italic">`</span>;
+      }
+    }
+
+    <span style="font-weight:bold">if</span> (<span style="font-weight:bold">this</span>.props.isIframe) {
+      window.top[<span style="font-style:italic">&#39;postMessage&#39;</span>]({ type: <span style="font-style:italic">&#39;OPEN_WINDOW&#39;</span>, params: url.replace(<span style="font-style:italic">/\/#\//</span>, <span style="font-style:italic">&#39;/&#39;</span>) }, <span style="font-style:italic">&#39;*&#39;</span>);
+      <span style="font-weight:bold">return</span>;
+    }
+
+    window.open(url);
+  };
+
+  <span style="font-style:italic">//  老crm，接受postMessage信息，判断路由跳转， 老crm有嵌套iframe部分
+</span><span style="font-style:italic"></span>  &lt;iframe
+    v-<span style="font-weight:bold">if</span>=<span style="font-style:italic">&#34;this.conversation.phone || this.orderId&#34;</span>
+    border=<span style="font-style:italic">&#34;0&#34;</span>
+    frameborder=<span style="font-style:italic">&#34;no&#34;</span>
+    marginwidth=<span style="font-style:italic">&#34;0&#34;</span>
+      marginheight=<span style="font-style:italic">&#34;0&#34;</span>
+    :src=<span style="font-style:italic">&#34;&#39;/lordaeron/task/searchresult?userMobile=&#39; + this.conversation.phone + &#39;&amp;busiKey=&#39; + this.orderId&#34;</span>
+    :style=<span style="font-style:italic">&#34;{ width: &#39;100%&#39;, height: iframeHeight }&#34;</span>
+  &gt;&lt;<span style="">/iframe&gt;</span>
+
+  window.addEventListener(<span style="font-style:italic">&#34;message&#34;</span>, (d) =&gt; {
+    <span style="font-weight:bold">let</span> { data } = d;
+    <span style="font-weight:bold">let</span> { type, params } = data || {};
+    <span style="font-weight:bold">if</span> (type === <span style="font-style:italic">&#34;OPEN_WINDOW&#34;</span>) {
+      <span style="font-weight:bold">if</span> (<span style="font-style:italic">/lordaeron/</span>.test(params)) {
+        window.open(params);
+        <span style="font-weight:bold">return</span>;
+      }
+      <span style="font-weight:bold">this</span>.routeTo({
+        path: params,
+        type: <span style="font-style:italic">&#34;_blank&#34;</span>,
+      });
+    }
+
+    <span style="font-weight:bold">if</span> (type === <span style="font-style:italic">&#34;PHONE_CALLING&#34;</span>) {
+      document.querySelector(<span style="font-style:italic">&#39;#dialout_input&#39;</span>).value = params;
+      document.querySelector(<span style="font-style:italic">&#39;#DialEnable&#39;</span>).click();
+    }
+  });
+</code></pre></div><ul>
+<li>跨域资源共享CORS &mdash; 不支持IE9以下浏览器</li>
+<li>nginx 实现反向代理， webpackdevserver proxy 是一个小型服务器，也能实现反向代理指定到指定域名</li>
+</ul>
+<h4 id="跨域资源共享cors简单请求复杂请求">
+  跨域资源共享CORS（简单请求、复杂请求）
+  <a class="heading-link" href="#%e8%b7%a8%e5%9f%9f%e8%b5%84%e6%ba%90%e5%85%b1%e4%ba%abcors%e7%ae%80%e5%8d%95%e8%af%b7%e6%b1%82%e5%a4%8d%e6%9d%82%e8%af%b7%e6%b1%82">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>跨站资源共享中的一种方式，它使用额外的http头部告诉浏览器可以服务器进行跨域资源请求</p>
+<h5 id="请求类型">
+  请求类型
+  <a class="heading-link" href="#%e8%af%b7%e6%b1%82%e7%b1%bb%e5%9e%8b">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<h6 id="简单请求">
+  简单请求
+  <a class="heading-link" href="#%e7%ae%80%e5%8d%95%e8%af%b7%e6%b1%82">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h6>
+<ul>
+<li>请求方式是 GET, POST, HEAD一种
+HEAD请求：和GET请求本质没说什么区别，也是从服务器获取资源，服务器处理逻辑也是一样的。只不过服务器不糊返回请求内容实体。只会回传响应头。
+1、常用来判断资源是否存在， 2、检查文件是否最新版本</li>
+<li>无定义头部信息</li>
+<li>content-type值只能是下面几种
+<ul>
+<li>application/x-www-form-urlencoded</li>
+<li>multipart/form-data</li>
+<li>text/plain</li>
+</ul>
+</li>
+</ul>
+<h6 id="复杂请求">
+  复杂请求
+  <a class="heading-link" href="#%e5%a4%8d%e6%9d%82%e8%af%b7%e6%b1%82">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h6>
+<p>当一个请求不满足上诉简单请求，被判定为复杂请求
+复杂请求有2个步骤，开始是options请求（预检请求），然后是实际请求，</p>
+<blockquote>
+<p>CORS预检请求发生在实际请求之前，用于验证服务器是否支持复杂请求，是否安全等、避免跨域请求对用户数据产生未预期结果，在实际业务中经常有自定义头部存在，
+这种自定义类型无法预测和保证数据安全，所以需要一个协商的过程(预检请求)</p>
+</blockquote>
+<h5 id="cors请求过程">
+  CORS请求过程
+  <a class="heading-link" href="#cors%e8%af%b7%e6%b1%82%e8%bf%87%e7%a8%8b">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<p>CORS请求需要要求服务器设置允许访问来源，即：设置<strong>Access-Conrol-Allow-Origin</strong>，该字段表明服务器允许哪些站点可以跨域访问资源，</p>
+<ul>
+<li>Origin: 请求发出的原站，如果不在Access-Control-Allow-Origin范围内，则拒绝请求</li>
+<li>Access-Control-Allow-Origin: * ; 代表允许所有站点访问， 注意如果设置 * ，那么头部设置 withCredentials： true， ，无法携带cookie</li>
+<li>Access-control-Allow-Methods: 约定的请求方法（GET/PUT/DELETE/POST/PATCH等）</li>
+<li>Access-Control-Allow-Header: 自定义约束的头部</li>
+<li>Access-Control-Expose-Headers: 跨域请求中，浏览器默认情况下通过API只能获取到以下响应头部字段：
+<ul>
+<li>cache-control</li>
+<li>last-modify</li>
+<li>expries</li>
+<li>content-type</li>
+</ul>
+</li>
+<li>Access-Control-Allow-Credentials: boolean;  表示在跨域请求是否允许客户端发送cookie给服务器。
+<em><em>浏览器cors请求默认不发生cookie，需要传递cookie的话，客户端和服务端同步设置 withCredentials： true  和 Access-Control-Allow-Credentials: true, 并且Access-Control-Allow-Origin: 不是</em>， 不然会报错</em>*</li>
+</ul>
+<!-- raw HTML omitted -->
+<h4 id="http10--http11--http20-区别">
+  http1.0 / http1.1 / http2.0 区别
+  <a class="heading-link" href="#http10--http11--http20-%e5%8c%ba%e5%88%ab">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<ul>
+<li>http1.1 增加了connection: keep-alive(保持http持久连接)
+<blockquote>
+<p>假设有6个http请求，如果开启keep-alive, 那么在5-15s同时发送6次http请求，走的是一个TCP连接，走一个是同一条http流，如果超出5-15没有发生http请求，那么连接中断，这表示是一条http长连接<br>
+如果不使用http持久连接，那么没发生一次http请求，都会经历TCP三次握手，非常耗时 <br>
+<strong>优点：降低服务器因大量建立TCP建立而造成CPU加重负载，以及TCP传输相关阻塞问题</strong>  <br>
+<strong>缺点：以前带宽小，瞬时请求高，所以用这个方法降低 TCP 新建。但现在带宽大，并发高。如果 HTTP 服务存在长轮训或较长间隔请求，而且超过 Keep-Alive 的设置（比如 Keep-Alive 5 秒，但轮训周期是 6 秒），则可能会造成大量的无用途连接，白白占用系统资源 ==&gt; 浪费带宽资源</strong></p>
+</blockquote>
+</li>
+<li>http 1.1 增加host字段</li>
+<li>http 2.0
+<ul>
+<li>头部压缩： 传递头信息之前会进行压缩</li>
+<li>二进制分帧：头部信息使用二进制的格式并分成一帧一帧传递 (1.1是一个文本格式)</li>
+<li>多路复用： 1.1请求和响应是有顺序，一旦某个前面未响应后续请求会阻塞，2.0响应是无序的，不会造成阻塞</li>
+<li>服务器推送： 服务器可以对客户端一次请求响应多次，例如客户端请求html，服务器可以额外推送css/js/img资源等</li>
+</ul>
+</li>
+</ul>
+<h4 id="web常用的攻击技术和防护">
+  web常用的攻击技术和防护
+  <a class="heading-link" href="#web%e5%b8%b8%e7%94%a8%e7%9a%84%e6%94%bb%e5%87%bb%e6%8a%80%e6%9c%af%e5%92%8c%e9%98%b2%e6%8a%a4">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<blockquote>
+<p>xss 跨站脚本攻击: XSS 攻击是指攻击者在网站上注入恶意的客户端代码，通过恶意脚本对客户端网页进行篡改，从而在用户浏览网页时，对用户浏览器进行控制或者获取用户隐私数据的一种攻击方式</p>
+</blockquote>
+<blockquote>
+<p>csrf 跨站请求伪造: 通常情况下，CSRF 攻击是攻击者借助受害者的 Cookie 骗取服务器的信任，可以在受害者毫不知情的情况下以受害者名义伪造请求发送给受攻击服务器，从而在并未授权的情况下执行在权限保护之下的操作。</p>
+</blockquote>
+<ul>
+<li><a href="https://github.com/dwqs/blog/issues/68">浅说 XSS 和 CSRF</a></li>
+<li><a href="https://bubuzou.com/2020/12/04/web-security/">浏览器专题之安全篇</a></li>
+</ul>
+<p>参考文章</p>
+<ul>
+<li><a href="https://juejin.cn/post/6844903872935247886">15个常见的http知识点复习</a></li>
+<li><a href="https://segmentfault.com/q/1010000019503002">connection keep-alive作用</a></li>
+</ul>
+<h4 id="dns解析相关--cdn原理">
+  DNS解析相关 &amp;&amp; CDN原理
+  <a class="heading-link" href="#dns%e8%a7%a3%e6%9e%90%e7%9b%b8%e5%85%b3--cdn%e5%8e%9f%e7%90%86">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>CDN中文含义”内容分发网络“，将原站的内容分布到接近用户边缘的边缘。用户可以就近获取数据</p>
+<ul>
+<li>降低了网络请求阻塞情况</li>
+<li>提高了请求的响应的数据</li>
+<li>减少了原站的负载压力</li>
+</ul>
+<h5 id="访问原站的过程无cdn">
+  访问原站的过程(无CDN)
+  <a class="heading-link" href="#%e8%ae%bf%e9%97%ae%e5%8e%9f%e7%ab%99%e7%9a%84%e8%bf%87%e7%a8%8b%e6%97%a0cdn">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<ul>
+<li>用户在客户端输入相关域名。 ”https://abc.sina.com“;</li>
+<li>客户端首先会在本地hosts或者hosts缓存中查到域名对应ip地址;</li>
+<li>如果没有信息，则会到本地DNS查询域名对应服务器地址;</li>
+<li>本地DNS仍然没有域名对应的ip地址，则会依次 根DNS、顶级域名DNS进行询问。最终本地DNS把域名对应ip地址返回给客户端;</li>
+<li>客户端拿到对应ip地址，经过标准的TCP三次握手、建立TCP连接； 浏览器想服务器发起数据请求 =&gt;  服务器把数据返回给客户端</li>
+<li>客户端解析数据（html、css、js、image等资源）</li>
+<li>经过标准的TCP挥手流程，断开TCP连接</li>
+</ul>
+<h5 id="域名解析">
+  域名解析
+  <a class="heading-link" href="#%e5%9f%9f%e5%90%8d%e8%a7%a3%e6%9e%90">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<p>域名解析可以分为2种</p>
+<ul>
+<li>将一个域名解析成一个ip地址</li>
+<li>将一个域名解析成另一个域名</li>
+</ul>
+<p>其实解析思路不难，我们在域名服务商购买了一个域名之后，需要去映射一个IP地址，可以用Map来表示这个关系：{域名：IP}。同时我们也可以给某个域名取一个别名，比如“www.baidu.com”取一个别名“test.baidu.com”，这种关系也可以用Map来表示：{域名：别名}。这里的别名专业一点叫做CNAME，相信大家对这个词有点眼熟，它就是这个意思
+<strong>而域名解析： 最终解析为一个ip地址或者一个CNAME</strong></p>
+<p>域名解析是由DNS完成，如果发现域名解析为CNAME,那么继续查询CNAME对应的ip地址</p>
+<h5 id="使用cdn获取缓存内容过程">
+  使用CDN获取缓存内容过程
+  <a class="heading-link" href="#%e4%bd%bf%e7%94%a8cdn%e8%8e%b7%e5%8f%96%e7%bc%93%e5%ad%98%e5%86%85%e5%ae%b9%e8%bf%87%e7%a8%8b">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<!-- raw HTML omitted -->
+<blockquote>
+<p>用户使用某个域名来访问静态资源时（这个域名在阿里CDN服务中叫做“加速域名”），比如这个域名为“image.baidu.com”，它对应一个CNAME，叫做“cdn.ali.com”，那么普通DNS服务器（区别CDN专用DNS服务器）在解析“image.baidu.com”时，会先解析成“cdn.ali.com”，普通DNS服务器发现该域名对应的也是一个DNS服务器，那么会将域名解析工作转交给该DNS服务器，该DNS服务器就是CDN专用DNS服务器。CDN专用DNS服务器对“cdn.ali.com”进行解析，然后依据服务器上记录的所有CDN</p>
+</blockquote>
+<ul>
+<li>客户端发起域名请求，先经过本机hosts、hosts缓存查看对应的ip，如果本机没有对应ip地址，转向本地DNS解析、域名DNS、顶级域名DNS依次查找，如果发现该域名对应一个CNAME(CND别名域名)。则会把域名解析权交给CDN专属DNS服务器</li>
+<li>CDN专属DNS服务器把CDN全局负载均衡设备(GSLB)ip返回给客户端</li>
+<li>用户向全局负载均衡设备ip发起网络请求</li>
+<li>GSLB根据请求ip判断用户当前位置。筛选出该区域内最优的区域负载均衡设备(SLB),并把请求转发该设备上</li>
+<li>区域负载均衡设备(SLB)考虑每个节点的负载情况、健康度、、连接数资源限制条件。筛选出最优缓存节点,并将http请求最终转发到该节点上</li>
+<li>用户向获取的IP地址发起对该资源的访问请求。
+<ul>
+<li>如果ip地址对应节点已经缓存了资源，则会直接把数据返给用户</li>
+<li>如果该ip地址对应节点未缓存该资源。则会向源站请求内容，结合用户自定义配置的缓存策略，把内容缓存到改节点上，并返回给用户，请求结束</li>
+</ul>
+</li>
+</ul>
+<h5 id="参考文章">
+  参考文章
+  <a class="heading-link" href="#%e5%8f%82%e8%80%83%e6%96%87%e7%ab%a0">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<ul>
+<li><a href="https://juejin.cn/post/6844903873518239752">CDN原理简析</a></li>
+<li><a href="https://juejin.cn/post/6844903906296725518">漫话：如何给女朋友解释什么是CDN？</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/306069528">百度面试官：给我说是CDN加速的原理？</a></li>
+</ul>
+<h4 id="使用promise封装ajax请求">
+  使用Promise封装ajax请求
+  <a class="heading-link" href="#%e4%bd%bf%e7%94%a8promise%e5%b0%81%e8%a3%85ajax%e8%af%b7%e6%b1%82">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">    <span style="font-style:italic">/***
+</span><span style="font-style:italic">     * @description
+</span><span style="font-style:italic">     *
+</span><span style="font-style:italic">     * readyState: 0 请求还未建立，未执行open方法
+</span><span style="font-style:italic">     * readyState: 1 请求已建立，还未调用send方法
+</span><span style="font-style:italic">     * readyState: 2 send方法执行
+</span><span style="font-style:italic">     * readyState: 3 处于响应中，还未得到response
+</span><span style="font-style:italic">     * readyState: 4 响应结束，请求完成处理完成
+</span><span style="font-style:italic">     * */</span>
+    <span style="font-weight:bold">const</span> levi_ajax = (url, method, params, headers) =&gt; {
+      <span style="font-weight:bold">return</span> <span style="font-weight:bold">new</span> Promise((resolve, reject) =&gt; {
+        <span style="font-weight:bold">const</span> xhr = <span style="font-weight:bold">new</span> XMLHttpRequest();
+        xhr.open(method, url, <span style="font-weight:bold">true</span>);  <span style="font-style:italic">//  xhrReq.open(method, url, async);  async 是否异步，默认true
+</span><span style="font-style:italic"></span>
+        <span style="font-weight:bold">for</span> (<span style="font-weight:bold">let</span> key <span style="font-weight:bold">in</span> headers) {
+          <span style="font-weight:bold">let</span> value = headers(key);
+          xhr.setRequestHeader(key, value);
+        }
+
+        xhr.onreadystatechange = () =&gt; {
+          <span style="font-weight:bold">if</span> (xhr.readyState === 4) {
+            <span style="font-weight:bold">if</span> (xhr.status === 200) {
+              resolve(xhr.responseText);
+            } <span style="font-weight:bold">else</span> {
+              reject(<span style="font-style:italic">&#39;some errors&#39;</span>);
+            }
+          }
+        };
+
+        xhr.send(params);
+      });
+    };
+
+    <span style="font-style:italic">// 改进，使用onload、onerror监听
+</span><span style="font-style:italic"></span>    <span style="font-weight:bold">const</span> levi_ajaxb = (method, url, params, headers) =&gt; {
+      <span style="font-weight:bold">return</span> <span style="font-weight:bold">new</span> Promise((resolve, reject) =&gt; {
+        <span style="font-weight:bold">const</span> xhr = <span style="font-weight:bold">new</span> XMLHttpRequest();
+        xhr.open(method, url);
+
+        <span style="font-weight:bold">for</span> (<span style="font-weight:bold">let</span> key <span style="font-weight:bold">in</span> headers) {
+          xhr.setRequestHeader(key, headers[key]);
+        }
+
+        xhr.onload = () =&gt; {
+          <span style="font-weight:bold">if</span> (xhr.readyState === 4) {
+            <span style="font-weight:bold">if</span> (xhr.status === 20) {
+              resolve(xhr.responseText);
+            } <span style="font-weight:bold">else</span> {
+              reject(xhr.statusText);
+            }
+          }
+        };
+
+        xhr.onerror = () =&gt; {
+          reject(<span style="font-style:italic">&#39;some error&#39;</span>);
+        };
+
+        xhr.send(params);
+      });
+    };
+</code></pre></div><h4 id="content-type-有几种-">
+  content-type 有几种 **
+  <a class="heading-link" href="#content-type-%e6%9c%89%e5%87%a0%e7%a7%8d-">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>用于定义网络文件以及类型，同时告知浏览器以那些方式处理该文件</p>
+<ul>
+<li>文本： text/html、text/javascript、text/css 、 text/plain</li>
+<li>图片： image/gif、image/jpeg、image/png</li>
+<li>视频： video/ogg</li>
+<li>视频： audio/ogg 、 audio/wav</li>
+<li>二进制：application/json 、 application/pdf</li>
+<li>上传文件： multipart/form-data</li>
+</ul>
+<h4 id="http报文结构有哪些headers-">
+  http报文结构，有哪些headers **
+  <a class="heading-link" href="#http%e6%8a%a5%e6%96%87%e7%bb%93%e6%9e%84%e6%9c%89%e5%93%aa%e4%ba%9bheaders-">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>用户http协议交互的信息成为报文： 有请求报文，响应报文， http报文可分为报文首部、报文主体
+<!-- raw HTML omitted --></p>
+<h5 id="请求报文">
+  请求报文
+  <a class="heading-link" href="#%e8%af%b7%e6%b1%82%e6%8a%a5%e6%96%87">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<ul>
+<li>请求行（请求方法、请求url、协议版本）</li>
+<li>请求头部</li>
+<li>空行</li>
+<li>请求体： 要传递的参数</li>
+</ul>
+<p><strong>实例数据</strong>
+<!-- raw HTML omitted --></p>
+<p><strong>Request Header</strong></p>
+<ul>
+<li>referer</li>
+<li>cookie</li>
+<li>origin</li>
+<li>accpet</li>
+<li>accept-language</li>
+<li>content-type</li>
+<li>cache-control</li>
+<li>xxx自定义参数</li>
+</ul>
+<h5 id="响应报文">
+  响应报文
+  <a class="heading-link" href="#%e5%93%8d%e5%ba%94%e6%8a%a5%e6%96%87">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<ul>
+<li>状态行</li>
+<li>响应头部</li>
+<li>空格</li>
+<li>响应体</li>
+</ul>
+<p><strong>实例数据</strong>
+<!-- raw HTML omitted --></p>
+<p><strong>Response Header</strong></p>
+<ul>
+<li>ETag</li>
+<li>date</li>
+<li>content-type</li>
+<li>last-modified</li>
+<li>&hellip;自定义参数</li>
+</ul>
+<h5 id="参考文章-1">
+  参考文章
+  <a class="heading-link" href="#%e5%8f%82%e8%80%83%e6%96%87%e7%ab%a0-1">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<ul>
+<li><a href="https://juejin.cn/post/6920784699493187591">一篇让你彻底了解http请求报文和响应报文的结构</a></li>
+</ul>
+<h4 id="你一般用的mime类型有哪些">
+  你一般用的MIME类型有哪些？**
+  <a class="heading-link" href="#%e4%bd%a0%e4%b8%80%e8%88%ac%e7%94%a8%e7%9a%84mime%e7%b1%bb%e5%9e%8b%e6%9c%89%e5%93%aa%e4%ba%9b">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>通常来说，浏览器通过MIME Type区分不同的媒体资源， 在把输出结果响应到浏览器上的时候，浏览器必须启动适当的应用程序来处理这个输出文档。这可以通过MIME来完成。在HTTP中，MIME类型被定义在Content-Type header中  <br>
+<strong>mime类型：参考上文：content-type类型</strong></p>
+      </div>
+
+
+      <footer>
+        
+
+
+        
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    ©
+    
+      2019 -
+    
+    2021
+     levi 
+    ·
+    开启美好新一天
+  </section>
+</footer>
+
+    </main>
+
+    
+      
+      <script src="/js/coder.min.03b17769f4f91ae35667e1f2a1ca8c16f50562576cf90ff32b3179926914daa5.js" integrity="sha256-A7F3afT5GuNWZ&#43;HyocqMFvUFYlds&#43;Q/zKzF5kmkU2qU="></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+  </body>
+
+</html>
