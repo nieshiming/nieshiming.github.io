@@ -259,7 +259,7 @@ class Route extends React.Component {
 
 组件渲染逻辑如下：
 
-![image.png](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/806a677942be47a196b61f676fe0c9d1~tplv-k3u1fbpfcp-watermark.image?)
+![image.png](https://pic3.zhimg.com/80/v2-50844a678c2d16134bf5d54f6addeb20_1440w.png)
 
 #### Switch
 

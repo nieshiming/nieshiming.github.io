@@ -43,17 +43,16 @@ childsrc = ["'self'"]
 fontsrc = ["'self'", "https://fonts.gstatic.com", "https://cdn.jsdelivr.net/"]
 formaction = ["'self'"]
 framesrc = ["'self'"]
-imgsrc = ["'self'"]
+imgsrc = ["'self'", "https://pic3.zhimg.com"]
 objectsrc = ["'none'"]
 stylesrc = [
   "'self'",
   "'unsafe-inline'",
   "https://cdn.jsdelivr.net/",
   "https://cdn.bootcss.com/",
-  "https://cdnjs.cloudflare.com/",
-  "https://fonts.googleapis.com/",
+  "https://fonts.googleapis.com/"
 ]
-scriptsrc = ["'self'","https://unpkg.com", "https://cdn.bootcss.com/","https://cdn.jsdelivr.net/"]
+scriptsrc = ["'self'","https://unpkg.com", "https://cdn.bootcss.com/"]
 prefetchsrc = ["'self'"]
 # connect-src directive – defines valid targets for to XMLHttpRequest (AJAX), WebSockets or EventSource
 connectsrc = ["'self'"]
@@ -110,3 +109,17 @@ url = "tags/"
 name = "关于我"
 weight = 4
 url = "about/"
+
+[markup]
+  [markup.highlight]
+    anchorLineNos = false
+    codeFences = true
+    guessSyntax = false
+    hl_Lines = ''
+    lineAnchors = ''
+    lineNoStart = 1
+    lineNos = false
+    lineNumbersInTable = true
+    noClasses = true
+    style = 'dracula'
+    tabWidth = 4
