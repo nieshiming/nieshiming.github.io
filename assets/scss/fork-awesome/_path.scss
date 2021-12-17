@@ -1,16 +1,10 @@
 /* FONT PATH
  * -------------------------- */
 
-@font-face {
-  font-family: '#{$fa-font-family}';
-  src: url('#{$fa-font-path}/forkawesome-webfont.eot?v=#{$fa-version}');
-  src: url('#{$fa-font-path}/forkawesome-webfont.eot?#iefix&v=#{$fa-version}') format('embedded-opentype'),
-    url('#{$fa-font-path}/forkawesome-webfont.woff2?v=#{$fa-version}') format('woff2'),
-    url('#{$fa-font-path}/forkawesome-webfont.woff?v=#{$fa-version}') format('woff'),
-    url('#{$fa-font-path}/forkawesome-webfont.ttf?v=#{$fa-version}') format('truetype'),
-    url('#{$fa-font-path}/forkawesome-webfont.svg?v=#{$fa-version}#forkawesomeregular') format('svg');
-//  src: url('#{$fa-font-path}/ForkAwesome.otf') format('opentype'); // used when developing fonts
-  font-weight: normal;
-  font-style: normal;
-  font-display: block;
-}
+//  @font-face {
+//   font-family: 'Itim';
+//   font-style: normal;
+//   font-weight: 400;
+//   src: url(https://fonts.gstatic.com/s/itim/v5/0nknC9ziJOYe8AxAkOzaZwTSoQ.woff2) format('woff2');
+//   unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB;
+// }

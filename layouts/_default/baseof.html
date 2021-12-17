@@ -23,8 +23,18 @@
     {{ if .Permalink }}
       <link rel="canonical" href="{{ .Permalink }}">
     {{ end }}
+    
 
-    <link rel="preload" href="/fonts/forkawesome-webfont.woff2?v=1.2.0" as="font" type="font/woff2" crossorigin>
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.3.1/build/styles/default.min.css"> -->
+    <!-- <link href="https://cdn.bootcss.com/highlight.js/9.12.0/styles/atom-one-dark.min.css" rel="stylesheet"> -->
+
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300&display=swap" rel="stylesheet">
+
 
     {{ if .Site.IsServer }}
       {{ $cssOpts := (dict "targetPath" "css/coder.css" "enableSourceMap" true ) }}
@@ -95,6 +105,16 @@
     {{ hugo.Generator }}
 
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+
+
+    <link href="https://cdn.bootcss.com/highlight.js/9.12.0/styles/monokai.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>
+
+      window.onload = function() {
+        console.log(1);
+      }
+    </script>
   </head>
 
   {{ $csClass := "colorscheme-light" }}
@@ -133,31 +153,7 @@
       {{ end }}
     {{ end }}
 
-    {{ template "_internal/google_analytics.html" . }}
 
-    {{ if and .Site.Params.fathomAnalytics .Site.Params.fathomAnalytics.siteID }}
-      {{- partial "analytics/fathom" . -}}
-    {{ end }}
-
-    {{ if and .Site.Params.plausibleAnalytics .Site.Params.plausibleAnalytics.domain }}
-      {{- partial "analytics/plausible" . -}}
-    {{ end }}
-
-    {{ if and .Site.Params.goatCounter .Site.Params.goatCounter.code }}
-      {{- partial "analytics/goatcounter" . -}}
-    {{ end }}
-
-    {{ if and .Site.Params.cloudflare .Site.Params.cloudflare.token }}
-      {{- partial "analytics/cloudflare" . -}}
-    {{ end }}
-
-    {{ if and .Site.Params.matomo .Site.Params.matomo.serverURL }}
-      {{- partial "analytics/matomo" . -}}
-    {{ end }}
-
-    {{ if and .Site.Params.googleTagManager .Site.Params.googleTagManager.id }}
-      {{- partial "analytics/googletagmanager" . -}}
-    {{ end }}
   </body>
 
 </html>

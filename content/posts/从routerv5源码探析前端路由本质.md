@@ -89,7 +89,7 @@ react路由核心包。 提供了路由的核心组件。如Router、Route、Swi
 #### BrowserRouter
 内部创建了一个全局的history对象<用于监听整个路由的变化>， 并且把history作为props传递的react-router的Router组件
 
-```javascript
+```js
 class BrowserRouter extends React.Component {
   history = createHistory(this.props);
 

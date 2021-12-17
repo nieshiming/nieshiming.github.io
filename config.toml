@@ -48,13 +48,15 @@ objectsrc = ["'none'"]
 stylesrc = [
   "'self'",
   "'unsafe-inline'",
+  "https://cdn.jsdelivr.net/",
+  "https://cdn.bootcss.com/",
+  "https://cdnjs.cloudflare.com/",
   "https://fonts.googleapis.com/",
-  "https://cdn.jsdelivr.net/"
 ]
-scriptsrc = ["'self'", "'unsafe-inline'", "https://www.google-analytics.com"]
+scriptsrc = ["'self'","https://unpkg.com", "https://cdn.bootcss.com/","https://cdn.jsdelivr.net/"]
 prefetchsrc = ["'self'"]
 # connect-src directive – defines valid targets for to XMLHttpRequest (AJAX), WebSockets or EventSource
-connectsrc = ["'self'", "https://www.google-analytics.com"]
+connectsrc = ["'self'"]
 
 [taxonomies]
 category = "categories"
