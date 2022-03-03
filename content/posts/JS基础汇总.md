@@ -2456,7 +2456,7 @@ requestAnimationFrame 比起 setTimeout、setInterval 的优势主要有两点�
 
 
 
-####  typescript infer举例
+####  typescript infer举例1
 
 ```javascript
 
