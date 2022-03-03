@@ -251,6 +251,7 @@ setState的“异步”并不是说内部由异步代码实现，其实本身执
 参考文章
 - [setState异步、同步与进阶](https://juejin.cn/post/6844903715921477640#heading-2)
 - [关于 React setState，你了解多少？ #11](https://github.com/JTangming/blog/issues/11)
+- [React的 setState 批量更新的原理](https://blog.csdn.net/weixin_45452083/article/details/118272501)
 
 
 #### 类组件和函数组件区别

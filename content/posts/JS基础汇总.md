@@ -2308,3 +2308,180 @@ console.log('start');
   */ 
 
 ```
+
+#### requestAnimationFrame 与 requestIdleCallback 的区别
+- requestAnimationFrame在浏览器的运行的每一帧都会执行，属于高优先级任务
+- requestIdleCallback里面注意的回收的回调在浏览器每一帧空余的时间才会执行， 同时可以设置一个超时时间
+> window.requestAnimationFrame() 告诉浏览器——你希望执行一个动画，并且要求浏览器在下次重绘之前调用指定的回调函数更新动画。
+> 该方法需要传入一个回调函数作为参数，该回调函数会在浏览器下一次重绘之前执行
+
+requestAnimationFrame 比起 setTimeout、setInterval 的优势主要有两点：
+- requestAnimationFrame 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒 60 帧。
+- 在隐藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
+
+```javascript
+
+  requestAnimationFrame(callback);
+
+  requestIdleCallback(callback, {timeout: xxx})
+
+```
+
+#### esmodule 和 commonjs 的区别
+
+#### TS 的 type 和 interface 的区别
+相同点
+- 都可以描述Object或者Function
+  ```javascript
+    type Person = {
+      name: string;
+      age: number;
+    };
+
+    type Person = () => Promise<boolean>;
+
+    type Person = string | number;
+
+
+  interface Levia {
+    name: string;
+    age: number;
+    fn: () => string;
+  }
+
+  interface ILevi {
+    (a: number, b: string): string;
+  }
+
+  ```
+- 都可以被继承，使用泛型
+
+    ```javascript
+
+    type Base = {
+      name: string;
+    };
+
+    interface IBase {
+      name: string;
+    }
+
+    type Person = Base & IBase & { age: number };
+
+    interface ILevi extends Base, IBase {
+      say: () => void;
+    }
+
+  ```
+- 都可以被类实现<implements>, 注意类不能实现联合类型的继承
+  ```javascript
+
+    type Base = {
+      name: string;
+      say: () => void;
+    };
+    class Nie implements Base {
+      name: string = 'levis';
+
+      say() {
+        console.log(`我是${this.name}`);
+      }
+    }
+
+    interface IBase {
+      age: number;
+      run: () => string;
+    }
+
+    class levis implements IBase {
+      public age: number = 20;
+      public run() {
+        return `我今年${this.age}`;
+      }
+    }
+
+    console.log(new Nie().say()); // 我是levis
+    console.log(new levis().run()); // 我今年20
+  ```
+
+不同点
+- type 可以定义类型别名、
+  ```javascript
+    type UserName = string;
+    type Studo = number;
+
+    const a: UserName = 'levis';
+  ```
+-  type 可以声明联合类型/元祖类型，interfce不行
+  ```javascript
+
+    type Name =  string | number;
+
+    type Person = ['a', 'b'];
+    const Levi: Person = ['a', 'b'];
+
+  ```
+
+  - interface 会声明合并， type 声明合并会报错
+  ```javascript
+
+    interface IPerson {
+      name: string;
+    }
+
+    interface IPerson {
+      age: number;
+    }
+
+    export const levis: IPerson = {
+      name: 'levis',
+    };
+
+
+    type Student = {
+      name: string;
+    };
+
+    type Student = {
+      age: number;
+    };
+
+    //  报错了： Duplicate identifier 'Student'.
+    export const jack: Student = {
+      name: 'levis',
+      age: 20,
+    };
+
+  ```
+
+
+
+####  typescript infer举例
+
+```javascript
+
+// 获取指定类型
+type Foo<T> = T extends { a: infer U; b: infer U } ? U : never;
+type Levi = Foo<{ a: string; b: string }>; // string
+
+
+// 获取函数返回的promise类型
+const fna = () => {
+  return Promise.resolve(1);
+};
+const method = async () => 'levis'
+
+type Foo<T extends (...arg: any) => Promise<any>> = T extends (...args) => Promise<infer U> ? U : never;
+type Levia = Foo<typeof fn>; // number
+type Levib = Foo<typeof method>; // string
+
+// 获取函数的形参类型
+
+const fn = async (a: number, b: number) => a + b;
+const method = async (a: number, b: string) => a + b;
+
+type Foo<T> = T extends (...args: (infer T)[]) => Promise<U> ? T : never;
+type Levi = Foo<typeof fn>; // number;
+type Levi = Foo<typeof method>; // number | string;
+
+```
