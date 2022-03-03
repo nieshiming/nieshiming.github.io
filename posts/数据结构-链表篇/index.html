@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="color-scheme" content="light dark">
+
+    
+      <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests; block-all-mixed-content; default-src 'self'; child-src 'self'; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net/; form-action 'self'; frame-src 'self'; img-src 'self' https://pic3.zhimg.com; object-src 'none'; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net/ https://cdn.bootcss.com/ https://fonts.googleapis.com/; script-src 'self' https://unpkg.com https://cdn.bootcss.com/; prefetch-src 'self'; connect-src 'self';">
+
+    
+
+    <meta name="author" content="levi">
+    <meta name="description" content="链表    数组&lt;队列&gt;是比较简单的线性存储，数组的大小初始化是固定，从起点和中间插入元素成本很高，因为需要不断的移动元素。 链表存储有序的数据集合，不同于数组的是，链表存储的数据在内存中并不要求是连续的，链表中每个节点存储了当前节点值，以及指向下一个节点的指针
+链表可细分为      链表结构实现
+ 添加、删除元素 插入元素 获取链表长度、输出链表文本    双向链表
+  循环链表
+  排序链表
+  通过链表实现栈
+  链表结构实现     实现一个链表类，包含删除、添加元素、链表长度等
+ class Node { constructor(value) { this.value = value this.next = null } } class LinkedList { count = 0 head = null push(element) { const node = new Node(element) if (this.isEmpty()) { this.">
+    <meta name="keywords" content="blog,developer,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="数据结构 链表篇"/>
+<meta name="twitter:description" content="链表    数组&lt;队列&gt;是比较简单的线性存储，数组的大小初始化是固定，从起点和中间插入元素成本很高，因为需要不断的移动元素。 链表存储有序的数据集合，不同于数组的是，链表存储的数据在内存中并不要求是连续的，链表中每个节点存储了当前节点值，以及指向下一个节点的指针
+链表可细分为      链表结构实现
+ 添加、删除元素 插入元素 获取链表长度、输出链表文本    双向链表
+  循环链表
+  排序链表
+  通过链表实现栈
+  链表结构实现     实现一个链表类，包含删除、添加元素、链表长度等
+ class Node { constructor(value) { this.value = value this.next = null } } class LinkedList { count = 0 head = null push(element) { const node = new Node(element) if (this.isEmpty()) { this."/>
+
+    <meta property="og:title" content="数据结构 链表篇" />
+<meta property="og:description" content="链表    数组&lt;队列&gt;是比较简单的线性存储，数组的大小初始化是固定，从起点和中间插入元素成本很高，因为需要不断的移动元素。 链表存储有序的数据集合，不同于数组的是，链表存储的数据在内存中并不要求是连续的，链表中每个节点存储了当前节点值，以及指向下一个节点的指针
+链表可细分为      链表结构实现
+ 添加、删除元素 插入元素 获取链表长度、输出链表文本    双向链表
+  循环链表
+  排序链表
+  通过链表实现栈
+  链表结构实现     实现一个链表类，包含删除、添加元素、链表长度等
+ class Node { constructor(value) { this.value = value this.next = null } } class LinkedList { count = 0 head = null push(element) { const node = new Node(element) if (this.isEmpty()) { this." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://nieshiming.cn/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E9%93%BE%E8%A1%A8%E7%AF%87/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-08-12T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-08-12T00:00:00+00:00" />
+
+
+
+    <title>
+  数据结构 链表篇 · levi
+</title>
+
+    
+      <link rel="canonical" href="https://nieshiming.cn/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E9%93%BE%E8%A1%A8%E7%AF%87/">
+    
+  
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300&display=swap" rel="stylesheet">
+
+
+    
+      
+      
+      <link rel="stylesheet" href="/css/coder.min.35fe7ad16c77cf2342a31b00a3714f305eeb0717aec800b19eb782d4847ca6be.css" integrity="sha256-Nf560Wx3zyNCoxsAo3FPMF7rBxeuyACxnreC1IR8pr4=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+      
+        
+        
+        <link rel="stylesheet" href="/css/coder-dark.min.ccbbada2e264e4fdbf9b2181cccc2cdb289a63dc9520a1e96ac2b9a45778df29.css" integrity="sha256-zLutouJk5P2/myGBzMws2yiaY9yVIKHpasK5pFd43yk=" crossorigin="anonymous" media="screen" />
+      
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
+
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+    <meta name="generator" content="Hugo 0.90.1" />
+
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+  </head>
+
+  
+  
+    
+  
+  <body class="preload-transitions colorscheme-auto">
+    
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="ri-contrast-line" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="/">
+      levi
+    </a>
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="ri-bar-chart-horizontal-fill" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/">首页</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/posts/">博客</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/tags/">标签</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/about/">关于我</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="https://nieshiming.cn/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E9%93%BE%E8%A1%A8%E7%AF%87/">
+              数据结构 链表篇
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="ri-calendar-2-line" aria-hidden="true"></i>
+              <time datetime='2021-08-12T00:00:00Z'>
+                2021-08-12
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="ri-time-line" aria-hidden="true"></i>
+              8-minute read
+            </span>
+          </div>
+          
+          <div class="categories">
+  <i class="ri-folder-fill" aria-hidden="true"></i>
+    <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a></div>
+
+          <div class="tags">
+  <i class="ri-price-tag-3-fill" aria-hidden="true"></i>
+    <span class="tag">
+      <a href="/tags/%E7%AE%97%E6%B3%95/">算法</a>
+    </span>
+      <span class="separator">•</span>
+    <span class="tag">
+      <a href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/">八股文</a>
+    </span></div>
+
+        </div>
+      </header>
+
+      <div>
+        
+        <h2 id="链表">
+  链表
+  <a class="heading-link" href="#%e9%93%be%e8%a1%a8">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h2>
+<p>数组&lt;队列&gt;是比较简单的线性存储，数组的大小初始化是固定，从起点和中间插入元素成本很高，因为需要不断的移动元素。
+链表存储有序的数据集合，不同于数组的是，链表存储的数据在内存中并不要求是连续的，链表中每个节点存储了当前节点值，以及指向下一个节点的指针</p>
+<h3 id="链表可细分为">
+  链表可细分为
+  <a class="heading-link" href="#%e9%93%be%e8%a1%a8%e5%8f%af%e7%bb%86%e5%88%86%e4%b8%ba">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<ul>
+<li>
+<p>链表结构实现</p>
+<ul>
+<li>添加、删除元素</li>
+<li>插入元素</li>
+<li>获取链表长度、输出链表文本</li>
+</ul>
+</li>
+<li>
+<p>双向链表</p>
+</li>
+<li>
+<p>循环链表</p>
+</li>
+<li>
+<p>排序链表</p>
+</li>
+<li>
+<p>通过链表实现栈</p>
+</li>
+</ul>
+<h4 id="链表结构实现">
+  链表结构实现
+  <a class="heading-link" href="#%e9%93%be%e8%a1%a8%e7%bb%93%e6%9e%84%e5%ae%9e%e7%8e%b0">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<blockquote>
+<p>实现一个链表类，包含删除、添加元素、链表长度等</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">
+  <span style="color:#ff79c6">class</span> Node {
+    constructor(value) {
+      <span style="color:#ff79c6">this</span>.value <span style="color:#ff79c6">=</span> value
+      <span style="color:#ff79c6">this</span>.next <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span>
+    }
+  }
+
+  <span style="color:#ff79c6">class</span> LinkedList {
+    count <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>
+
+    head <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span>
+
+    push(element) {
+      <span style="color:#ff79c6">const</span> node <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Node(element)
+      <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">this</span>.isEmpty()) {
+        <span style="color:#ff79c6">this</span>.head <span style="color:#ff79c6">=</span> node
+      } <span style="color:#ff79c6">else</span> {
+        <span style="color:#8be9fd;font-style:italic">let</span> current <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.head
+        <span style="color:#ff79c6">while</span> (current.next) {
+          current <span style="color:#ff79c6">=</span> current.next
+        }
+
+        current.next <span style="color:#ff79c6">=</span> node
+      }
+
+      <span style="color:#ff79c6">this</span>.count<span style="color:#ff79c6">++</span>
+    }
+
+    insert(element, index <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>) {
+      <span style="color:#ff79c6">if</span> (index <span style="color:#ff79c6">&lt;</span> <span style="color:#bd93f9">0</span> <span style="color:#ff79c6">||</span> index <span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">this</span>.count) {
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">false</span>
+      }
+
+      <span style="color:#8be9fd;font-style:italic">let</span> prious
+      <span style="color:#8be9fd;font-style:italic">let</span> current <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.head
+      <span style="color:#ff79c6">const</span> node <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Node(element)
+      <span style="color:#ff79c6">if</span> (index <span style="color:#ff79c6">===</span> <span style="color:#bd93f9">0</span>) {
+        <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span><span style="color:#ff79c6">this</span>.head) {
+          <span style="color:#ff79c6">this</span>.head <span style="color:#ff79c6">=</span> node
+        } <span style="color:#ff79c6">else</span> {
+          node.next <span style="color:#ff79c6">=</span> current
+          <span style="color:#ff79c6">this</span>.head <span style="color:#ff79c6">=</span> node
+        }
+      } <span style="color:#ff79c6">else</span> {
+        <span style="color:#ff79c6">for</span> (<span style="color:#8be9fd;font-style:italic">let</span> i <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>; i <span style="color:#ff79c6">&lt;</span> index; i<span style="color:#ff79c6">++</span>) {
+          prious <span style="color:#ff79c6">=</span> current
+          current <span style="color:#ff79c6">=</span> current.next
+        }
+
+        prious.next <span style="color:#ff79c6">=</span> node
+        node.next <span style="color:#ff79c6">=</span> current
+      }
+
+      <span style="color:#ff79c6">this</span>.count<span style="color:#ff79c6">++</span>
+      <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">true</span>
+    }
+
+    removeElement(element) {
+      <span style="color:#ff79c6">const</span> index <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.getIndexBy(element)
+
+      <span style="color:#ff79c6">return</span> index <span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">-</span><span style="color:#bd93f9">1</span> <span style="color:#ff79c6">?</span> <span style="color:#ff79c6">this</span>.removeElementBy(index) <span style="color:#ff79c6">:</span> <span style="color:#ff79c6">false</span>
+    }
+
+    removeElementBy(index) {
+      <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span><span style="color:#ff79c6">this</span>.head <span style="color:#ff79c6">||</span> index <span style="color:#ff79c6">&lt;</span> <span style="color:#bd93f9">0</span> <span style="color:#ff79c6">||</span> index <span style="color:#ff79c6">&gt;=</span> <span style="color:#ff79c6">this</span>.count) {
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">false</span>
+      }
+
+      <span style="color:#ff79c6">if</span> (index <span style="color:#ff79c6">===</span> <span style="color:#bd93f9">0</span>) {
+        <span style="color:#ff79c6">this</span>.head <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.head.next
+      } <span style="color:#ff79c6">else</span> {
+        <span style="color:#8be9fd;font-style:italic">let</span> previous
+        <span style="color:#8be9fd;font-style:italic">let</span> current <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.head
+        <span style="color:#ff79c6">for</span> (<span style="color:#8be9fd;font-style:italic">let</span> i <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>; i <span style="color:#ff79c6">&lt;</span> index; i<span style="color:#ff79c6">++</span>) {
+          previous <span style="color:#ff79c6">=</span> current
+          current <span style="color:#ff79c6">=</span> current.next
+        }
+
+        previous.next <span style="color:#ff79c6">=</span> current.next
+      }
+
+      <span style="color:#ff79c6">this</span>.count<span style="color:#ff79c6">--</span>
+      <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">true</span>
+    }
+
+    getIndexBy(element) {
+      <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span><span style="color:#ff79c6">this</span>.head <span style="color:#ff79c6">||</span> <span style="color:#ff79c6">!</span>element) {
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">undefined</span>
+      }
+
+      <span style="color:#8be9fd;font-style:italic">let</span> current <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.head
+      <span style="color:#ff79c6">for</span> (<span style="color:#8be9fd;font-style:italic">let</span> i <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>; current; i<span style="color:#ff79c6">++</span>) {
+        <span style="color:#ff79c6">if</span> (current.value <span style="color:#ff79c6">===</span> element) {
+          <span style="color:#ff79c6">return</span> i
+        }
+
+        current <span style="color:#ff79c6">=</span> current.next
+      }
+
+      <span style="color:#6272a4">// for 循环找到的直接退出函数体
+</span><span style="color:#6272a4"></span>      <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">-</span><span style="color:#bd93f9">1</span>
+    }
+
+    getElementBy(index) {
+      <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span><span style="color:#ff79c6">this</span>.head <span style="color:#ff79c6">||</span> index <span style="color:#ff79c6">&lt;</span> <span style="color:#bd93f9">0</span> <span style="color:#ff79c6">||</span> index <span style="color:#ff79c6">&gt;=</span> <span style="color:#ff79c6">this</span>.count) {
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">undefined</span>
+      }
+
+      <span style="color:#8be9fd;font-style:italic">let</span> current <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.head
+      <span style="color:#6272a4">// 控制次数
+</span><span style="color:#6272a4"></span>      <span style="color:#ff79c6">for</span> (<span style="color:#8be9fd;font-style:italic">let</span> i <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>; i <span style="color:#ff79c6">&lt;</span> index; i<span style="color:#ff79c6">++</span>) {
+        current <span style="color:#ff79c6">=</span> current.next
+      }
+
+      <span style="color:#ff79c6">return</span> current
+    }
+
+    size() {
+      <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">this</span>.count
+    }
+
+    isEmpty() {
+      <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">this</span>.count <span style="color:#ff79c6">===</span> <span style="color:#bd93f9">0</span>
+    }
+
+    print() {
+      <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span><span style="color:#ff79c6">this</span>.count <span style="color:#ff79c6">===</span> <span style="color:#bd93f9">0</span>) {
+        console.log(<span style="color:#f1fa8c">&#39;&#39;</span>)
+        <span style="color:#ff79c6">return</span>
+      }
+
+      <span style="color:#8be9fd;font-style:italic">let</span> str <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#39;&#39;</span>
+      <span style="color:#8be9fd;font-style:italic">let</span> current <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.head
+      <span style="color:#ff79c6">while</span> (current) {
+        str <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">`</span><span style="color:#f1fa8c">${</span>str<span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">=&gt;</span><span style="color:#f1fa8c">${</span>current.value<span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">`</span>
+        current <span style="color:#ff79c6">=</span> current.next
+      }
+    }
+  }
+
+</code></pre></div><h4 id="双向链表">
+  双向链表
+  <a class="heading-link" href="#%e5%8f%8c%e5%90%91%e9%93%be%e8%a1%a8">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<blockquote>
+<p>相比较单链表，当前元素只能指向下一个元素，双向链接区别在于，不仅可以指向下一个元素，还可以指向上一个元素</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">
+  <span style="color:#ff79c6">class</span> Node {
+    constructor(value) {
+      <span style="color:#ff79c6">this</span>.value <span style="color:#ff79c6">=</span> value
+      <span style="color:#ff79c6">this</span>.next <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span>
+      <span style="color:#ff79c6">this</span>.prev <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span>
+    }
+  }
+
+  <span style="color:#ff79c6">class</span> DoubleLinkedList {
+    count <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>
+
+    head <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span>
+
+    tail <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span> <span style="color:#6272a4">// 记录尾指针，向后插入不用一次次遍历了
+</span><span style="color:#6272a4"></span>
+    push(element) {
+      <span style="color:#ff79c6">const</span> node <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Node(element)
+      <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">this</span>.isEmpty()) {
+        <span style="color:#ff79c6">this</span>.head <span style="color:#ff79c6">=</span> node
+        <span style="color:#ff79c6">this</span>.tail <span style="color:#ff79c6">=</span> node
+      } <span style="color:#ff79c6">else</span> {
+        <span style="color:#8be9fd;font-style:italic">let</span> current <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.tail;
+
+          current.next <span style="color:#ff79c6">=</span> node;
+          node.prev <span style="color:#ff79c6">=</span> current;
+          <span style="color:#ff79c6">this</span>.tail <span style="color:#ff79c6">=</span> node;
+      }
+
+      <span style="color:#ff79c6">this</span>.count<span style="color:#ff79c6">++</span>
+    }
+
+    insert(element, index <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>) {
+      <span style="color:#ff79c6">if</span> (index <span style="color:#ff79c6">&lt;</span> <span style="color:#bd93f9">0</span> <span style="color:#ff79c6">||</span> index <span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">this</span>.count) {
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">false</span>
+      }
+
+      <span style="color:#8be9fd;font-style:italic">let</span> current <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.head
+      <span style="color:#ff79c6">const</span> node <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Node(element)
+      <span style="color:#ff79c6">if</span> (index <span style="color:#ff79c6">===</span> <span style="color:#bd93f9">0</span>) {
+        <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span><span style="color:#ff79c6">this</span>.head) {
+          <span style="color:#ff79c6">this</span>.head <span style="color:#ff79c6">=</span> node
+          <span style="color:#ff79c6">this</span>.tail <span style="color:#ff79c6">=</span> node
+        } <span style="color:#ff79c6">else</span> {
+          current.prev <span style="color:#ff79c6">=</span> node
+          node.next <span style="color:#ff79c6">=</span> current
+          <span style="color:#ff79c6">this</span>.head <span style="color:#ff79c6">=</span> node
+        }
+      } <span style="color:#ff79c6">else</span> <span style="color:#ff79c6">if</span> (index <span style="color:#ff79c6">===</span> <span style="color:#ff79c6">this</span>.count) {
+        <span style="color:#ff79c6">this</span>.tail.next <span style="color:#ff79c6">=</span> node
+        node.prev <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.tail
+        <span style="color:#ff79c6">this</span>.tail <span style="color:#ff79c6">=</span> node
+      } <span style="color:#ff79c6">else</span> {
+        <span style="color:#ff79c6">const</span> previous <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.getElementBy(index <span style="color:#ff79c6">-</span> <span style="color:#bd93f9">1</span>)
+        node.prev <span style="color:#ff79c6">=</span> previous
+        node.next <span style="color:#ff79c6">=</span> previous.next
+        previous.next.prev <span style="color:#ff79c6">=</span> node
+        previous.next <span style="color:#ff79c6">=</span> node
+      }
+
+      <span style="color:#ff79c6">this</span>.count<span style="color:#ff79c6">++</span>
+      <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">true</span>
+    }
+
+    removeElement(element) {
+      <span style="color:#ff79c6">const</span> index <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.getIndexBy(element)
+
+      <span style="color:#ff79c6">return</span> index <span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">-</span><span style="color:#bd93f9">1</span> <span style="color:#ff79c6">?</span> <span style="color:#ff79c6">this</span>.removeElementBy(index) <span style="color:#ff79c6">:</span> <span style="color:#ff79c6">false</span>
+    }
+
+    removeElementBy(index) {
+      <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span><span style="color:#ff79c6">this</span>.head <span style="color:#ff79c6">||</span> index <span style="color:#ff79c6">&lt;</span> <span style="color:#bd93f9">0</span> <span style="color:#ff79c6">||</span> index <span style="color:#ff79c6">&gt;=</span> <span style="color:#ff79c6">this</span>.count) {
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">false</span>
+      }
+
+      <span style="color:#8be9fd;font-style:italic">let</span> current <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.head
+
+      <span style="color:#ff79c6">if</span> (index <span style="color:#ff79c6">===</span> <span style="color:#bd93f9">0</span>) {
+        <span style="color:#ff79c6">this</span>.head <span style="color:#ff79c6">=</span> current.next
+        <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">this</span>.count <span style="color:#ff79c6">===</span> <span style="color:#bd93f9">1</span>) {
+          <span style="color:#ff79c6">this</span>.tail <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span>
+        } <span style="color:#ff79c6">else</span> {
+          <span style="color:#ff79c6">this</span>.head.prev <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span>
+        }
+      } <span style="color:#ff79c6">else</span> <span style="color:#ff79c6">if</span> (index <span style="color:#ff79c6">===</span> <span style="color:#ff79c6">this</span>.count <span style="color:#ff79c6">-</span> <span style="color:#bd93f9">1</span>) {
+        current <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.tail.prev
+        <span style="color:#ff79c6">this</span>.tail <span style="color:#ff79c6">=</span> current
+        <span style="color:#ff79c6">this</span>.tail.next <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span>
+      } <span style="color:#ff79c6">else</span> {
+        <span style="color:#ff79c6">const</span> previous <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.getElementBy(index)
+        previous.prev.next <span style="color:#ff79c6">=</span> previous.next
+        previous.next.prev <span style="color:#ff79c6">=</span> previous.prev
+      }
+
+      <span style="color:#ff79c6">this</span>.count<span style="color:#ff79c6">--</span>
+      <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">true</span>
+    }
+
+    getIndexBy(element) {
+      <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span><span style="color:#ff79c6">this</span>.head <span style="color:#ff79c6">||</span> <span style="color:#ff79c6">!</span>element) {
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">undefined</span>
+      }
+
+      <span style="color:#8be9fd;font-style:italic">let</span> current <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.head
+      <span style="color:#ff79c6">for</span> (<span style="color:#8be9fd;font-style:italic">let</span> i <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>; current; i<span style="color:#ff79c6">++</span>) {
+        <span style="color:#ff79c6">if</span> (current.value <span style="color:#ff79c6">===</span> element) {
+          <span style="color:#ff79c6">return</span> i
+        }
+
+        current <span style="color:#ff79c6">=</span> current.next
+      }
+
+      <span style="color:#6272a4">// for 循环找到的直接退出函数体
+</span><span style="color:#6272a4"></span>      <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">-</span><span style="color:#bd93f9">1</span>
+    }
+
+    getElementBy(index) {
+      <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span><span style="color:#ff79c6">this</span>.head <span style="color:#ff79c6">||</span> index <span style="color:#ff79c6">&lt;</span> <span style="color:#bd93f9">0</span> <span style="color:#ff79c6">||</span> index <span style="color:#ff79c6">&gt;=</span> <span style="color:#ff79c6">this</span>.count) {
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">undefined</span>
+      }
+
+      <span style="color:#8be9fd;font-style:italic">let</span> current <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.head
+      <span style="color:#6272a4">// 控制次数
+</span><span style="color:#6272a4"></span>      <span style="color:#ff79c6">for</span> (<span style="color:#8be9fd;font-style:italic">let</span> i <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>; i <span style="color:#ff79c6">&lt;</span> index; i<span style="color:#ff79c6">++</span>) {
+        current <span style="color:#ff79c6">=</span> current.next
+      }
+
+      <span style="color:#ff79c6">return</span> current
+    }
+
+    size() {
+      <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">this</span>.count
+    }
+
+    isEmpty() {
+      <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">this</span>.count <span style="color:#ff79c6">===</span> <span style="color:#bd93f9">0</span>
+    }
+
+    print() {
+      <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span><span style="color:#ff79c6">this</span>.count <span style="color:#ff79c6">===</span> <span style="color:#bd93f9">0</span>) {
+        console.log(<span style="color:#f1fa8c">&#39;&#39;</span>)
+        <span style="color:#ff79c6">return</span>
+      }
+
+      <span style="color:#8be9fd;font-style:italic">let</span> str <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#39;&#39;</span>
+      <span style="color:#8be9fd;font-style:italic">let</span> current <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.head
+      <span style="color:#ff79c6">while</span> (current) {
+        str <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">`</span><span style="color:#f1fa8c">${</span>str<span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">=&gt;(current: </span><span style="color:#f1fa8c">${</span>current.value<span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">, prev: </span><span style="color:#f1fa8c">${</span>current.prev <span style="color:#ff79c6">&amp;&amp;</span> current.prev.value<span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">, next:</span><span style="color:#f1fa8c">${</span>
+          current.next <span style="color:#ff79c6">&amp;&amp;</span> current.next.value
+        <span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">)\n`</span>
+        current <span style="color:#ff79c6">=</span> current.next
+      }
+
+      console.log(str)
+
+      <span style="color:#ff79c6">return</span> str
+    }
+  }
+
+</code></pre></div><h4 id="循环链表">
+  循环链表
+  <a class="heading-link" href="#%e5%be%aa%e7%8e%af%e9%93%be%e8%a1%a8">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<blockquote>
+<p>循环链表和普通链表最大的区别是，循环链表最后的tail指针，指向了header</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">
+  <span style="color:#ff79c6">class</span> CycleLinkedList {
+    count <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>
+
+    head <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span>
+
+    push(element) {
+      <span style="color:#ff79c6">const</span> node <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Node(element)
+      <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">this</span>.isEmpty()) {
+        <span style="color:#ff79c6">this</span>.head <span style="color:#ff79c6">=</span> node
+        node.next <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.head
+      } <span style="color:#ff79c6">else</span> {
+        <span style="color:#ff79c6">const</span> last <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.getElementBy(<span style="color:#ff79c6">this</span>.count <span style="color:#ff79c6">-</span> <span style="color:#bd93f9">1</span>)
+        last.next <span style="color:#ff79c6">=</span> node
+        node.next <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.head
+      }
+
+      <span style="color:#ff79c6">this</span>.count<span style="color:#ff79c6">++</span>
+    }
+
+    insert(element, index <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>) {
+      <span style="color:#ff79c6">if</span> (index <span style="color:#ff79c6">&lt;</span> <span style="color:#bd93f9">0</span> <span style="color:#ff79c6">||</span> index <span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">this</span>.count) {
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">false</span>
+      }
+
+      <span style="color:#8be9fd;font-style:italic">let</span> current <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.head
+      <span style="color:#ff79c6">const</span> node <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Node(element)
+      <span style="color:#ff79c6">if</span> (index <span style="color:#ff79c6">===</span> <span style="color:#bd93f9">0</span>) {
+        <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span><span style="color:#ff79c6">this</span>.head) {
+          <span style="color:#ff79c6">this</span>.head <span style="color:#ff79c6">=</span> node
+          node.next <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.head
+        } <span style="color:#ff79c6">else</span> {
+          <span style="color:#ff79c6">const</span> last <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.getElementBy(<span style="color:#ff79c6">this</span>.count <span style="color:#ff79c6">-</span> <span style="color:#bd93f9">1</span>)
+          last.next <span style="color:#ff79c6">=</span> node
+          node.next <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.head
+          <span style="color:#ff79c6">this</span>.head <span style="color:#ff79c6">=</span> node
+        }
+      } <span style="color:#ff79c6">else</span> <span style="color:#ff79c6">if</span> (index <span style="color:#ff79c6">===</span> <span style="color:#ff79c6">this</span>.count) {
+        <span style="color:#ff79c6">const</span> last <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.getElementBy(<span style="color:#ff79c6">this</span>.count <span style="color:#ff79c6">-</span> <span style="color:#bd93f9">1</span>)
+        last.next <span style="color:#ff79c6">=</span> node
+        node.next <span style="color:#ff79c6">=</span> current
+      } <span style="color:#ff79c6">else</span> {
+        <span style="color:#ff79c6">const</span> previous <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.getElementBy(index <span style="color:#ff79c6">-</span> <span style="color:#bd93f9">1</span>)
+        node.next <span style="color:#ff79c6">=</span> previous.next
+        previous.next <span style="color:#ff79c6">=</span> node
+      }
+
+      <span style="color:#ff79c6">this</span>.count<span style="color:#ff79c6">++</span>
+      <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">true</span>
+    }
+
+    removeElement(element) {
+      <span style="color:#ff79c6">const</span> index <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.getIndexBy(element)
+
+      <span style="color:#ff79c6">return</span> index <span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">-</span><span style="color:#bd93f9">1</span> <span style="color:#ff79c6">?</span> <span style="color:#ff79c6">this</span>.removeElementBy(index) <span style="color:#ff79c6">:</span> <span style="color:#ff79c6">false</span>
+    }
+
+    removeElementBy(index) {
+      <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span><span style="color:#ff79c6">this</span>.head <span style="color:#ff79c6">||</span> index <span style="color:#ff79c6">&lt;</span> <span style="color:#bd93f9">0</span> <span style="color:#ff79c6">||</span> index <span style="color:#ff79c6">&gt;=</span> <span style="color:#ff79c6">this</span>.count) {
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">false</span>
+      }
+
+      <span style="color:#8be9fd;font-style:italic">let</span> current <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.head
+
+      <span style="color:#ff79c6">if</span> (index <span style="color:#ff79c6">===</span> <span style="color:#bd93f9">0</span>) {
+        <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">this</span>.count <span style="color:#ff79c6">!==</span> <span style="color:#bd93f9">1</span>) {
+          <span style="color:#ff79c6">const</span> last <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.getElementBy(<span style="color:#ff79c6">this</span>.count <span style="color:#ff79c6">-</span> <span style="color:#bd93f9">1</span>)
+          <span style="color:#ff79c6">this</span>.head <span style="color:#ff79c6">=</span> current.next
+          last.next <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.head
+        } <span style="color:#ff79c6">else</span> {
+          <span style="color:#ff79c6">this</span>.head <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span>
+        }
+      } <span style="color:#ff79c6">else</span> {
+        <span style="color:#ff79c6">const</span> previous <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.getElementBy(index <span style="color:#ff79c6">-</span> <span style="color:#bd93f9">1</span>)
+        current <span style="color:#ff79c6">=</span> previous.next
+        previous.next <span style="color:#ff79c6">=</span> current.next
+      }
+
+      <span style="color:#ff79c6">this</span>.count<span style="color:#ff79c6">--</span>
+      <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">true</span>
+    }
+
+    getIndexBy(element) {
+      <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span><span style="color:#ff79c6">this</span>.head <span style="color:#ff79c6">||</span> <span style="color:#ff79c6">!</span>element) {
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">undefined</span>
+      }
+
+      <span style="color:#8be9fd;font-style:italic">let</span> current <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.head
+      <span style="color:#ff79c6">for</span> (<span style="color:#8be9fd;font-style:italic">let</span> i <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>; current; i<span style="color:#ff79c6">++</span>) {
+        <span style="color:#ff79c6">if</span> (current.value <span style="color:#ff79c6">===</span> element) {
+          <span style="color:#ff79c6">return</span> i
+        }
+
+        current <span style="color:#ff79c6">=</span> current.next
+      }
+
+      <span style="color:#6272a4">// for 循环找到的直接退出函数体
+</span><span style="color:#6272a4"></span>      <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">-</span><span style="color:#bd93f9">1</span>
+    }
+
+    getElementBy(index) {
+      <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span><span style="color:#ff79c6">this</span>.head <span style="color:#ff79c6">||</span> index <span style="color:#ff79c6">&lt;</span> <span style="color:#bd93f9">0</span> <span style="color:#ff79c6">||</span> index <span style="color:#ff79c6">&gt;=</span> <span style="color:#ff79c6">this</span>.count) {
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">undefined</span>
+      }
+
+      <span style="color:#8be9fd;font-style:italic">let</span> current <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.head
+      <span style="color:#6272a4">// 控制次数
+</span><span style="color:#6272a4"></span>      <span style="color:#ff79c6">for</span> (<span style="color:#8be9fd;font-style:italic">let</span> i <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>; i <span style="color:#ff79c6">&lt;</span> index; i<span style="color:#ff79c6">++</span>) {
+        current <span style="color:#ff79c6">=</span> current.next
+      }
+
+      <span style="color:#ff79c6">return</span> current
+    }
+
+    size() {
+      <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">this</span>.count
+    }
+
+    isEmpty() {
+      <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">this</span>.count <span style="color:#ff79c6">===</span> <span style="color:#bd93f9">0</span>
+    }
+
+    print() {
+      <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span><span style="color:#ff79c6">this</span>.count <span style="color:#ff79c6">===</span> <span style="color:#bd93f9">0</span>) {
+        console.log(<span style="color:#f1fa8c">&#39;&#39;</span>)
+        <span style="color:#ff79c6">return</span>
+      }
+
+      <span style="color:#8be9fd;font-style:italic">let</span> str <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#39;&#39;</span>
+      <span style="color:#8be9fd;font-style:italic">let</span> current <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.head
+      <span style="color:#8be9fd;font-style:italic">let</span> i <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>
+      <span style="color:#ff79c6">while</span> (current <span style="color:#ff79c6">&amp;&amp;</span> i <span style="color:#ff79c6">&lt;</span> <span style="color:#ff79c6">this</span>.count) {
+        str <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">`</span><span style="color:#f1fa8c">${</span>str<span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">=&gt;(current: </span><span style="color:#f1fa8c">${</span>current.value<span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">, next:</span><span style="color:#f1fa8c">${</span>current.next <span style="color:#ff79c6">&amp;&amp;</span> current.next.value<span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">)\n`</span>
+        current <span style="color:#ff79c6">=</span> current.next
+        i<span style="color:#ff79c6">++</span>
+      }
+
+      console.log(str)
+
+      <span style="color:#ff79c6">return</span> str
+    }
+  }
+
+</code></pre></div><h4 id="双向循环链表">
+  双向循环链表
+  <a class="heading-link" href="#%e5%8f%8c%e5%90%91%e5%be%aa%e7%8e%af%e9%93%be%e8%a1%a8">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<blockquote>
+<p>链表尾元素指向链表的头部节点， 每个链表有next和prev指针，分别指向链表的下个节点和上个节点</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">
+</code></pre></div><h4 id="有序链表">
+  有序链表
+  <a class="heading-link" href="#%e6%9c%89%e5%ba%8f%e9%93%be%e8%a1%a8">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<blockquote>
+<p>按照链表的元素大小排列依次排列</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">
+ <span style="color:#ff79c6">const</span> compare <span style="color:#ff79c6">=</span> {
+    BIGGER<span style="color:#ff79c6">:</span> <span style="color:#bd93f9">1</span>,
+    SMALL<span style="color:#ff79c6">:</span> <span style="color:#ff79c6">-</span><span style="color:#bd93f9">1</span>,
+    EQUAL<span style="color:#ff79c6">:</span> <span style="color:#bd93f9">0</span>,
+  }
+
+  <span style="color:#ff79c6">class</span> Node {
+    constructor(value) {
+      <span style="color:#ff79c6">this</span>.value <span style="color:#ff79c6">=</span> value
+      <span style="color:#ff79c6">this</span>.next <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span>
+    }
+  }
+
+  <span style="color:#ff79c6">class</span> OrderlyinkedList {
+    count <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>
+
+    head <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span>
+
+    push(element, index <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>) {
+      <span style="color:#ff79c6">if</span> ((index <span style="color:#ff79c6">&lt;</span> <span style="color:#bd93f9">0</span> <span style="color:#ff79c6">||</span> index <span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">this</span>.count) <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#ff79c6">typeof</span> element <span style="color:#ff79c6">!==</span> <span style="color:#f1fa8c">&#39;number&#39;</span>) {
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">false</span>
+      }
+
+      <span style="color:#8be9fd;font-style:italic">let</span> current <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.head
+      <span style="color:#ff79c6">const</span> node <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Node(element)
+      <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">this</span>.isEmpty()) {
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">this</span>.insert(element, <span style="color:#bd93f9">0</span>)
+      } <span style="color:#ff79c6">else</span> {
+        <span style="color:#6272a4">// 不断移动索引， index 和 current每次循环开始前都一一对应了
+</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">for</span> (<span style="color:#8be9fd;font-style:italic">var</span> i <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>; i <span style="color:#ff79c6">&lt;</span> <span style="color:#ff79c6">this</span>.count; i<span style="color:#ff79c6">++</span>) {
+          <span style="color:#ff79c6">const</span> result <span style="color:#ff79c6">=</span> element <span style="color:#ff79c6">-</span> current.value
+          <span style="color:#ff79c6">if</span> (result <span style="color:#ff79c6">===</span> compare.EQUAL <span style="color:#ff79c6">||</span> result <span style="color:#ff79c6">===</span> compare.SMALL) {
+            <span style="color:#ff79c6">break</span>
+          }
+
+          current <span style="color:#ff79c6">=</span> current.next
+        }
+
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">this</span>.insert(element, i)
+      }
+    }
+
+    insert(element, index <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>) {
+      <span style="color:#ff79c6">if</span> (index <span style="color:#ff79c6">&lt;</span> <span style="color:#bd93f9">0</span> <span style="color:#ff79c6">||</span> index <span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">this</span>.count) {
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">false</span>
+      }
+
+      <span style="color:#8be9fd;font-style:italic">let</span> prious
+      <span style="color:#8be9fd;font-style:italic">let</span> current <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.head
+      <span style="color:#ff79c6">const</span> node <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Node(element)
+      <span style="color:#ff79c6">if</span> (index <span style="color:#ff79c6">===</span> <span style="color:#bd93f9">0</span>) {
+        <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span><span style="color:#ff79c6">this</span>.head) {
+          <span style="color:#ff79c6">this</span>.head <span style="color:#ff79c6">=</span> node
+        } <span style="color:#ff79c6">else</span> {
+          node.next <span style="color:#ff79c6">=</span> current
+          <span style="color:#ff79c6">this</span>.head <span style="color:#ff79c6">=</span> node
+        }
+      } <span style="color:#ff79c6">else</span> {
+        <span style="color:#ff79c6">for</span> (<span style="color:#8be9fd;font-style:italic">let</span> i <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>; i <span style="color:#ff79c6">&lt;</span> index; i<span style="color:#ff79c6">++</span>) {
+          prious <span style="color:#ff79c6">=</span> current
+          current <span style="color:#ff79c6">=</span> current.next
+        }
+
+        prious.next <span style="color:#ff79c6">=</span> node
+        node.next <span style="color:#ff79c6">=</span> current
+      }
+
+      <span style="color:#ff79c6">this</span>.count<span style="color:#ff79c6">++</span>
+      <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">true</span>
+    }
+
+    removeElement(element) {
+      <span style="color:#ff79c6">const</span> index <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.getIndexBy(element)
+
+      <span style="color:#ff79c6">return</span> index <span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">-</span><span style="color:#bd93f9">1</span> <span style="color:#ff79c6">?</span> <span style="color:#ff79c6">this</span>.removeElementBy(index) <span style="color:#ff79c6">:</span> <span style="color:#ff79c6">false</span>
+    }
+
+    removeElementBy(index) {
+      <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span><span style="color:#ff79c6">this</span>.head <span style="color:#ff79c6">||</span> index <span style="color:#ff79c6">&lt;</span> <span style="color:#bd93f9">0</span> <span style="color:#ff79c6">||</span> index <span style="color:#ff79c6">&gt;=</span> <span style="color:#ff79c6">this</span>.count) {
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">false</span>
+      }
+
+      <span style="color:#8be9fd;font-style:italic">let</span> current <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.head
+
+      <span style="color:#ff79c6">if</span> (index <span style="color:#ff79c6">===</span> <span style="color:#bd93f9">0</span>) {
+        <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">this</span>.count <span style="color:#ff79c6">!==</span> <span style="color:#bd93f9">1</span>) {
+          <span style="color:#ff79c6">const</span> last <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.getElementBy(<span style="color:#ff79c6">this</span>.count <span style="color:#ff79c6">-</span> <span style="color:#bd93f9">1</span>)
+          <span style="color:#ff79c6">this</span>.head <span style="color:#ff79c6">=</span> current.next
+          last.next <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.head
+        } <span style="color:#ff79c6">else</span> {
+          <span style="color:#ff79c6">this</span>.head <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span>
+        }
+      } <span style="color:#ff79c6">else</span> {
+        <span style="color:#ff79c6">const</span> previous <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.getElementBy(index <span style="color:#ff79c6">-</span> <span style="color:#bd93f9">1</span>)
+        current <span style="color:#ff79c6">=</span> previous.next
+        previous.next <span style="color:#ff79c6">=</span> current.next
+      }
+
+      <span style="color:#ff79c6">this</span>.count<span style="color:#ff79c6">--</span>
+      <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">true</span>
+    }
+
+    getIndexBy(element) {
+      <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span><span style="color:#ff79c6">this</span>.head <span style="color:#ff79c6">||</span> <span style="color:#ff79c6">!</span>element) {
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">undefined</span>
+      }
+
+      <span style="color:#8be9fd;font-style:italic">let</span> current <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.head
+      <span style="color:#ff79c6">for</span> (<span style="color:#8be9fd;font-style:italic">let</span> i <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>; current; i<span style="color:#ff79c6">++</span>) {
+        <span style="color:#ff79c6">if</span> (current.value <span style="color:#ff79c6">===</span> element) {
+          <span style="color:#ff79c6">return</span> i
+        }
+
+        current <span style="color:#ff79c6">=</span> current.next
+      }
+
+      <span style="color:#6272a4">// for 循环找到的直接退出函数体
+</span><span style="color:#6272a4"></span>      <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">-</span><span style="color:#bd93f9">1</span>
+    }
+
+    getElementBy(index) {
+      <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span><span style="color:#ff79c6">this</span>.head <span style="color:#ff79c6">||</span> index <span style="color:#ff79c6">&lt;</span> <span style="color:#bd93f9">0</span> <span style="color:#ff79c6">||</span> index <span style="color:#ff79c6">&gt;=</span> <span style="color:#ff79c6">this</span>.count) {
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">undefined</span>
+      }
+
+      <span style="color:#8be9fd;font-style:italic">let</span> current <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.head
+      <span style="color:#6272a4">// 控制次数
+</span><span style="color:#6272a4"></span>      <span style="color:#ff79c6">for</span> (<span style="color:#8be9fd;font-style:italic">let</span> i <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>; i <span style="color:#ff79c6">&lt;</span> index; i<span style="color:#ff79c6">++</span>) {
+        current <span style="color:#ff79c6">=</span> current.next
+      }
+
+      <span style="color:#ff79c6">return</span> current
+    }
+
+    size() {
+      <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">this</span>.count
+    }
+
+    isEmpty() {
+      <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">this</span>.count <span style="color:#ff79c6">===</span> <span style="color:#bd93f9">0</span>
+    }
+
+    print() {
+      <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span><span style="color:#ff79c6">this</span>.count <span style="color:#ff79c6">===</span> <span style="color:#bd93f9">0</span>) {
+        console.log(<span style="color:#f1fa8c">&#39;&#39;</span>)
+        <span style="color:#ff79c6">return</span>
+      }
+
+      <span style="color:#8be9fd;font-style:italic">let</span> str <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#39;&#39;</span>
+      <span style="color:#8be9fd;font-style:italic">let</span> current <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.head
+      <span style="color:#ff79c6">while</span> (current) {
+        str <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">`</span><span style="color:#f1fa8c">${</span>str<span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">=&gt;</span><span style="color:#f1fa8c">${</span>current.value<span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">`</span>
+        current <span style="color:#ff79c6">=</span> current.next
+      }
+
+      console.log(str)
+
+      <span style="color:#ff79c6">return</span> str
+    }
+  }
+
+</code></pre></div>
+      </div>
+
+
+      <footer>
+        
+
+
+        
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    ©
+    
+      2019 -
+    
+    2022
+     levi 
+    ·
+    开启美好新一天
+  </section>
+</footer>
+
+    </main>
+
+    
+      
+      <script src="/js/coder.min.03b17769f4f91ae35667e1f2a1ca8c16f50562576cf90ff32b3179926914daa5.js" integrity="sha256-A7F3afT5GuNWZ&#43;HyocqMFvUFYlds&#43;Q/zKzF5kmkU2qU="></script>
+    
+
+    
+
+
+  </body>
+
+</html>

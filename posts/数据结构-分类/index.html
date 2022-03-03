@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="color-scheme" content="light dark">
+
+    
+      <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests; block-all-mixed-content; default-src 'self'; child-src 'self'; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net/; form-action 'self'; frame-src 'self'; img-src 'self' https://pic3.zhimg.com; object-src 'none'; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net/ https://cdn.bootcss.com/ https://fonts.googleapis.com/; script-src 'self' https://unpkg.com https://cdn.bootcss.com/; prefetch-src 'self'; connect-src 'self';">
+
+    
+
+    <meta name="author" content="levi">
+    <meta name="description" content="数据结构与算法     本文件内所有知识点均是基础的数据结构与算法，具体参考每个章节markdown 后续深入理解，参考 初级算法 &amp;&amp; 中级算法 &amp;&amp; 高级算法 (大部分参考leetCode)  数据结构     栈： 一种遵从先进后出原则的有序集合；新添加或者待删除的元素都会保存的在栈的头部，称为栈顶，另一端为栈底，在栈里面，新元素都靠近栈顶，旧元素都接近栈底 队列： 与栈相反，遵从先进先出的原则的一组有序的项，队列在尾部添加新的元素，并从头部移除元素，最新添加的元素必须在队列的末尾  普通队列 优先队列 循环队列   链表： 存储有序的元素集合, 但不同与数组, 链表中元素在内存中并不是连续放置的; 每个元素由一个存储元素本身的节点和一个指向下一个元素引用(指针/链接)组成  普通链表 双向链表 循环链表   集合： 集合是一组无序且唯一的项组成，这个数据结构使用了与有限集合相同的数学概念 字典： 集合、字典、散列表都可以存储不重复的数据，字典和集合很像，集合是以{value: value}形式存储数据，而字典是以{key: value}形式存储数据，字典也称为映射(object对象便是字典在javascript中的实现) 散列： HashMap类是Dictionary的一种散列表实现方式， 散列算法是尽可能地在数据结构中快速找到一个值，使用散列函数，就知道 值的具体位置，因此能够快速检索到該值，散列函数的作用是给定一个键值，然后返回值在表中的地址。 树： TODO  栈    一种遵从先进后出原则的有序集合；新添加或者待删除的元素都会保存的在栈的头部，称为栈顶，另一端为栈底，在栈里面，新元素都靠近栈顶，旧元素都接近栈底
+栈也被用在编程语言的编辑器和内存中保存变量，方法调用
+队列    在现实中，最常见的例子就是排队，吃饭排队、银行业务排队、公车的前门上后门下机制&hellip;，前面的人优先完成自己的事务，完成之后，下一个人才能继续。总之，遵从先出原则，
+优先队列    其中一个修改版就是优先队列。元素的添加和移除是基于优先级的。一个现实的例子就是机场登机的顺序。头等舱和商务舱乘客的优先级要高于经济舱乘客。在有些国家，老年人和孕妇(或 带小孩的妇女)登机时也享有高于其他乘客的优先级。">
+    <meta name="keywords" content="blog,developer,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="数据结构 分类"/>
+<meta name="twitter:description" content="数据结构与算法     本文件内所有知识点均是基础的数据结构与算法，具体参考每个章节markdown 后续深入理解，参考 初级算法 &amp;&amp; 中级算法 &amp;&amp; 高级算法 (大部分参考leetCode)  数据结构     栈： 一种遵从先进后出原则的有序集合；新添加或者待删除的元素都会保存的在栈的头部，称为栈顶，另一端为栈底，在栈里面，新元素都靠近栈顶，旧元素都接近栈底 队列： 与栈相反，遵从先进先出的原则的一组有序的项，队列在尾部添加新的元素，并从头部移除元素，最新添加的元素必须在队列的末尾  普通队列 优先队列 循环队列   链表： 存储有序的元素集合, 但不同与数组, 链表中元素在内存中并不是连续放置的; 每个元素由一个存储元素本身的节点和一个指向下一个元素引用(指针/链接)组成  普通链表 双向链表 循环链表   集合： 集合是一组无序且唯一的项组成，这个数据结构使用了与有限集合相同的数学概念 字典： 集合、字典、散列表都可以存储不重复的数据，字典和集合很像，集合是以{value: value}形式存储数据，而字典是以{key: value}形式存储数据，字典也称为映射(object对象便是字典在javascript中的实现) 散列： HashMap类是Dictionary的一种散列表实现方式， 散列算法是尽可能地在数据结构中快速找到一个值，使用散列函数，就知道 值的具体位置，因此能够快速检索到該值，散列函数的作用是给定一个键值，然后返回值在表中的地址。 树： TODO  栈    一种遵从先进后出原则的有序集合；新添加或者待删除的元素都会保存的在栈的头部，称为栈顶，另一端为栈底，在栈里面，新元素都靠近栈顶，旧元素都接近栈底
+栈也被用在编程语言的编辑器和内存中保存变量，方法调用
+队列    在现实中，最常见的例子就是排队，吃饭排队、银行业务排队、公车的前门上后门下机制&hellip;，前面的人优先完成自己的事务，完成之后，下一个人才能继续。总之，遵从先出原则，
+优先队列    其中一个修改版就是优先队列。元素的添加和移除是基于优先级的。一个现实的例子就是机场登机的顺序。头等舱和商务舱乘客的优先级要高于经济舱乘客。在有些国家，老年人和孕妇(或 带小孩的妇女)登机时也享有高于其他乘客的优先级。"/>
+
+    <meta property="og:title" content="数据结构 分类" />
+<meta property="og:description" content="数据结构与算法     本文件内所有知识点均是基础的数据结构与算法，具体参考每个章节markdown 后续深入理解，参考 初级算法 &amp;&amp; 中级算法 &amp;&amp; 高级算法 (大部分参考leetCode)  数据结构     栈： 一种遵从先进后出原则的有序集合；新添加或者待删除的元素都会保存的在栈的头部，称为栈顶，另一端为栈底，在栈里面，新元素都靠近栈顶，旧元素都接近栈底 队列： 与栈相反，遵从先进先出的原则的一组有序的项，队列在尾部添加新的元素，并从头部移除元素，最新添加的元素必须在队列的末尾  普通队列 优先队列 循环队列   链表： 存储有序的元素集合, 但不同与数组, 链表中元素在内存中并不是连续放置的; 每个元素由一个存储元素本身的节点和一个指向下一个元素引用(指针/链接)组成  普通链表 双向链表 循环链表   集合： 集合是一组无序且唯一的项组成，这个数据结构使用了与有限集合相同的数学概念 字典： 集合、字典、散列表都可以存储不重复的数据，字典和集合很像，集合是以{value: value}形式存储数据，而字典是以{key: value}形式存储数据，字典也称为映射(object对象便是字典在javascript中的实现) 散列： HashMap类是Dictionary的一种散列表实现方式， 散列算法是尽可能地在数据结构中快速找到一个值，使用散列函数，就知道 值的具体位置，因此能够快速检索到該值，散列函数的作用是给定一个键值，然后返回值在表中的地址。 树： TODO  栈    一种遵从先进后出原则的有序集合；新添加或者待删除的元素都会保存的在栈的头部，称为栈顶，另一端为栈底，在栈里面，新元素都靠近栈顶，旧元素都接近栈底
+栈也被用在编程语言的编辑器和内存中保存变量，方法调用
+队列    在现实中，最常见的例子就是排队，吃饭排队、银行业务排队、公车的前门上后门下机制&hellip;，前面的人优先完成自己的事务，完成之后，下一个人才能继续。总之，遵从先出原则，
+优先队列    其中一个修改版就是优先队列。元素的添加和移除是基于优先级的。一个现实的例子就是机场登机的顺序。头等舱和商务舱乘客的优先级要高于经济舱乘客。在有些国家，老年人和孕妇(或 带小孩的妇女)登机时也享有高于其他乘客的优先级。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://nieshiming.cn/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%88%86%E7%B1%BB/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-08-03T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-08-03T00:00:00+00:00" />
+
+
+
+    <title>
+  数据结构 分类 · levi
+</title>
+
+    
+      <link rel="canonical" href="https://nieshiming.cn/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%88%86%E7%B1%BB/">
+    
+  
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300&display=swap" rel="stylesheet">
+
+
+    
+      
+      
+      <link rel="stylesheet" href="/css/coder.min.35fe7ad16c77cf2342a31b00a3714f305eeb0717aec800b19eb782d4847ca6be.css" integrity="sha256-Nf560Wx3zyNCoxsAo3FPMF7rBxeuyACxnreC1IR8pr4=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+      
+        
+        
+        <link rel="stylesheet" href="/css/coder-dark.min.ccbbada2e264e4fdbf9b2181cccc2cdb289a63dc9520a1e96ac2b9a45778df29.css" integrity="sha256-zLutouJk5P2/myGBzMws2yiaY9yVIKHpasK5pFd43yk=" crossorigin="anonymous" media="screen" />
+      
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
+
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+    <meta name="generator" content="Hugo 0.90.1" />
+
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+  </head>
+
+  
+  
+    
+  
+  <body class="preload-transitions colorscheme-auto">
+    
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="ri-contrast-line" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="/">
+      levi
+    </a>
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="ri-bar-chart-horizontal-fill" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/">首页</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/posts/">博客</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/tags/">标签</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/about/">关于我</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="https://nieshiming.cn/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%88%86%E7%B1%BB/">
+              数据结构 分类
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="ri-calendar-2-line" aria-hidden="true"></i>
+              <time datetime='2021-08-03T00:00:00Z'>
+                2021-08-03
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="ri-time-line" aria-hidden="true"></i>
+              One-minute read
+            </span>
+          </div>
+          
+          <div class="categories">
+  <i class="ri-folder-fill" aria-hidden="true"></i>
+    <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a></div>
+
+          <div class="tags">
+  <i class="ri-price-tag-3-fill" aria-hidden="true"></i>
+    <span class="tag">
+      <a href="/tags/%E7%AE%97%E6%B3%95/">算法</a>
+    </span>
+      <span class="separator">•</span>
+    <span class="tag">
+      <a href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/">八股文</a>
+    </span></div>
+
+        </div>
+      </header>
+
+      <div>
+        
+        <h2 id="数据结构与算法">
+  数据结构与算法
+  <a class="heading-link" href="#%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84%e4%b8%8e%e7%ae%97%e6%b3%95">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h2>
+<ul>
+<li>本文件内所有知识点均是基础的数据结构与算法，具体参考每个章节markdown</li>
+<li>后续深入理解，参考 初级算法 &amp;&amp; 中级算法 &amp;&amp; 高级算法 (大部分参考leetCode)</li>
+</ul>
+<h3 id="数据结构">
+  数据结构
+  <a class="heading-link" href="#%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<ul>
+<li><strong>栈：</strong>  一种遵从先进后出原则的有序集合；新添加或者待删除的元素都会保存的在栈的头部，称为栈顶，另一端为栈底，在栈里面，新元素都靠近栈顶，旧元素都接近栈底</li>
+<li><strong>队列：</strong> 与栈相反，遵从先进先出的原则的一组有序的项，队列在尾部添加新的元素，并从头部移除元素，最新添加的元素必须在队列的末尾
+<ul>
+<li>普通队列</li>
+<li>优先队列</li>
+<li>循环队列</li>
+</ul>
+</li>
+<li><strong>链表：</strong> 存储有序的元素集合, 但不同与数组, 链表中元素在内存中并不是连续放置的; 每个元素由一个存储元素本身的节点和一个指向下一个元素引用(指针/链接)组成
+<ul>
+<li>普通链表</li>
+<li>双向链表</li>
+<li>循环链表</li>
+</ul>
+</li>
+<li><strong>集合：</strong> 集合是一组无序且唯一的项组成，这个数据结构使用了与有限集合相同的数学概念</li>
+<li><strong>字典：</strong> 集合、字典、散列表都可以存储不重复的数据，字典和集合很像，集合是以{value: value}形式存储数据，而字典是以{key: value}形式存储数据，字典也称为映射(object对象便是字典在javascript中的实现)</li>
+<li><strong>散列：</strong> HashMap类是Dictionary的一种散列表实现方式， 散列算法是尽可能地在数据结构中快速找到一个值，使用散列函数，就知道
+值的具体位置，因此能够快速检索到該值，散列函数的作用是给定一个键值，然后返回值在表中的地址。</li>
+<li><strong>树：</strong> TODO</li>
+</ul>
+<h4 id="栈">
+  栈
+  <a class="heading-link" href="#%e6%a0%88">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>一种遵从先进后出原则的有序集合；新添加或者待删除的元素都会保存的在栈的头部，称为栈顶，另一端为栈底，在栈里面，新元素都靠近栈顶，旧元素都接近栈底<br>
+栈也被用在编程语言的编辑器和内存中保存变量，方法调用</p>
+<h4 id="队列">
+  队列
+  <a class="heading-link" href="#%e9%98%9f%e5%88%97">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>在现实中，最常见的例子就是排队，吃饭排队、银行业务排队、公车的前门上后门下机制&hellip;，前面的人优先完成自己的事务，完成之后，下一个人才能继续。总之，遵从先出原则，</p>
+<h5 id="优先队列">
+  优先队列
+  <a class="heading-link" href="#%e4%bc%98%e5%85%88%e9%98%9f%e5%88%97">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<p>其中一个修改版就是优先队列。元素的添加和移除是基于优先级的。一个现实的例子就是机场登机的顺序。头等舱和商务舱乘客的优先级要高于经济舱乘客。在有些国家，老年人和孕妇(或 带小孩的妇女)登机时也享有高于其他乘客的优先级。</p>
+<h5 id="循环队列">
+  循环队列
+  <a class="heading-link" href="#%e5%be%aa%e7%8e%af%e9%98%9f%e5%88%97">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<p>为充分利用向量空间, 克服&quot;假溢出&quot;现象的方法是: 将向量空间想象成一个首尾相接的圆环，并称为这种向量为循环向量，存储在其中的队列称为循环队列，这种循环队列可以以单链表, 队列的方式在实际编程中应用中实现</p>
+<h4 id="链表">
+  链表
+  <a class="heading-link" href="#%e9%93%be%e8%a1%a8">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>存储有序的元素集合, 但不同与数组, 链表中元素在内存中并不是连续放置的; 每个元素由一个存储元素本身的节点和一个指向下一个元素引用(指针/链接)组成</p>
+<h5 id="普通链表">
+  普通链表
+  <a class="heading-link" href="#%e6%99%ae%e9%80%9a%e9%93%be%e8%a1%a8">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<p>数组的大小是固定的, 从数组起点或中间插入或移除项成本很高，以为需要移动元素<br>
+链表存储有序的集合，但不同与数组，链表中元素在内存中并不是连续放置的，每个元素由一个存储元素本身的节点和一个指向下一个元素引用(指针/链接)组成<br>
+1、相对于传统数组，链表在于，添加或者删除元素不需要移动其他元素，改变元素之间的引用即可 <br>
+2、数组的另一个细节是可以直接访问任何位置的元素，而要想访问链表中间的一个元素，需要从起点开始迭代直到找到所需的元素</p>
+<h5 id="双向链表">
+  双向链表
+  <a class="heading-link" href="#%e5%8f%8c%e5%90%91%e9%93%be%e8%a1%a8">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<p>概念： 链表是双向，node一个链向下一个元素，一个链向上一个元素<br>
+在普通链表中在迭代元素过程中如果错过迭代元素那么就得重新开始，但是在双向链表中，由于双向指向，不必每次重新循环迭代，打打节省了内存消耗</p>
+<h5 id="循环链表">
+  循环链表
+  <a class="heading-link" href="#%e5%be%aa%e7%8e%af%e9%93%be%e8%a1%a8">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<p>循环链表可以像普通链表一样只有单项引用，也可以像双向链表一样有双向引用，循环链表和普通链表之间唯一区别的就是，最后一个元素指向下一个元素的引用而不是null，指向第一个(head)<br>
+双向循环链表 head的previous指向了tai</p>
+<h5 id="双向循环链表">
+  双向循环链表
+  <a class="heading-link" href="#%e5%8f%8c%e5%90%91%e5%be%aa%e7%8e%af%e9%93%be%e8%a1%a8">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<p>综合了双向链表以及循环链表的特点</p>
+<h4 id="集合">
+  集合
+  <a class="heading-link" href="#%e9%9b%86%e5%90%88">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>目前es6已内置Set类型的实现, 下面将手动实现实现一个集合类 <br>
+对集合可以进行如下操作</p>
+<ul>
+<li>并集： 对于给定2个集合，返回一个包含2个集合所有元素的集合</li>
+<li>交集： 对于给定2个集合，返回一个2个集合都包含元素的集合</li>
+<li>差集： 对于给定2个集合， 返回包含在A集合但不包含于B集合的新集合</li>
+<li>子集： 验证一个集合是不是全部包含在另一个集合中</li>
+</ul>
+<h4 id="字典">
+  字典
+  <a class="heading-link" href="#%e5%ad%97%e5%85%b8">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>集合、字典、散列表都可以存储不重复的数据，字典和集合很像，集合是以{value: value}形式存储数据，而字典是以{key: value}形式存储数据，字典也称为映射(object对象便是字典在javascript中的实现)</p>
+<h4 id="散列">
+  散列
+  <a class="heading-link" href="#%e6%95%a3%e5%88%97">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>HashMap类是Dictionary的一种散列表实现方式， 散列算法是尽可能地在数据结构中快速找到一个值，使用散列函数，就知道
+值的具体位置，因此能够快速检索到該值，散列函数的作用是给定一个键值，然后返回值在表中的地址</p>
+<h4 id="树">
+  树
+  <a class="heading-link" href="#%e6%a0%91">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<p>树是一种非顺序数据结构，一种分层数据的抽象模型，它对于储存需要快速查询的数据非常有用 <br>
+一个树结构包含一系列存在父节点关系的节点(除了顶部的第一个节点)以及零个或者多个子节点 <br>
+树大概包含以下几种数据特性</p>
+<ul>
+<li>节点<br>
+-根节点  <br>
+-内部节点：非根节点、且有子节点的节点<br>
+-外部节点/页节点：无子节点的节点</li>
+<li>子树：就是大大小小节点组成的书</li>
+<li>深度：节点到根节点的节点数量</li>
+<li>高度：树的高度取决节点深度的最大值</li>
+<li>层级： 也可以按照节点级别来分层</li>
+</ul>
+<h5 id="二叉树和二叉树搜索树">
+  二叉树和二叉树搜索树
+  <a class="heading-link" href="#%e4%ba%8c%e5%8f%89%e6%a0%91%e5%92%8c%e4%ba%8c%e5%8f%89%e6%a0%91%e6%90%9c%e7%b4%a2%e6%a0%91">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<ul>
+<li>二叉树中的节点最多只能有2个节点，一个是左侧的子节点，另一个是右侧的子节点。</li>
+<li>二叉搜索树是二叉树的一种，但是它只允许你在左侧节点存储比父节点小的值，在右侧节点存储大于或者等于父节点的值</li>
+<li>不同之前的链表和集合，在树中节点被称为“键”，而不是“项”</li>
+</ul>
+<p><strong>树的遍历：中序、先序、后序</strong></p>
+<ul>
+<li>中序：中序遍历是一种以上行访问BST所有节点的遍历方式，也就是最小到最大的顺序访问节点，中序遍历是一种应用对树的排序操作</li>
+<li>先序遍历是优先与后代节点顺序访问每个节点的，先序遍历的一种应用是打印结构化文档</li>
+<li>后续遍历则是访问后代节点，在访问节点本身，后续遍历是一种应用计算的一个目录和它的子目录的所有文件所占的大小</li>
+</ul>
+<p><strong>三种遍历方式的不同:</strong></p>
+<ul>
+<li>先序遍历： 节点本身 =&gt; 左侧子节点  =&gt; 右侧子节点</li>
+<li>中序遍历： 左侧子节点 =&gt; 右侧子节点  =&gt; 节点本身</li>
+<li>后续遍历： 左侧子节点 =&gt; 节点本身 =&gt; 右侧子节点</li>
+</ul>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    ©
+    
+      2019 -
+    
+    2022
+     levi 
+    ·
+    开启美好新一天
+  </section>
+</footer>
+
+    </main>
+
+    
+      
+      <script src="/js/coder.min.03b17769f4f91ae35667e1f2a1ca8c16f50562576cf90ff32b3179926914daa5.js" integrity="sha256-A7F3afT5GuNWZ&#43;HyocqMFvUFYlds&#43;Q/zKzF5kmkU2qU="></script>
+    
+
+    
+
+
+  </body>
+
+</html>

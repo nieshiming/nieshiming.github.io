@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="color-scheme" content="light dark">
+
+    
+      <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests; block-all-mixed-content; default-src 'self'; child-src 'self'; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net/; form-action 'self'; frame-src 'self'; img-src 'self' https://pic3.zhimg.com; object-src 'none'; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net/ https://cdn.bootcss.com/ https://fonts.googleapis.com/; script-src 'self' https://unpkg.com https://cdn.bootcss.com/; prefetch-src 'self'; connect-src 'self';">
+
+    
+
+    <meta name="author" content="levi">
+    <meta name="description" content="栈    是一种遵循后入先出的数据集合，新添加的元素靠近栈顶，后添加靠近栈底
+用对象模拟栈    // 对象模拟  class Stack { constructor() { this.count = 0 this.item = {} } push(value) { this.item[this.count] = value this.count&#43;&#43; } peek() { if (this.isEmpty()) { return undefined } this.count-- const result = this.item[this.count] delete this.item[this.count] return result } isEmpty() { return this.count === 0 } size() { return this.count } print() { let str = this.item[0] for (let i = 1; i &lt; this.">
+    <meta name="keywords" content="blog,developer,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="数据结构 堆栈篇"/>
+<meta name="twitter:description" content="栈    是一种遵循后入先出的数据集合，新添加的元素靠近栈顶，后添加靠近栈底
+用对象模拟栈    // 对象模拟  class Stack { constructor() { this.count = 0 this.item = {} } push(value) { this.item[this.count] = value this.count&#43;&#43; } peek() { if (this.isEmpty()) { return undefined } this.count-- const result = this.item[this.count] delete this.item[this.count] return result } isEmpty() { return this.count === 0 } size() { return this.count } print() { let str = this.item[0] for (let i = 1; i &lt; this."/>
+
+    <meta property="og:title" content="数据结构 堆栈篇" />
+<meta property="og:description" content="栈    是一种遵循后入先出的数据集合，新添加的元素靠近栈顶，后添加靠近栈底
+用对象模拟栈    // 对象模拟  class Stack { constructor() { this.count = 0 this.item = {} } push(value) { this.item[this.count] = value this.count&#43;&#43; } peek() { if (this.isEmpty()) { return undefined } this.count-- const result = this.item[this.count] delete this.item[this.count] return result } isEmpty() { return this.count === 0 } size() { return this.count } print() { let str = this.item[0] for (let i = 1; i &lt; this." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://nieshiming.cn/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%A0%86%E6%A0%88%E7%AF%87/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-08-01T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-08-01T00:00:00+00:00" />
+
+
+
+    <title>
+  数据结构 堆栈篇 · levi
+</title>
+
+    
+      <link rel="canonical" href="https://nieshiming.cn/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%A0%86%E6%A0%88%E7%AF%87/">
+    
+  
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300&display=swap" rel="stylesheet">
+
+
+    
+      
+      
+      <link rel="stylesheet" href="/css/coder.min.35fe7ad16c77cf2342a31b00a3714f305eeb0717aec800b19eb782d4847ca6be.css" integrity="sha256-Nf560Wx3zyNCoxsAo3FPMF7rBxeuyACxnreC1IR8pr4=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+      
+        
+        
+        <link rel="stylesheet" href="/css/coder-dark.min.ccbbada2e264e4fdbf9b2181cccc2cdb289a63dc9520a1e96ac2b9a45778df29.css" integrity="sha256-zLutouJk5P2/myGBzMws2yiaY9yVIKHpasK5pFd43yk=" crossorigin="anonymous" media="screen" />
+      
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
+
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+    <meta name="generator" content="Hugo 0.90.1" />
+
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+  </head>
+
+  
+  
+    
+  
+  <body class="preload-transitions colorscheme-auto">
+    
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="ri-contrast-line" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="/">
+      levi
+    </a>
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="ri-bar-chart-horizontal-fill" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/">首页</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/posts/">博客</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/tags/">标签</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/about/">关于我</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="https://nieshiming.cn/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%A0%86%E6%A0%88%E7%AF%87/">
+              数据结构 堆栈篇
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="ri-calendar-2-line" aria-hidden="true"></i>
+              <time datetime='2021-08-01T00:00:00Z'>
+                2021-08-01
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="ri-time-line" aria-hidden="true"></i>
+              One-minute read
+            </span>
+          </div>
+          
+          <div class="categories">
+  <i class="ri-folder-fill" aria-hidden="true"></i>
+    <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a></div>
+
+          <div class="tags">
+  <i class="ri-price-tag-3-fill" aria-hidden="true"></i>
+    <span class="tag">
+      <a href="/tags/%E7%AE%97%E6%B3%95/">算法</a>
+    </span>
+      <span class="separator">•</span>
+    <span class="tag">
+      <a href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/">八股文</a>
+    </span></div>
+
+        </div>
+      </header>
+
+      <div>
+        
+        <h3 id="栈">
+  栈
+  <a class="heading-link" href="#%e6%a0%88">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<p>是一种遵循后入先出的数据集合，新添加的元素靠近栈顶，后添加靠近栈底</p>
+<h4 id="用对象模拟栈">
+  用对象模拟栈
+  <a class="heading-link" href="#%e7%94%a8%e5%af%b9%e8%b1%a1%e6%a8%a1%e6%8b%9f%e6%a0%88">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">
+  <span style="color:#6272a4">// 对象模拟 
+</span><span style="color:#6272a4"></span>  <span style="color:#ff79c6">class</span> Stack {
+    constructor() {
+      <span style="color:#ff79c6">this</span>.count <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>
+      <span style="color:#ff79c6">this</span>.item <span style="color:#ff79c6">=</span> {}
+    }
+
+    push(value) {
+      <span style="color:#ff79c6">this</span>.item[<span style="color:#ff79c6">this</span>.count] <span style="color:#ff79c6">=</span> value
+      <span style="color:#ff79c6">this</span>.count<span style="color:#ff79c6">++</span>
+    }
+
+    peek() {
+      <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">this</span>.isEmpty()) {
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">undefined</span>
+      }
+
+      <span style="color:#ff79c6">this</span>.count<span style="color:#ff79c6">--</span>
+      <span style="color:#ff79c6">const</span> result <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.item[<span style="color:#ff79c6">this</span>.count]
+      <span style="color:#ff79c6">delete</span> <span style="color:#ff79c6">this</span>.item[<span style="color:#ff79c6">this</span>.count]
+
+      <span style="color:#ff79c6">return</span> result
+    }
+
+    isEmpty() {
+      <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">this</span>.count <span style="color:#ff79c6">===</span> <span style="color:#bd93f9">0</span>
+    }
+
+    size() {
+      <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">this</span>.count
+    }
+
+    print() {
+      <span style="color:#8be9fd;font-style:italic">let</span> str <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.item[<span style="color:#bd93f9">0</span>]
+
+      <span style="color:#ff79c6">for</span> (<span style="color:#8be9fd;font-style:italic">let</span> i <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">1</span>; i <span style="color:#ff79c6">&lt;</span> <span style="color:#ff79c6">this</span>.count; i<span style="color:#ff79c6">++</span>) {
+        str <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">`</span><span style="color:#f1fa8c">${</span>str<span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">=&gt;</span><span style="color:#f1fa8c">${</span><span style="color:#ff79c6">this</span>.item[i]<span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">`</span>
+      }
+
+      <span style="color:#ff79c6">return</span> str
+    }
+
+    clear() {
+      <span style="color:#ff79c6">this</span>.count <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>
+      <span style="color:#ff79c6">this</span>.item <span style="color:#ff79c6">=</span> {}
+    }
+  }
+</code></pre></div><h4 id="用数组模拟栈">
+  用数组模拟栈
+  <a class="heading-link" href="#%e7%94%a8%e6%95%b0%e7%bb%84%e6%a8%a1%e6%8b%9f%e6%a0%88">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">
+  <span style="color:#6272a4">//  数组模拟
+</span><span style="color:#6272a4"></span>  <span style="color:#ff79c6">class</span> Stack {
+    constructor() {
+      <span style="color:#ff79c6">this</span>.item <span style="color:#ff79c6">=</span> []
+    }
+
+    push(value) {
+      <span style="color:#ff79c6">this</span>.item.push(value)
+    }
+
+    peek() {
+      <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">this</span>.item.pop()
+    }
+
+    isEmpty() {
+      <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">!!</span><span style="color:#ff79c6">this</span>.item.length
+    }
+
+    size() {
+      <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">this</span>.item.length
+    }
+
+    print() {
+      <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">this</span>.item.join(<span style="color:#f1fa8c">&#39;=&gt;&#39;</span>)
+    }
+
+    clear() {
+      <span style="color:#ff79c6">this</span>.item <span style="color:#ff79c6">=</span> []
+    }
+  }
+</code></pre></div>
+      </div>
+
+
+      <footer>
+        
+
+
+        
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    ©
+    
+      2019 -
+    
+    2022
+     levi 
+    ·
+    开启美好新一天
+  </section>
+</footer>
+
+    </main>
+
+    
+      
+      <script src="/js/coder.min.03b17769f4f91ae35667e1f2a1ca8c16f50562576cf90ff32b3179926914daa5.js" integrity="sha256-A7F3afT5GuNWZ&#43;HyocqMFvUFYlds&#43;Q/zKzF5kmkU2qU="></script>
+    
+
+    
+
+
+  </body>
+
+</html>

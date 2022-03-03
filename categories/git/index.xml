@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>git on levi</title>
+    <link>https://nieshiming.cn/categories/git/</link>
+    <description>Recent content in git on levi</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 05 Apr 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://nieshiming.cn/categories/git/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>git-pull-和git-fetch区别</title>
+      <link>https://nieshiming.cn/posts/git-pull-%E5%92%8Cgit-fetch%E5%8C%BA%E5%88%AB/</link>
+      <pubDate>Fri, 05 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://nieshiming.cn/posts/git-pull-%E5%92%8Cgit-fetch%E5%8C%BA%E5%88%AB/</guid>
+      <description>&lt;h4 id=&#34;描述&#34;&gt;
+  描述
+  &lt;a class=&#34;heading-link&#34; href=&#34;#%e6%8f%8f%e8%bf%b0&#34;&gt;
+    &lt;i class=&#34;fa fa-link&#34; aria-hidden=&#34;true&#34;&gt;&lt;/i&gt;
+  &lt;/a&gt;
+&lt;/h4&gt;
+&lt;blockquote&gt;
+&lt;p&gt;git fetch并没有更新远程代码到本地仓库，只是拉去了远程的commit数据，将远程仓库的commitid 更新为lastet&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;工作区&#34;&gt;
+  工作区
+  &lt;a class=&#34;heading-link&#34; href=&#34;#%e5%b7%a5%e4%bd%9c%e5%8c%ba&#34;&gt;
+    &lt;i class=&#34;fa fa-link&#34; aria-hidden=&#34;true&#34;&gt;&lt;/i&gt;
+  &lt;/a&gt;
+&lt;/h5&gt;
+&lt;p&gt;简而言之就是工作的区域，对于git而言，就是当前工作的目录，工作的内容会被提交到暂存区以及版本库中，同时也包含自己的修改的内容&lt;/p&gt;
+&lt;h5 id=&#34;暂存区&#34;&gt;
+  暂存区
+  &lt;a class=&#34;heading-link&#34; href=&#34;#%e6%9a%82%e5%ad%98%e5%8c%ba&#34;&gt;
+    &lt;i class=&#34;fa fa-link&#34; aria-hidden=&#34;true&#34;&gt;&lt;/i&gt;
+  &lt;/a&gt;
+&lt;/h5&gt;
+&lt;p&gt;使用git add 命令把我们工作区修改的内容添加到暂存区中&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>git-入门指令</title>
+      <link>https://nieshiming.cn/posts/git-%E5%85%A5%E9%97%A8%E6%8C%87%E4%BB%A4/</link>
+      <pubDate>Tue, 02 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://nieshiming.cn/posts/git-%E5%85%A5%E9%97%A8%E6%8C%87%E4%BB%A4/</guid>
+      <description>&lt;h4 id=&#34;初始化连接-git-相关&#34;&gt;
+  初始化连接 git 相关
+  &lt;a class=&#34;heading-link&#34; href=&#34;#%e5%88%9d%e5%a7%8b%e5%8c%96%e8%bf%9e%e6%8e%a5-git-%e7%9b%b8%e5%85%b3&#34;&gt;
+    &lt;i class=&#34;fa fa-link&#34; aria-hidden=&#34;true&#34;&gt;&lt;/i&gt;
+  &lt;/a&gt;
+&lt;/h4&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;    git clone xxx(远程仓库名)            ---克隆项目
+    git remote add origin xxx           ---本地仓库连接到远程
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;配置账号密码&#34;&gt;
+  配置账号密码
+  &lt;a class=&#34;heading-link&#34; href=&#34;#%e9%85%8d%e7%bd%ae%e8%b4%a6%e5%8f%b7%e5%af%86%e7%a0%81&#34;&gt;
+    &lt;i class=&#34;fa fa-link&#34; aria-hidden=&#34;true&#34;&gt;&lt;/i&gt;
+  &lt;/a&gt;
+&lt;/h4&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;    git config --local user.name xxx
+    git config --local user.email &amp;#39;xxx@xx.com&amp;#39;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;git 配置推送时自动保存账号密码: &lt;code&gt;git config credential.helper store&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;参考文章: &lt;a href=&#34;https://cloud.tencent.com/developer/ask/131910&#34;&gt;https://cloud.tencent.com/developer/ask/131910&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;单个分支相关&#34;&gt;
+  单个分支相关
+  &lt;a class=&#34;heading-link&#34; href=&#34;#%e5%8d%95%e4%b8%aa%e5%88%86%e6%94%af%e7%9b%b8%e5%85%b3&#34;&gt;
+    &lt;i class=&#34;fa fa-link&#34; aria-hidden=&#34;true&#34;&gt;&lt;/i&gt;
+  &lt;/a&gt;
+&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;创建本地分支: git branch dev/nsm&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;删除本地分支： git branch -D dev/nsm&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;切换到本地分支： git checkout dev/nsm&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;切换上一个分支： git checkout -&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;创建并切换到改分支： git checkout -b xxx&lt;/p&gt;
+&lt;p&gt;&amp;hellip;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>git-代码提交规范</title>
+      <link>https://nieshiming.cn/posts/git-%E4%BB%A3%E7%A0%81%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83/</link>
+      <pubDate>Sat, 16 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://nieshiming.cn/posts/git-%E4%BB%A3%E7%A0%81%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83/</guid>
+      <description>&lt;h4 id=&#34;代码提交规范&#34;&gt;
+  代码提交规范
+  &lt;a class=&#34;heading-link&#34; href=&#34;#%e4%bb%a3%e7%a0%81%e6%8f%90%e4%ba%a4%e8%a7%84%e8%8c%83&#34;&gt;
+    &lt;i class=&#34;fa fa-link&#34; aria-hidden=&#34;true&#34;&gt;&lt;/i&gt;
+  &lt;/a&gt;
+&lt;/h4&gt;
+&lt;p&gt;因为最近项目比较多，而且经常穿插各种很紧急的小需求，导致版本管理比较困难，所以现在定制一下代码的提交规范&lt;/p&gt;
+&lt;h4 id=&#34;具体步骤&#34;&gt;
+  具体步骤
+  &lt;a class=&#34;heading-link&#34; href=&#34;#%e5%85%b7%e4%bd%93%e6%ad%a5%e9%aa%a4&#34;&gt;
+    &lt;i class=&#34;fa fa-link&#34; aria-hidden=&#34;true&#34;&gt;&lt;/i&gt;
+  &lt;/a&gt;
+&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;基于master分支，创建出自己的开发分支，分支命名可以参考 &lt;code&gt;feature-功能描述&lt;/code&gt; 或者 &lt;code&gt;bug-bug描述&lt;/code&gt; 或者 &lt;code&gt;develop-姓名&lt;/code&gt; 这样的模式。&lt;/li&gt;
+&lt;li&gt;在自己的开发分支上修改代码，创建Commit。&lt;/li&gt;
+&lt;li&gt;在开发完成之后，将自己本地的开发分支推送到远端，这时候需要确定自己的开发分支需要合并进哪个版本分支。&lt;/li&gt;
+&lt;li&gt;在明确了版本分支之后，在GitLab上创建Merge Request。创建Merge Request的步骤如下：
+&amp;hellip;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

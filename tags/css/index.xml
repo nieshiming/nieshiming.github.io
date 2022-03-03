@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>css on levi</title>
+    <link>https://nieshiming.cn/tags/css/</link>
+    <description>Recent content in css on levi</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 03 Feb 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://nieshiming.cn/tags/css/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>levi-css总结</title>
+      <link>https://nieshiming.cn/posts/levi-css%E6%80%BB%E7%BB%93/</link>
+      <pubDate>Mon, 03 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://nieshiming.cn/posts/levi-css%E6%80%BB%E7%BB%93/</guid>
+      <description>&lt;h4 id=&#34;flex&#34;&gt;
+  flex
+  &lt;a class=&#34;heading-link&#34; href=&#34;#flex&#34;&gt;
+    &lt;i class=&#34;fa fa-link&#34; aria-hidden=&#34;true&#34;&gt;&lt;/i&gt;
+  &lt;/a&gt;
+&lt;/h4&gt;
+&lt;h5 id=&#34;flex-basis&#34;&gt;
+  flex-basis
+  &lt;a class=&#34;heading-link&#34; href=&#34;#flex-basis&#34;&gt;
+    &lt;i class=&#34;fa fa-link&#34; aria-hidden=&#34;true&#34;&gt;&lt;/i&gt;
+  &lt;/a&gt;
+&lt;/h5&gt;
+&lt;p&gt;flex-basis: 项目占据主轴的宽度， 在分配多余空间之前会判断这个属性大小， 默认值auto&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;auto: 即项目本身的大小，取决于item自身的宽度或高度&lt;/li&gt;
+&lt;li&gt;0%： 不暂居主轴宽度，item的宽度和高度无意义
+&lt;strong&gt;当主轴为水平方向的时候，当设置了 flex-basis，项目的宽度设置值会失效，flex-basis 需要跟 flex-grow 和 flex-shrink 配合使用才能发挥效果。&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h5 id=&#34;flex-grow&#34;&gt;
+  flex-grow
+  &lt;a class=&#34;heading-link&#34; href=&#34;#flex-grow&#34;&gt;
+    &lt;i class=&#34;fa fa-link&#34; aria-hidden=&#34;true&#34;&gt;&lt;/i&gt;
+  &lt;/a&gt;
+&lt;/h5&gt;
+&lt;p&gt;flex-grow: 用于瓜分”父容器“剩余空间 。定义项目的放大比例， 默认值0，即存在剩余空间，也不会放大&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果所有项目的 flex-grow 属性都为 1，则它们将等分剩余空间。(如果有的话)&lt;/li&gt;
+&lt;li&gt;如果一个项目的 flex-grow 属性为 2，其他项目都为 1，则前者占据的剩余空间将比其他项多一倍。&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

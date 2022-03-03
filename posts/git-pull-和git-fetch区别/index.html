@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="color-scheme" content="light dark">
+
+    
+      <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests; block-all-mixed-content; default-src 'self'; child-src 'self'; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net/; form-action 'self'; frame-src 'self'; img-src 'self' https://pic3.zhimg.com; object-src 'none'; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net/ https://cdn.bootcss.com/ https://fonts.googleapis.com/; script-src 'self' https://unpkg.com https://cdn.bootcss.com/; prefetch-src 'self'; connect-src 'self';">
+
+    
+
+    <meta name="author" content="levi">
+    <meta name="description" content="
+  描述
+  
+    
+  
+
+
+git fetch并没有更新远程代码到本地仓库，只是拉去了远程的commit数据，将远程仓库的commitid 更新为lastet
+
+
+  工作区
+  
+    
+  
+
+简而言之就是工作的区域，对于git而言，就是当前工作的目录，工作的内容会被提交到暂存区以及版本库中，同时也包含自己的修改的内容
+
+  暂存区
+  
+    
+  
+
+使用git add 命令把我们工作区修改的内容添加到暂存区中">
+    <meta name="keywords" content="blog,developer,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="git-pull-和git-fetch区别"/>
+<meta name="twitter:description" content="
+  描述
+  
+    
+  
+
+
+git fetch并没有更新远程代码到本地仓库，只是拉去了远程的commit数据，将远程仓库的commitid 更新为lastet
+
+
+  工作区
+  
+    
+  
+
+简而言之就是工作的区域，对于git而言，就是当前工作的目录，工作的内容会被提交到暂存区以及版本库中，同时也包含自己的修改的内容
+
+  暂存区
+  
+    
+  
+
+使用git add 命令把我们工作区修改的内容添加到暂存区中"/>
+
+    <meta property="og:title" content="git-pull-和git-fetch区别" />
+<meta property="og:description" content="
+  描述
+  
+    
+  
+
+
+git fetch并没有更新远程代码到本地仓库，只是拉去了远程的commit数据，将远程仓库的commitid 更新为lastet
+
+
+  工作区
+  
+    
+  
+
+简而言之就是工作的区域，对于git而言，就是当前工作的目录，工作的内容会被提交到暂存区以及版本库中，同时也包含自己的修改的内容
+
+  暂存区
+  
+    
+  
+
+使用git add 命令把我们工作区修改的内容添加到暂存区中" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://nieshiming.cn/posts/git-pull-%E5%92%8Cgit-fetch%E5%8C%BA%E5%88%AB/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2019-04-05T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-04-05T00:00:00+00:00" />
+
+
+
+    <title>
+  git-pull-和git-fetch区别 · levi
+</title>
+
+    
+      <link rel="canonical" href="https://nieshiming.cn/posts/git-pull-%E5%92%8Cgit-fetch%E5%8C%BA%E5%88%AB/">
+    
+  
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300&display=swap" rel="stylesheet">
+
+
+    
+      
+      
+      <link rel="stylesheet" href="/css/coder.min.35fe7ad16c77cf2342a31b00a3714f305eeb0717aec800b19eb782d4847ca6be.css" integrity="sha256-Nf560Wx3zyNCoxsAo3FPMF7rBxeuyACxnreC1IR8pr4=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+      
+        
+        
+        <link rel="stylesheet" href="/css/coder-dark.min.ccbbada2e264e4fdbf9b2181cccc2cdb289a63dc9520a1e96ac2b9a45778df29.css" integrity="sha256-zLutouJk5P2/myGBzMws2yiaY9yVIKHpasK5pFd43yk=" crossorigin="anonymous" media="screen" />
+      
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
+
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+    <meta name="generator" content="Hugo 0.90.1" />
+
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+  </head>
+
+  
+  
+    
+  
+  <body class="preload-transitions colorscheme-auto">
+    
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="ri-contrast-line" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="/">
+      levi
+    </a>
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="ri-bar-chart-horizontal-fill" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/">首页</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/posts/">博客</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/tags/">标签</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/about/">关于我</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="https://nieshiming.cn/posts/git-pull-%E5%92%8Cgit-fetch%E5%8C%BA%E5%88%AB/">
+              git-pull-和git-fetch区别
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="ri-calendar-2-line" aria-hidden="true"></i>
+              <time datetime='2019-04-05T00:00:00Z'>
+                2019-04-05
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="ri-time-line" aria-hidden="true"></i>
+              One-minute read
+            </span>
+          </div>
+          
+          <div class="categories">
+  <i class="ri-folder-fill" aria-hidden="true"></i>
+    <a href="/categories/git/">git</a></div>
+
+          <div class="tags">
+  <i class="ri-price-tag-3-fill" aria-hidden="true"></i>
+    <span class="tag">
+      <a href="/tags/git/">git</a>
+    </span></div>
+
+        </div>
+      </header>
+
+      <div>
+        
+        <h4 id="描述">
+  描述
+  <a class="heading-link" href="#%e6%8f%8f%e8%bf%b0">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<blockquote>
+<p>git fetch并没有更新远程代码到本地仓库，只是拉去了远程的commit数据，将远程仓库的commitid 更新为lastet</p>
+</blockquote>
+<h5 id="工作区">
+  工作区
+  <a class="heading-link" href="#%e5%b7%a5%e4%bd%9c%e5%8c%ba">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<p>简而言之就是工作的区域，对于git而言，就是当前工作的目录，工作的内容会被提交到暂存区以及版本库中，同时也包含自己的修改的内容</p>
+<h5 id="暂存区">
+  暂存区
+  <a class="heading-link" href="#%e6%9a%82%e5%ad%98%e5%8c%ba">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<p>使用git add 命令把我们工作区修改的内容添加到暂存区中</p>
+<h5 id="本地仓库">
+  本地仓库
+  <a class="heading-link" href="#%e6%9c%ac%e5%9c%b0%e4%bb%93%e5%ba%93">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<p>使用git commit命令后，会把暂存区的内容提交到本地仓库中，工作区有个.git目录，这个目录不属于工作区，里面是关于仓库的相关信息， 暂存区的内容也会在里面。记录相关commit节点，
+可以使用git merge，或者rebase命令把远程仓库副本合并到本地仓库</p>
+<h5 id="远程版本库远程代码库">
+  远程版本库(远程代码库)
+  <a class="heading-link" href="#%e8%bf%9c%e7%a8%8b%e7%89%88%e6%9c%ac%e5%ba%93%e8%bf%9c%e7%a8%8b%e4%bb%a3%e7%a0%81%e5%ba%93">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<p>与本地仓库概念一致，只不过存储于远程，可用于远程多人协作，可以通过git pull 、 git push来下载或推送代码，实现本地仓库与远程仓库的交互</p>
+<h5 id="远程仓库副本">
+  远程仓库副本
+  <a class="heading-link" href="#%e8%bf%9c%e7%a8%8b%e4%bb%93%e5%ba%93%e5%89%af%e6%9c%ac">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h5>
+<p>可以理解为存储于本地的远程仓库缓存，记录远程仓库的相关信息，主要是commit节点， git fetch只是同步远程仓库数据至本地的远程仓库副本， 可以通过git pull拉取远程仓库代码只本地仓库
+<strong>git pull根据配置不同</strong>分为以下2种形式</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">
+    git pull === git fetch + git rebase branch
+
+    git pull === git fetch + git merge branch
+
+</code></pre></div><h4 id="实践">
+  实践
+  <a class="heading-link" href="#%e5%ae%9e%e8%b7%b5">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<blockquote>
+<p>查看指定仓库的 .git文件夹。 .git文件夹中refs里面有3个文件夹： headers、remotes、tags。其中heads记录的是本地仓库最新commit, remotes记录的是远程的commitId，使用git fetch可以把remotes中commit更新至最新</p>
+</blockquote>
+<p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/059a4105b46e428d9e7c83192f796a03~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+<ul>
+<li>
+<p>使用git fetch命令同步远程commit至remotes</p>
+</li>
+<li>
+<p>在refs中 heads查看本地指定分支<!-- raw HTML omitted -->commit： eg: 66d961889ed447a37ce612899c954ec4f1363289
+<img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/58db50750cad4f3fa50dc8418dd29a62~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+<li>
+<p>在refs中，remotes查看指定分支<!-- raw HTML omitted -->远程仓库commit数据:
+<img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/408ba665d0354fce88436bf70a887cee~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+<li>
+<p>执行git merge操作
+<img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3f6402ce5c3e4920b63dab3a15f49088~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+<p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/816f4d6d8496435e854e429ea5621aee~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+</li>
+</ul>
+      </div>
+
+
+      <footer>
+        
+
+
+        
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    ©
+    
+      2019 -
+    
+    2022
+     levi 
+    ·
+    开启美好新一天
+  </section>
+</footer>
+
+    </main>
+
+    
+      
+      <script src="/js/coder.min.03b17769f4f91ae35667e1f2a1ca8c16f50562576cf90ff32b3179926914daa5.js" integrity="sha256-A7F3afT5GuNWZ&#43;HyocqMFvUFYlds&#43;Q/zKzF5kmkU2qU="></script>
+    
+
+    
+
+
+  </body>
+
+</html>

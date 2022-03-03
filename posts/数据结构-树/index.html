@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="color-scheme" content="light dark">
+
+    
+      <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests; block-all-mixed-content; default-src 'self'; child-src 'self'; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net/; form-action 'self'; frame-src 'self'; img-src 'self' https://pic3.zhimg.com; object-src 'none'; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net/ https://cdn.bootcss.com/ https://fonts.googleapis.com/; script-src 'self' https://unpkg.com https://cdn.bootcss.com/; prefetch-src 'self'; connect-src 'self';">
+
+    
+
+    <meta name="author" content="levi">
+    <meta name="description" content="树     树是一种非线性结构，它对于存储快速查找的元素非常用有用， 树是一种分层数据的抽象模型
+  树的相关术语 树结构实现 树的遍历 添加和移除节点  树的相关术语     位于树顶部的节点叫作根节点。它没有父节点。 树中的每个元素都叫作节点.节点分为内部节点和外部节点。至少有一个子节点的节点称为内部节点，没有子元素的节点成为外部节点或叶节点。 节点的深度：取决当前节点去祖先节点的数量。 节点的高度：所有节点深度的最大值  二叉树 &amp; 二叉搜索树（BST树）    二叉树中每个节点最多有个节点，一个是左侧节点，一个是右侧节点
+二叉搜索树是二叉树特殊分别，只允许你在左侧存储比父节点小数据，右侧节点存储比父节点大数据
+BST实现     insert(key) 向树插入一个新的键 search(key) 在树种搜索key是否存在 remove(key) 删除树种特定的值 min() 寻找树的最小值 max() 寻找树的最大值 preOrderTraverse 先序遍历： 先输出当前节点值，在输出左节点，然后右节点值 middleOrderTraverse 中序遍历： 先输出左侧节点值，在输出当前节点值，然后右节点值 postSequenceTraverse 后续遍历： 先输出左侧节点值，在输出右侧节点值，然后输出当前节点值  class Node { constructor(value) { this.key = value this.left = null this.right = null } } class bstTree { root = null insert(key) { const item = new Node(key) const insertNode = (node, key) =&gt; { if (!">
+    <meta name="keywords" content="blog,developer,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="数据结构 树"/>
+<meta name="twitter:description" content="树     树是一种非线性结构，它对于存储快速查找的元素非常用有用， 树是一种分层数据的抽象模型
+  树的相关术语 树结构实现 树的遍历 添加和移除节点  树的相关术语     位于树顶部的节点叫作根节点。它没有父节点。 树中的每个元素都叫作节点.节点分为内部节点和外部节点。至少有一个子节点的节点称为内部节点，没有子元素的节点成为外部节点或叶节点。 节点的深度：取决当前节点去祖先节点的数量。 节点的高度：所有节点深度的最大值  二叉树 &amp; 二叉搜索树（BST树）    二叉树中每个节点最多有个节点，一个是左侧节点，一个是右侧节点
+二叉搜索树是二叉树特殊分别，只允许你在左侧存储比父节点小数据，右侧节点存储比父节点大数据
+BST实现     insert(key) 向树插入一个新的键 search(key) 在树种搜索key是否存在 remove(key) 删除树种特定的值 min() 寻找树的最小值 max() 寻找树的最大值 preOrderTraverse 先序遍历： 先输出当前节点值，在输出左节点，然后右节点值 middleOrderTraverse 中序遍历： 先输出左侧节点值，在输出当前节点值，然后右节点值 postSequenceTraverse 后续遍历： 先输出左侧节点值，在输出右侧节点值，然后输出当前节点值  class Node { constructor(value) { this.key = value this.left = null this.right = null } } class bstTree { root = null insert(key) { const item = new Node(key) const insertNode = (node, key) =&gt; { if (!"/>
+
+    <meta property="og:title" content="数据结构 树" />
+<meta property="og:description" content="树     树是一种非线性结构，它对于存储快速查找的元素非常用有用， 树是一种分层数据的抽象模型
+  树的相关术语 树结构实现 树的遍历 添加和移除节点  树的相关术语     位于树顶部的节点叫作根节点。它没有父节点。 树中的每个元素都叫作节点.节点分为内部节点和外部节点。至少有一个子节点的节点称为内部节点，没有子元素的节点成为外部节点或叶节点。 节点的深度：取决当前节点去祖先节点的数量。 节点的高度：所有节点深度的最大值  二叉树 &amp; 二叉搜索树（BST树）    二叉树中每个节点最多有个节点，一个是左侧节点，一个是右侧节点
+二叉搜索树是二叉树特殊分别，只允许你在左侧存储比父节点小数据，右侧节点存储比父节点大数据
+BST实现     insert(key) 向树插入一个新的键 search(key) 在树种搜索key是否存在 remove(key) 删除树种特定的值 min() 寻找树的最小值 max() 寻找树的最大值 preOrderTraverse 先序遍历： 先输出当前节点值，在输出左节点，然后右节点值 middleOrderTraverse 中序遍历： 先输出左侧节点值，在输出当前节点值，然后右节点值 postSequenceTraverse 后续遍历： 先输出左侧节点值，在输出右侧节点值，然后输出当前节点值  class Node { constructor(value) { this.key = value this.left = null this.right = null } } class bstTree { root = null insert(key) { const item = new Node(key) const insertNode = (node, key) =&gt; { if (!" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://nieshiming.cn/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%91/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-08-13T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-08-13T00:00:00+00:00" />
+
+
+
+    <title>
+  数据结构 树 · levi
+</title>
+
+    
+      <link rel="canonical" href="https://nieshiming.cn/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%91/">
+    
+  
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300&display=swap" rel="stylesheet">
+
+
+    
+      
+      
+      <link rel="stylesheet" href="/css/coder.min.35fe7ad16c77cf2342a31b00a3714f305eeb0717aec800b19eb782d4847ca6be.css" integrity="sha256-Nf560Wx3zyNCoxsAo3FPMF7rBxeuyACxnreC1IR8pr4=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+      
+        
+        
+        <link rel="stylesheet" href="/css/coder-dark.min.ccbbada2e264e4fdbf9b2181cccc2cdb289a63dc9520a1e96ac2b9a45778df29.css" integrity="sha256-zLutouJk5P2/myGBzMws2yiaY9yVIKHpasK5pFd43yk=" crossorigin="anonymous" media="screen" />
+      
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
+
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+    <meta name="generator" content="Hugo 0.90.1" />
+
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+  </head>
+
+  
+  
+    
+  
+  <body class="preload-transitions colorscheme-auto">
+    
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="ri-contrast-line" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="/">
+      levi
+    </a>
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="ri-bar-chart-horizontal-fill" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/">首页</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/posts/">博客</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/tags/">标签</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/about/">关于我</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="https://nieshiming.cn/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%91/">
+              数据结构 树
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="ri-calendar-2-line" aria-hidden="true"></i>
+              <time datetime='2021-08-13T00:00:00Z'>
+                2021-08-13
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="ri-time-line" aria-hidden="true"></i>
+              2-minute read
+            </span>
+          </div>
+          
+          <div class="categories">
+  <i class="ri-folder-fill" aria-hidden="true"></i>
+    <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a></div>
+
+          <div class="tags">
+  <i class="ri-price-tag-3-fill" aria-hidden="true"></i>
+    <span class="tag">
+      <a href="/tags/%E7%AE%97%E6%B3%95/">算法</a>
+    </span>
+      <span class="separator">•</span>
+    <span class="tag">
+      <a href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/">八股文</a>
+    </span></div>
+
+        </div>
+      </header>
+
+      <div>
+        
+        <h2 id="树">
+  树
+  <a class="heading-link" href="#%e6%a0%91">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h2>
+<blockquote>
+<p>树是一种非线性结构，它对于存储快速查找的元素非常用有用， 树是一种分层数据的抽象模型</p>
+</blockquote>
+<ul>
+<li>树的相关术语</li>
+<li>树结构实现</li>
+<li>树的遍历</li>
+<li>添加和移除节点</li>
+</ul>
+<h3 id="树的相关术语">
+  树的相关术语
+  <a class="heading-link" href="#%e6%a0%91%e7%9a%84%e7%9b%b8%e5%85%b3%e6%9c%af%e8%af%ad">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<ul>
+<li>位于树顶部的节点叫作根节点。它没有父节点。</li>
+<li>树中的每个元素都叫作节点.节点分为内部节点和外部节点。至少有一个子节点的节点称为内部节点，没有子元素的节点成为外部节点或叶节点。</li>
+<li>节点的深度：取决当前节点去祖先节点的数量。</li>
+<li>节点的高度：所有节点深度的最大值</li>
+</ul>
+<h3 id="二叉树--二叉搜索树bst树">
+  二叉树 &amp; 二叉搜索树（BST树）
+  <a class="heading-link" href="#%e4%ba%8c%e5%8f%89%e6%a0%91--%e4%ba%8c%e5%8f%89%e6%90%9c%e7%b4%a2%e6%a0%91bst%e6%a0%91">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<p>二叉树中每个节点最多有个节点，一个是左侧节点，一个是右侧节点<br>
+<strong>二叉搜索树是二叉树特殊分别，只允许你在左侧存储比父节点小数据，右侧节点存储比父节点大数据</strong></p>
+<h4 id="bst实现">
+  BST实现
+  <a class="heading-link" href="#bst%e5%ae%9e%e7%8e%b0">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<ul>
+<li>insert(key) 向树插入一个新的键</li>
+<li>search(key) 在树种搜索key是否存在</li>
+<li>remove(key) 删除树种特定的值</li>
+<li>min()  寻找树的最小值</li>
+<li>max() 寻找树的最大值</li>
+<li>preOrderTraverse 先序遍历： 先输出当前节点值，在输出左节点，然后右节点值</li>
+<li>middleOrderTraverse 中序遍历： 先输出左侧节点值，在输出当前节点值，然后右节点值</li>
+<li>postSequenceTraverse 后续遍历： 先输出左侧节点值，在输出右侧节点值，然后输出当前节点值</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">
+ <span style="color:#ff79c6">class</span> Node {
+    constructor(value) {
+      <span style="color:#ff79c6">this</span>.key <span style="color:#ff79c6">=</span> value
+      <span style="color:#ff79c6">this</span>.left <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span>
+      <span style="color:#ff79c6">this</span>.right <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span>
+    }
+  }
+
+  <span style="color:#ff79c6">class</span> bstTree {
+    root <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span>
+
+    insert(key) {
+      <span style="color:#ff79c6">const</span> item <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Node(key)
+
+      <span style="color:#ff79c6">const</span> insertNode <span style="color:#ff79c6">=</span> (node, key) =&gt; {
+        <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span>node) {
+          node <span style="color:#ff79c6">=</span> item
+        }
+
+        <span style="color:#ff79c6">if</span> (node.key <span style="color:#ff79c6">-</span> key <span style="color:#ff79c6">&gt;</span> <span style="color:#bd93f9">0</span>) {
+          node.left <span style="color:#ff79c6">=</span> insertNode(node.left, key)
+        } <span style="color:#ff79c6">else</span> <span style="color:#ff79c6">if</span> (node.key <span style="color:#ff79c6">-</span> key <span style="color:#ff79c6">&lt;</span> <span style="color:#bd93f9">0</span>) {
+          node.right <span style="color:#ff79c6">=</span> insertNode(node.right, key)
+        }
+
+        <span style="color:#ff79c6">return</span> node
+      }
+
+      <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span><span style="color:#ff79c6">this</span>.root) {
+        <span style="color:#ff79c6">this</span>.root <span style="color:#ff79c6">=</span> item
+      } <span style="color:#ff79c6">else</span> {
+        insertNode(<span style="color:#ff79c6">this</span>.root, key)
+      }
+
+      <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">true</span>
+    }
+
+    remove(key) {
+      <span style="color:#ff79c6">const</span> removeNode <span style="color:#ff79c6">=</span> (node, key) =&gt; {
+        <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span>node) {
+          <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">null</span>
+        }
+
+        <span style="color:#ff79c6">if</span> (node.key <span style="color:#ff79c6">-</span> key <span style="color:#ff79c6">&gt;</span> <span style="color:#bd93f9">0</span>) {
+          node.left <span style="color:#ff79c6">=</span> removeNode(node.left, key)
+        } <span style="color:#ff79c6">else</span> <span style="color:#ff79c6">if</span> (node.key <span style="color:#ff79c6">-</span> key <span style="color:#ff79c6">&lt;</span> <span style="color:#bd93f9">0</span>) {
+          node.right <span style="color:#ff79c6">=</span> removeNode(node.right, key)
+        } <span style="color:#ff79c6">else</span> {
+          <span style="color:#6272a4">// 找到目标节点
+</span><span style="color:#6272a4"></span>          <span style="color:#ff79c6">if</span> (node.left <span style="color:#ff79c6">===</span> <span style="color:#ff79c6">null</span> <span style="color:#ff79c6">&amp;&amp;</span> node.right <span style="color:#ff79c6">===</span> <span style="color:#ff79c6">null</span>) {
+            node <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span>
+          } <span style="color:#ff79c6">else</span> <span style="color:#ff79c6">if</span> (node.left <span style="color:#ff79c6">&amp;&amp;</span> node.right <span style="color:#ff79c6">===</span> <span style="color:#ff79c6">null</span>) {
+            node <span style="color:#ff79c6">=</span> node.left
+          } <span style="color:#ff79c6">else</span> <span style="color:#ff79c6">if</span> (node.right <span style="color:#ff79c6">&amp;&amp;</span> node.left <span style="color:#ff79c6">===</span> <span style="color:#ff79c6">null</span>) {
+            node <span style="color:#ff79c6">=</span> node.right
+          } <span style="color:#ff79c6">else</span> {
+            <span style="color:#6272a4">// 目标节点存在左右节点的话， 保持左树不变，取右树最小节点，并且把右树最小节点删除掉
+</span><span style="color:#6272a4"></span>            <span style="color:#ff79c6">const</span> rightMin <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.minNode(node.right)
+            node.key <span style="color:#ff79c6">=</span> rightMin.key
+            node.right <span style="color:#ff79c6">=</span> removeNode(node.right, rightMin.key)
+          }
+        }
+
+        <span style="color:#ff79c6">return</span> node
+      }
+
+      <span style="color:#ff79c6">return</span> removeNode(<span style="color:#ff79c6">this</span>.root, key)
+    }
+
+    search(key) {
+      <span style="color:#ff79c6">const</span> searchNode <span style="color:#ff79c6">=</span> (node, key) =&gt; {
+        <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span>node) {
+          <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">undefined</span>
+        }
+
+        <span style="color:#ff79c6">if</span> (node.key <span style="color:#ff79c6">-</span> key <span style="color:#ff79c6">&gt;</span> <span style="color:#bd93f9">0</span>) {
+          <span style="color:#ff79c6">return</span> searchNode(node.left, key)
+        } <span style="color:#ff79c6">else</span> <span style="color:#ff79c6">if</span> (node.key <span style="color:#ff79c6">-</span> key <span style="color:#ff79c6">&lt;</span> <span style="color:#bd93f9">0</span>) {
+          <span style="color:#ff79c6">return</span> searchNode(node.right, key)
+        } <span style="color:#ff79c6">else</span> {
+          <span style="color:#ff79c6">return</span> node
+        }
+      }
+
+      <span style="color:#ff79c6">return</span> searchNode(<span style="color:#ff79c6">this</span>.root, key)
+    }
+
+    <span style="color:#6272a4">// 先序遍历
+</span><span style="color:#6272a4"></span>    preOrderTraverse() {
+      <span style="color:#8be9fd;font-style:italic">let</span> str <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#39;&#39;</span>
+      <span style="color:#ff79c6">const</span> loop <span style="color:#ff79c6">=</span> (node) =&gt; {
+        <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span>node) {
+          <span style="color:#ff79c6">return</span>
+        }
+
+        str <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">`</span><span style="color:#f1fa8c">${</span>str<span style="color:#f1fa8c">}</span><span style="color:#f1fa8c"> =&gt; </span><span style="color:#f1fa8c">${</span>node.key<span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">`</span>
+        loop(node.left)
+        loop(node.right)
+      }
+
+      loop(<span style="color:#ff79c6">this</span>.root)
+      console.log(str)
+    }
+
+    <span style="color:#6272a4">// 中序遍历
+</span><span style="color:#6272a4"></span>    middleOrderTraverse() {
+      <span style="color:#ff79c6">const</span> loop <span style="color:#ff79c6">=</span> (node) =&gt; {
+        <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span>node) {
+          <span style="color:#ff79c6">return</span>
+        }
+
+        loop(node.left)
+        console.log(node.key)
+        loop(node.right)
+      }
+
+      loop(<span style="color:#ff79c6">this</span>.root)
+    }
+
+    <span style="color:#6272a4">// 后序遍历
+</span><span style="color:#6272a4"></span>    postSequenceTraverse() {
+      <span style="color:#ff79c6">const</span> loop <span style="color:#ff79c6">=</span> (node) =&gt; {
+        <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span>node) {
+          <span style="color:#ff79c6">return</span>
+        }
+
+        loop(node.left)
+        loop(node.right)
+        console.log(node.key)
+      }
+
+      loop(<span style="color:#ff79c6">this</span>.root)
+    }
+
+    min() {
+      <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span><span style="color:#ff79c6">this</span>.root) {
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">undefined</span>
+      }
+
+      <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">this</span>.minNode(<span style="color:#ff79c6">this</span>.root)
+    }
+
+    minNode(node) {
+      <span style="color:#8be9fd;font-style:italic">let</span> current <span style="color:#ff79c6">=</span> node
+
+      <span style="color:#ff79c6">while</span> (current <span style="color:#ff79c6">&amp;&amp;</span> current.left) {
+        current <span style="color:#ff79c6">=</span> current.left
+      }
+
+      <span style="color:#ff79c6">return</span> current
+    }
+
+    max() {
+      <span style="color:#8be9fd;font-style:italic">let</span> current <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>.root
+
+      <span style="color:#ff79c6">while</span> (current <span style="color:#ff79c6">&amp;&amp;</span> current.right) {
+        current <span style="color:#ff79c6">=</span> current.right
+      }
+
+      <span style="color:#ff79c6">return</span> current
+    }
+  }
+
+</code></pre></div>
+      </div>
+
+
+      <footer>
+        
+
+
+        
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    ©
+    
+      2019 -
+    
+    2022
+     levi 
+    ·
+    开启美好新一天
+  </section>
+</footer>
+
+    </main>
+
+    
+      
+      <script src="/js/coder.min.03b17769f4f91ae35667e1f2a1ca8c16f50562576cf90ff32b3179926914daa5.js" integrity="sha256-A7F3afT5GuNWZ&#43;HyocqMFvUFYlds&#43;Q/zKzF5kmkU2qU="></script>
+    
+
+    
+
+
+  </body>
+
+</html>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>http on levi</title>
+    <link>https://nieshiming.cn/tags/http/</link>
+    <description>Recent content in http on levi</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 09 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://nieshiming.cn/tags/http/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>单点登录</title>
+      <link>https://nieshiming.cn/posts/%E5%8D%95%E7%82%B9%E7%99%BB%E5%BD%95/</link>
+      <pubDate>Fri, 09 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://nieshiming.cn/posts/%E5%8D%95%E7%82%B9%E7%99%BB%E5%BD%95/</guid>
+      <description>&lt;h4 id=&#34;1同域-sso&#34;&gt;
+  1.同域 SSO
+  &lt;a class=&#34;heading-link&#34; href=&#34;#1%e5%90%8c%e5%9f%9f-sso&#34;&gt;
+    &lt;i class=&#34;fa fa-link&#34; aria-hidden=&#34;true&#34;&gt;&lt;/i&gt;
+  &lt;/a&gt;
+&lt;/h4&gt;
+&lt;p&gt;如图，同域 SSO 是最简单的一种情况。&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;此时，两个产品都是在一个域名下，单点登录是很自然的选择。我们来捋一捋步骤，搞清楚这里的步骤是理解后文的基础，千万不要跳过。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;用户访问产品 a，向 后台服务器发送登录请求。&lt;/li&gt;
+&lt;li&gt;登录认证成功，服务器把用户的登录信息写入 session。服务器为该用户生成一个 cookie，并加入到 response header 中，随着请求返回而写入浏览器。该 cookie 的域设定为 dxy.cn。&lt;/li&gt;
+&lt;li&gt;下一次，当用户访问同域名的产品 b 时，由于 a 和 b 在同一域名下，也是 dxy.cn，浏览器会自动带上之前的 cookie。此时后台服务器就可以通过该 cookie 来验证登录状态了。&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>levi_http总结</title>
+      <link>https://nieshiming.cn/posts/levi-http%E6%80%BB%E7%BB%93/</link>
+      <pubDate>Fri, 28 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://nieshiming.cn/posts/levi-http%E6%80%BB%E7%BB%93/</guid>
+      <description>&lt;h4 id=&#34;http-协商缓存--强制缓存&#34;&gt;
+  http 协商缓存 &amp;amp; 强制缓存
+  &lt;a class=&#34;heading-link&#34; href=&#34;#http-%e5%8d%8f%e5%95%86%e7%bc%93%e5%ad%98--%e5%bc%ba%e5%88%b6%e7%bc%93%e5%ad%98&#34;&gt;
+    &lt;i class=&#34;fa fa-link&#34; aria-hidden=&#34;true&#34;&gt;&lt;/i&gt;
+  &lt;/a&gt;
+&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://juejin.cn/post/6844903838768431118&#34;&gt;http面试必会的：强制缓存和协商缓存&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://segmentfault.com/a/1190000016199807&#34;&gt;10分钟彻底搞懂Http的强制缓存和协商缓存&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;强缓存是利用http头部中的cache-control和expries控制&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;expries: (http1.0) 属于过时的验证缓存的方式，其值保存的是服务器返回的过期时间，再次发起请求的时候，如果客户端时间小于资源expires则不会发起请求   &lt;br&gt;
+cache-control: (http1.1) 现在最多使用的控制缓存的方式，服务器返回的一个相对时间(会设置一个毫秒数，在有效时间内发起服务器请求，会读取缓存内容，直至失效，重新发起服务器请求)，解决expires比较时间造成的问题，请求服务器资源时，比较缓存资源时间和客户端当前时间(发生更改)，则会重新请求资源&lt;/p&gt;
+&lt;p&gt;通常来说，强缓存不会向浏览器发起请求，直接从缓存中读取内容，在在chrome控制台的network的size选项中可以看到该请求返回200的状态码。分为 from disk cache 和 from memory cache。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;from disk cache：（硬盘中缓存） 一般非脚本内容，例如css/html&lt;/li&gt;
+&lt;li&gt;from memory cache: （内存中缓存）一般是脚本、字体、图片&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

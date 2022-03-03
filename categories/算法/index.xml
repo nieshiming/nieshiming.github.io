@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>算法 on levi</title>
+    <link>https://nieshiming.cn/categories/%E7%AE%97%E6%B3%95/</link>
+    <description>Recent content in 算法 on levi</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 15 Aug 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://nieshiming.cn/categories/%E7%AE%97%E6%B3%95/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>算法 排序</title>
+      <link>https://nieshiming.cn/posts/%E7%AE%97%E6%B3%95-%E6%8E%92%E5%BA%8F/</link>
+      <pubDate>Sun, 15 Aug 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://nieshiming.cn/posts/%E7%AE%97%E6%B3%95-%E6%8E%92%E5%BA%8F/</guid>
+      <description>十大排序算法    冒泡排序    选择排序    快速排序    堆排序    参考文章    图解排序算法(三)之堆排序 javascript实现堆排序</description>
+    </item>
+    
+    <item>
+      <title>数据结构 树</title>
+      <link>https://nieshiming.cn/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%91/</link>
+      <pubDate>Fri, 13 Aug 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://nieshiming.cn/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%91/</guid>
+      <description>树     树是一种非线性结构，它对于存储快速查找的元素非常用有用， 树是一种分层数据的抽象模型
+  树的相关术语 树结构实现 树的遍历 添加和移除节点  树的相关术语     位于树顶部的节点叫作根节点。它没有父节点。 树中的每个元素都叫作节点.节点分为内部节点和外部节点。至少有一个子节点的节点称为内部节点，没有子元素的节点成为外部节点或叶节点。 节点的深度：取决当前节点去祖先节点的数量。 节点的高度：所有节点深度的最大值  二叉树 &amp;amp; 二叉搜索树（BST树）    二叉树中每个节点最多有个节点，一个是左侧节点，一个是右侧节点
+二叉搜索树是二叉树特殊分别，只允许你在左侧存储比父节点小数据，右侧节点存储比父节点大数据
+BST实现     insert(key) 向树插入一个新的键 search(key) 在树种搜索key是否存在 remove(key) 删除树种特定的值 min() 寻找树的最小值 max() 寻找树的最大值 preOrderTraverse 先序遍历： 先输出当前节点值，在输出左节点，然后右节点值 middleOrderTraverse 中序遍历： 先输出左侧节点值，在输出当前节点值，然后右节点值 postSequenceTraverse 后续遍历： 先输出左侧节点值，在输出右侧节点值，然后输出当前节点值  class Node { constructor(value) { this.key = value this.left = null this.right = null } } class bstTree { root = null insert(key) { const item = new Node(key) const insertNode = (node, key) =&amp;gt; { if (!</description>
+    </item>
+    
+    <item>
+      <title>数据结构 链表篇</title>
+      <link>https://nieshiming.cn/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E9%93%BE%E8%A1%A8%E7%AF%87/</link>
+      <pubDate>Thu, 12 Aug 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://nieshiming.cn/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E9%93%BE%E8%A1%A8%E7%AF%87/</guid>
+      <description>链表    数组&amp;lt;队列&amp;gt;是比较简单的线性存储，数组的大小初始化是固定，从起点和中间插入元素成本很高，因为需要不断的移动元素。 链表存储有序的数据集合，不同于数组的是，链表存储的数据在内存中并不要求是连续的，链表中每个节点存储了当前节点值，以及指向下一个节点的指针
+链表可细分为      链表结构实现
+ 添加、删除元素 插入元素 获取链表长度、输出链表文本    双向链表
+  循环链表
+  排序链表
+  通过链表实现栈
+  链表结构实现     实现一个链表类，包含删除、添加元素、链表长度等
+ class Node { constructor(value) { this.value = value this.next = null } } class LinkedList { count = 0 head = null push(element) { const node = new Node(element) if (this.isEmpty()) { this.</description>
+    </item>
+    
+    <item>
+      <title>数据结构 集合、字典、散列</title>
+      <link>https://nieshiming.cn/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E9%9B%86%E5%90%88%E5%AD%97%E5%85%B8%E6%95%A3%E5%88%97/</link>
+      <pubDate>Sat, 07 Aug 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://nieshiming.cn/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E9%9B%86%E5%90%88%E5%AD%97%E5%85%B8%E6%95%A3%E5%88%97/</guid>
+      <description>集合     集合是一种存储不重复数据的结构，es5中set是具体实现
+ 集合实现    class Set { item = {}; add(key) { if (!this.has(key)) { this.item[key] = key return true } return false } remove(key) { if (this.has(key)) { delete this.item[key] return true } return false } // 并集  union(otherSet = {}) { const newSet = new Dictionary() this.values().forEach((item) =&amp;gt; newSet.add(item)) otherSet.values().forEach((item) =&amp;gt; newSet.add(item)) return newSet.values() } // 交集  intersect(otherSet = {}) { return this.</description>
+    </item>
+    
+    <item>
+      <title>数据结构 分类</title>
+      <link>https://nieshiming.cn/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%88%86%E7%B1%BB/</link>
+      <pubDate>Tue, 03 Aug 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://nieshiming.cn/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%88%86%E7%B1%BB/</guid>
+      <description>数据结构与算法     本文件内所有知识点均是基础的数据结构与算法，具体参考每个章节markdown 后续深入理解，参考 初级算法 &amp;amp;&amp;amp; 中级算法 &amp;amp;&amp;amp; 高级算法 (大部分参考leetCode)  数据结构     栈： 一种遵从先进后出原则的有序集合；新添加或者待删除的元素都会保存的在栈的头部，称为栈顶，另一端为栈底，在栈里面，新元素都靠近栈顶，旧元素都接近栈底 队列： 与栈相反，遵从先进先出的原则的一组有序的项，队列在尾部添加新的元素，并从头部移除元素，最新添加的元素必须在队列的末尾  普通队列 优先队列 循环队列   链表： 存储有序的元素集合, 但不同与数组, 链表中元素在内存中并不是连续放置的; 每个元素由一个存储元素本身的节点和一个指向下一个元素引用(指针/链接)组成  普通链表 双向链表 循环链表   集合： 集合是一组无序且唯一的项组成，这个数据结构使用了与有限集合相同的数学概念 字典： 集合、字典、散列表都可以存储不重复的数据，字典和集合很像，集合是以{value: value}形式存储数据，而字典是以{key: value}形式存储数据，字典也称为映射(object对象便是字典在javascript中的实现) 散列： HashMap类是Dictionary的一种散列表实现方式， 散列算法是尽可能地在数据结构中快速找到一个值，使用散列函数，就知道 值的具体位置，因此能够快速检索到該值，散列函数的作用是给定一个键值，然后返回值在表中的地址。 树： TODO  栈    一种遵从先进后出原则的有序集合；新添加或者待删除的元素都会保存的在栈的头部，称为栈顶，另一端为栈底，在栈里面，新元素都靠近栈顶，旧元素都接近栈底
+栈也被用在编程语言的编辑器和内存中保存变量，方法调用
+队列    在现实中，最常见的例子就是排队，吃饭排队、银行业务排队、公车的前门上后门下机制&amp;hellip;，前面的人优先完成自己的事务，完成之后，下一个人才能继续。总之，遵从先出原则，
+优先队列    其中一个修改版就是优先队列。元素的添加和移除是基于优先级的。一个现实的例子就是机场登机的顺序。头等舱和商务舱乘客的优先级要高于经济舱乘客。在有些国家，老年人和孕妇(或 带小孩的妇女)登机时也享有高于其他乘客的优先级。</description>
+    </item>
+    
+    <item>
+      <title>数据结构 队列篇</title>
+      <link>https://nieshiming.cn/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E9%98%9F%E5%88%97%E7%AF%87/</link>
+      <pubDate>Mon, 02 Aug 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://nieshiming.cn/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E9%98%9F%E5%88%97%E7%AF%87/</guid>
+      <description>队列    队列是遵循先进先出的有序集合，在队列尾部添加新元素，队列首部移除元素，最新添加的元素加在队列尾部
+Queue    // 对象模拟  class Queue { item = {} count = 0 lastIndex = 0 enqueue(value) { this.item[this.count] = value this.count++ } dequeue() { if (this.isEmpty()) { return undefined } const result = this.item[this.lastIndex] delete this.item[this.lastIndex] this.lastIndex++ return result } size() { return this.count - this.lastIndex } isEmpty() { return this.lastIndex === this.count } print() { let str = this.item[0] for (let i = 1; i &amp;lt; this.</description>
+    </item>
+    
+    <item>
+      <title>数据结构 堆栈篇</title>
+      <link>https://nieshiming.cn/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%A0%86%E6%A0%88%E7%AF%87/</link>
+      <pubDate>Sun, 01 Aug 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://nieshiming.cn/posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%A0%86%E6%A0%88%E7%AF%87/</guid>
+      <description>栈    是一种遵循后入先出的数据集合，新添加的元素靠近栈顶，后添加靠近栈底
+用对象模拟栈    // 对象模拟  class Stack { constructor() { this.count = 0 this.item = {} } push(value) { this.item[this.count] = value this.count++ } peek() { if (this.isEmpty()) { return undefined } this.count-- const result = this.item[this.count] delete this.item[this.count] return result } isEmpty() { return this.count === 0 } size() { return this.count } print() { let str = this.item[0] for (let i = 1; i &amp;lt; this.</description>
+    </item>
+    
+  </channel>
+</rss>
