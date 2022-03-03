@@ -22,7 +22,7 @@ hugo server -D
 ```
 
 
-##### Main Branch <Public 目录>
+##### Main Branch <public 目录>
 
 ```ssh
 
