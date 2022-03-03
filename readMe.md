@@ -3,7 +3,7 @@
 - source分支 => 根目录仓库下的所有文件，包含hugo配置，网站源文件等，不参与网站打包
 - main分支 => public文件所有内容，是实际发布网站文件
 
-> source、main分支在https://github.com/nieshiming/nieshiming.github.io
+> source、main分支在 https://github.com/nieshiming/nieshiming.github.io
 
 #### Start
 hugo server -D
